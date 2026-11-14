@@ -1,0 +1,21 @@
+{
+  "status": 0,
+  "code": "P02",
+  "message": "Transaction Failed",
+  "data": {
+    "txstatus": 2,
+    "payer": "233245659500",
+    "terminalid": "",
+    "accountnumber": "10927206072742",
+    "name": "",
+    "amount": "0",
+    "value": "0",
+    "transactionid": null,
+    "externalref": "1791031157570_73837",
+    "thirdpartyref": "",
+    "reason": "LOW_BALANCE_OR_PAYEE_LIMIT_REACHED_OR_NOT_ALLOWED",
+    "secret": "YOUR_CALLBACK_SECRET",
+    "ts": "2026-10-03 12:44:23"
+  },
+  "go": null
+}

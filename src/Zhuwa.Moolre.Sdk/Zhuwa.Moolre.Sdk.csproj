@@ -1,0 +1,74 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <!-- Microsoft: start new libraries on the current LTS. net10.0 only; netstandard2.0 only if .NET Framework users ask. -->
+    <TargetFramework>net10.0</TargetFramework>
+    <AssemblyName>Zhuwa.Moolre.Sdk</AssemblyName>
+    <RootNamespace>Zhuwa.Moolre</RootNamespace>
+
+    <!-- Public API documentation: CS1591 (missing XML docs on a public member) fails the build. -->
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+
+    <!-- Trimming and Native AOT compatibility; turns on the trim/AOT analyzers. -->
+    <IsTrimmable>true</IsTrimmable>
+    <IsAotCompatible>true</IsAotCompatible>
+    <JsonSerializerIsReflectionEnabledByDefault>false</JsonSerializerIsReflectionEnabledByDefault>
+  </PropertyGroup>
+
+  <!-- NuGet package metadata -->
+  <PropertyGroup>
+    <PackageId>Zhuwa.Moolre.Sdk</PackageId>
+    <Title>Zhuwa Moolre SDK (unofficial)</Title>
+    <Description>Unofficial community .NET client for the Moolre API: mobile money collections, payment links, transfers, wallets, airtime and data, SMS and WhatsApp. Dependency-injection first. Not affiliated with or endorsed by Moolre.</Description>
+    <Authors>Zhuwa Africa</Authors>
+    <Company>Zhuwa Africa</Company>
+    <Product>Zhuwa Moolre SDK</Product>
+    <Copyright>Copyright (c) Zhuwa Africa 2026</Copyright>
+    <PackageTags>moolre;payments;mobile-money;momo;ghana;sms;whatsapp;airtime;sdk;unofficial</PackageTags>
+    <PackageProjectUrl>https://github.com/zhuwaafrica/moolre-dotnet-sdk</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/zhuwaafrica/moolre-dotnet-sdk</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageReadmeFile>package-readme.md</PackageReadmeFile>
+    <PackageReleaseNotes>Preview: project setup only; no Moolre endpoints implemented yet. See CHANGELOG.md.</PackageReleaseNotes>
+
+    <!-- Source Link is built into the .NET SDK for GitHub; write the repository URL into the package. -->
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
+
+    <!-- Debug symbols as a separate .snupkg for the NuGet.org symbol server. -->
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+
+    <!-- Fail `dotnet pack` on API or compatibility problems. Add PackageValidationBaselineVersion after the first stable release. -->
+    <EnablePackageValidation>true</EnablePackageValidation>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\..\package-readme.md" Pack="true" PackagePath="\" />
+  </ItemGroup>
+
+  <!-- Direct dependencies only; versions are in Directory.Packages.props. -->
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" />
+    <PackageReference Include="Microsoft.Extensions.Http" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" />
+    <PackageReference Include="Microsoft.Extensions.Options" />
+    <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" />
+  </ItemGroup>
+
+  <!-- Public API tracking: every public member must be listed in .PublicAPI/PublicAPI.Unshipped.txt (moved to
+       Shipped.txt at release). An unreviewed public change fails the build. Banned APIs enforce the library's design rules. -->
+  <ItemGroup>
+    <PackageReference Include="Microsoft.CodeAnalysis.PublicApiAnalyzers" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.CodeAnalysis.BannedApiAnalyzers" PrivateAssets="all" />
+    <AdditionalFiles Include=".PublicAPI\PublicAPI.Shipped.txt" />
+    <AdditionalFiles Include=".PublicAPI\PublicAPI.Unshipped.txt" />
+    <AdditionalFiles Include="..\..\BannedSymbols.txt" Visible="false" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="Zhuwa.Moolre.Sdk.Tests" />
+  </ItemGroup>
+
+</Project>

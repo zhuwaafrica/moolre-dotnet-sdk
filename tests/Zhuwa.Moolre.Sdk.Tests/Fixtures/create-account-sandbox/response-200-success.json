@@ -1,0 +1,22 @@
+{
+  "status": "1",
+  "code": "WC02",
+  "message": [
+    "Wallet Created Successfully",
+    "Your wallet will be reloaded shortly or Click close to refresh now."
+  ],
+  "data": {
+    "status": 1,
+    "accountnumber": "100000157291",
+    "accountname": "My Business LTD",
+    "paymentid": "0757291",
+    "api": 0,
+    "callback": "",
+    "settlement": {},
+    "secret": "cf2a797f-c8d8-470c-a736-6f5f78ae1d86"
+  },
+  "go": [
+    "wallets",
+    "1.57291"
+  ]
+}

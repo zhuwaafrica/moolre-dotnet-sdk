@@ -1,0 +1,7 @@
+{
+  "status": 0,
+  "code": "ASMS07",
+  "message": "Sender ID is not approved, Please login on app.moolre.com and setup your Sender ID.",
+  "data": "senderid",
+  "go": null
+}

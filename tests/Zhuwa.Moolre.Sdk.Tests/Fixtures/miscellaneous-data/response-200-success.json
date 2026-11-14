@@ -1,0 +1,20 @@
+{
+  "status": 1,
+  "code": "SD01",
+  "message": "Banks Found",
+  "data": [
+    {
+      "name": "ABSA BANK GHANA LTD",
+      "code": "030100"
+    },
+    {
+      "name": "ACCESS BANK GHANA LTD",
+      "code": "030402"
+    },
+    {
+      "name": "ADB BANK GHANA LTD",
+      "code": "030301"
+    }
+  ],
+  "go": null
+}

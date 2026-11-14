@@ -1,0 +1,9 @@
+{
+  "status": 1,
+  "code": "ASMQ03",
+  "message": "Account Status",
+  "data": {
+    "balance": 857
+  },
+  "go": null
+}

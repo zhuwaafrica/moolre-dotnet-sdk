@@ -1,0 +1,30 @@
+{
+  "status": 1,
+  "code": "AC01",
+  "message": "Payment ID / Bank Account Found",
+  "data": {
+    "account": {
+      "accountno": "0052030001001",
+      "txcount": "1",
+      "txvalue": "4.60"
+    },
+    "transactions": [
+      {
+        "txstatus": 1,
+        "txtype": 1,
+        "accountnumber": "100000100002",
+        "payer": "9040013020315",
+        "payee": "Zagey",
+        "amount": "5.00",
+        "value": "4.60",
+        "fee": "0.40",
+        "networkfee": "0.00",
+        "transactionid": "51531630",
+        "externalref": "ur12ef001",
+        "thirdpartyref": "2625201512860000",
+        "ts": "2026-09-09 14:20:41"
+      }
+    ],
+    "go": null
+  }
+}

@@ -1,0 +1,317 @@
+{
+  "status": "1",
+  "code": "ASB02",
+  "message": "Data bundles",
+  "data": {
+    "mtn": [
+      {
+        "bundle": "RACT_Data_GHC_0.5_Others",
+        "price": "0.50",
+        "data": "20.73 MB",
+        "data_mb": 20.73,
+        "validity": "No Expiry",
+        "category": "Data Bundles"
+      },
+      {
+        "bundle": "RACT_Data_GHC_1_Others",
+        "price": "1.00",
+        "data": "41.46 MB",
+        "data_mb": 41.46,
+        "validity": "No Expiry",
+        "category": "Data Bundles"
+      },
+      {
+        "bundle": "RACT_Data_GHC_3_Others",
+        "price": "3.00",
+        "data": "406.89 MB",
+        "data_mb": 406.89,
+        "validity": "No Expiry",
+        "category": "Data Bundles"
+      },
+      {
+        "bundle": "RACT_Data_GHC_10_Others",
+        "price": "10.00",
+        "data": "837.55 MB",
+        "data_mb": 837.55,
+        "validity": "No Expiry",
+        "category": "Data Bundles"
+      },
+      {
+        "bundle": "RACT_Data_GHC_350_Others",
+        "price": "350.00",
+        "data": "108.21 GB",
+        "data_mb": 110807.04,
+        "validity": "No Expiry",
+        "category": "Data Bundles"
+      },
+      {
+        "bundle": "RACT_Data_GHC_399_Others",
+        "price": "399.00",
+        "data": "217.34 GB",
+        "data_mb": 222556.16,
+        "validity": "No Expiry",
+        "category": "Data Bundles"
+      },
+      {
+        "bundle": "NACT_Midnight_GHC3_Others",
+        "price": "3.00",
+        "data": "8.48 GB",
+        "data_mb": 8683.52,
+        "validity": "No Expiry",
+        "category": "Midnight Bundles"
+      },
+      {
+        "bundle": "RACT_Kokrokoo_GHC_1.22_Others",
+        "price": "1.22",
+        "data": "460.11 MB",
+        "data_mb": 460.11,
+        "validity": "No Expiry",
+        "category": "Kokrokoo Bundles"
+      },
+      {
+        "bundle": "RACT_Social_GHC_1_Others",
+        "price": "1.00",
+        "data": "82.57 MB",
+        "data_mb": 82.57,
+        "validity": "No Expiry",
+        "category": "Social Media Bundles"
+      },
+      {
+        "bundle": "RACT_Social_GHC_5_Others",
+        "price": "5.00",
+        "data": "412.85 MB",
+        "data_mb": 412.85,
+        "validity": "No Expiry",
+        "category": "Social Media Bundles"
+      },
+      {
+        "bundle": "RACT_Social_GHC_10_Others",
+        "price": "10.00",
+        "data": "825.70 MB",
+        "data_mb": 825.7,
+        "validity": "No Expiry",
+        "category": "Social Media Bundles"
+      },
+      {
+        "bundle": "RACT_Video_GHC_1_Others",
+        "price": "1.00",
+        "data": "158.05 MB",
+        "data_mb": 158.05,
+        "validity": "No Expiry",
+        "category": "Video Bundles"
+      },
+      {
+        "bundle": "RACT_Video_GHC_5_Others",
+        "price": "5.00",
+        "data": "790.25 MB",
+        "data_mb": 790.25,
+        "validity": "No Expiry",
+        "category": "Video Bundles"
+      },
+      {
+        "bundle": "RACT_Video_GHC_10_Others",
+        "price": "10.00",
+        "data": "1.54 GB",
+        "data_mb": 1576.96,
+        "validity": "No Expiry",
+        "category": "Video Bundles"
+      }
+    ],
+    "telecel": [
+      {
+        "bundle": "DATANVSTRDLY",
+        "price": "0.50",
+        "data": "22.29 MB",
+        "data_mb": 22.29,
+        "validity": "No Expiry",
+        "category": "Data Bundles"
+      },
+      {
+        "bundle": "DATANVDR1DLY",
+        "price": "1.00",
+        "data": "50.14 MB",
+        "data_mb": 50.14,
+        "validity": "No Expiry",
+        "category": "Data Bundles"
+      },
+      {
+        "bundle": "DATANVCHTDLY",
+        "price": "2.00",
+        "data": "111.43 MB",
+        "data_mb": 111.43,
+        "validity": "No Expiry",
+        "category": "Data Bundles"
+      },
+      {
+        "bundle": "DATANVDR5WLY",
+        "price": "5.00",
+        "data": "557.15 MB",
+        "data_mb": 557.15,
+        "validity": "No Expiry",
+        "category": "Data Bundles"
+      },
+      {
+        "bundle": "DATANVDBDL1",
+        "price": "10.00",
+        "data": "891.44 MB",
+        "data_mb": 891.44,
+        "validity": "No Expiry",
+        "category": "Data Bundles"
+      },
+      {
+        "bundle": "DATANVDBDL2",
+        "price": "20.00",
+        "data": "1.67 GB",
+        "data_mb": 1711.56,
+        "validity": "No Expiry",
+        "category": "Data Bundles"
+      },
+      {
+        "bundle": "DATANVDBDL3",
+        "price": "50.00",
+        "data": "4.46 GB",
+        "data_mb": 4564.17,
+        "validity": "No Expiry",
+        "category": "Data Bundles"
+      },
+      {
+        "bundle": "DATANVDBDL4",
+        "price": "100.00",
+        "data": "10.03 GB",
+        "data_mb": 10269.39,
+        "validity": "No Expiry",
+        "category": "Data Bundles"
+      },
+      {
+        "bundle": "DATANVDBDL5",
+        "price": "200.00",
+        "data": "33.43 GB",
+        "data_mb": 34231.3,
+        "validity": "No Expiry",
+        "category": "Data Bundles"
+      },
+      {
+        "bundle": "DATANVDBDL6",
+        "price": "300.00",
+        "data": "100.29 GB",
+        "data_mb": 102693.89,
+        "validity": "No Expiry",
+        "category": "Data Bundles"
+      },
+      {
+        "bundle": "DATANVDBDL7",
+        "price": "400.00",
+        "data": "253.25 GB",
+        "data_mb": 259328,
+        "validity": "No Expiry",
+        "category": "Data Bundles"
+      },
+      {
+        "bundle": "DATABUNDBMXDLNR",
+        "price": "3.00",
+        "data": "445.72 MB",
+        "data_mb": 445.72,
+        "validity": "1 day",
+        "category": "Data Bundles"
+      },
+      {
+        "bundle": "DATABUNDGAP1_NR",
+        "price": "5.00",
+        "data": "780.02 MB",
+        "data_mb": 780.02,
+        "validity": "3 days",
+        "category": "Data Bundles"
+      },
+      {
+        "bundle": "BDLBTBOSSUD1_NR",
+        "price": "10.00",
+        "data": "1.11 GB",
+        "data_mb": 1141.04,
+        "validity": "5 days",
+        "category": "Data Bundles"
+      },
+      {
+        "bundle": "DATABUND2MO_NR1",
+        "price": "10.00",
+        "data": "1002.87 MB",
+        "data_mb": 1002.87,
+        "validity": "15 days",
+        "category": "Data Bundles"
+      },
+      {
+        "bundle": "BDLBTBOSSUWE_NR",
+        "price": "15.00",
+        "data": "2.01 GB",
+        "data_mb": 2053.88,
+        "validity": "5 days",
+        "category": "Data Bundles"
+      },
+      {
+        "bundle": "DATABUNDGAP4_NR",
+        "price": "20.00",
+        "data": "2.56 GB",
+        "data_mb": 2624.4,
+        "validity": "5 days",
+        "category": "Data Bundles"
+      },
+      {
+        "bundle": "DATABUND2MO_NR2",
+        "price": "20.00",
+        "data": "2.45 GB",
+        "data_mb": 2510.3,
+        "validity": "30 days",
+        "category": "Data Bundles"
+      },
+      {
+        "bundle": "BDLBTBOSSUD2_NR",
+        "price": "43.50",
+        "data": "5.01 GB",
+        "data_mb": 5134.69,
+        "validity": "15 days",
+        "category": "Data Bundles"
+      },
+      {
+        "bundle": "DATABUND2MO_NR3",
+        "price": "50.00",
+        "data": "6.13 GB",
+        "data_mb": 6275.74,
+        "validity": "30 days",
+        "category": "Data Bundles"
+      },
+      {
+        "bundle": "DATABUND100NR",
+        "price": "100.00",
+        "data": "12.81 GB",
+        "data_mb": 13122,
+        "validity": "30 days",
+        "category": "Data Bundles"
+      },
+      {
+        "bundle": "DATABUNDJSTRENR",
+        "price": "200.00",
+        "data": "39.00 GB",
+        "data_mb": 39936.5,
+        "validity": "30 days",
+        "category": "Data Bundles"
+      },
+      {
+        "bundle": "DATABUNDJMAX_NR",
+        "price": "300.00",
+        "data": "111.43 GB",
+        "data_mb": 114104.3,
+        "validity": "30 days",
+        "category": "Data Bundles"
+      },
+      {
+        "bundle": "DATABUNDJBOptNR",
+        "price": "400.00",
+        "data": "263.38 GB",
+        "data_mb": 269701.1,
+        "validity": "30 days",
+        "category": "Data Bundles"
+      }
+    ],
+    "at": []
+  },
+  "go": null
+}

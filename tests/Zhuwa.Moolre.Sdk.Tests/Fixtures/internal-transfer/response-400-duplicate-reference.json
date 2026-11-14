@@ -1,0 +1,7 @@
+{
+  "status": "0",
+  "code": "TR013",
+  "message": "External Reference is required and must be unique.",
+  "data": "externalref",
+  "go": null
+}

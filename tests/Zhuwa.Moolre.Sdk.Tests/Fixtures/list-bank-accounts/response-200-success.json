@@ -1,0 +1,39 @@
+{
+  "status": 1,
+  "code": "AC01",
+  "message": "Success",
+  "data": {
+    "txcount": 4,
+    "accounts": [
+      {
+        "accountno": "0077440001001",
+        "accountname": "Zagey MLR",
+        "bankname": "",
+        "extid": "",
+        "ts": "2026-09-18 07:13:34"
+      },
+      {
+        "accountno": "0052080001001",
+        "accountname": "Kofi Adeniyi2 MLR",
+        "bankname": "",
+        "extid": "ur12ef0012",
+        "ts": "2026-09-09 11:52:56"
+      },
+      {
+        "accountno": "0052030001001",
+        "accountname": "Kofi Adeniyi2 MLR",
+        "bankname": "",
+        "extid": "ur12ef001",
+        "ts": "2026-09-09 10:10:37"
+      },
+      {
+        "accountno": "0014760001001",
+        "accountname": "Kofi Adeniyi3 MoolrePay-2",
+        "bankname": "",
+        "extid": "",
+        "ts": "2026-06-15 10:58:02"
+      }
+    ],
+    "go": null
+  }
+}

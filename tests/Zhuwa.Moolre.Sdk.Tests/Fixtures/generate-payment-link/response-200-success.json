@@ -1,0 +1,9 @@
+{
+  "status": 1,
+  "code": "POS09",
+  "message": "POS payment link successfully generated.",
+  "data": {
+    "authorization_url": "https://pos.moolre.com/RZWs1yB6amGjNoiEQvlHPS5uqgp3Jc",
+    "reference": "uuid-1234as2"
+  }
+}

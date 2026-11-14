@@ -1,0 +1,9 @@
+# Test projects: Microsoft's test naming standard is Method_Scenario_ExpectedBehaviour, which uses underscores.
+[*.cs]
+dotnet_diagnostic.CA1707.severity = none
+# Tests do not expose public API surface for consumers.
+dotnet_diagnostic.CA1515.severity = none
+# Test code never needs ConfigureAwait.
+dotnet_diagnostic.CA2007.severity = none
+# IDE0005 only runs in a build when GenerateDocumentationFile is on; tests do not generate docs.
+dotnet_diagnostic.IDE0005.severity = none

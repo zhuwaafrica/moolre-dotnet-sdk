@@ -1,0 +1,23 @@
+{
+  "status": 1,
+  "code": "P01",
+  "message": "Transaction Successful",
+  "data": {
+    "txstatus": 1,
+    "payer": "233242097401",
+    "payername": "BISMARK AMOAH",
+    "payernetwork": "MTN",
+    "payerinstitution": "MTN",
+    "terminalid": "",
+    "accountnumber": "10772306069982",
+    "name": "",
+    "amount": "101",
+    "value": "98.97",
+    "transactionid": "54214408",
+    "externalref": "CDT20261111F1CE1703",
+    "thirdpartyref": "93586012523",
+    "secret": "YOUR_CALLBACK_SECRET",
+    "ts": "2026-11-11 12:35:49"
+  },
+  "go": null
+}

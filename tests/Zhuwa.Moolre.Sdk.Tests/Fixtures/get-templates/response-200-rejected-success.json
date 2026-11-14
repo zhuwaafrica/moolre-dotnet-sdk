@@ -1,0 +1,19 @@
+{
+  "status": 1,
+  "code": "WAS200",
+  "message": "Templates retrieved successfully",
+  "data": [
+    {
+      "id": "1470051854524583",
+      "name": "whatsapp_test",
+      "language": "en",
+      "status": "REJECTED",
+      "message": "Hello {{1}},\n\nYou are receiving this message from Melchizedek Technologies in response to your request with {{2}}.\n\nIf you need any assistance, please reply to this message and our support team will assist you.\n",
+      "placeholders": [
+        "1",
+        "2"
+      ]
+    }
+  ],
+  "next": null
+}

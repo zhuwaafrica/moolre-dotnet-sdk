@@ -1,0 +1,11 @@
+{
+  "status": 1,
+  "code": "AD14",
+  "message": "Terminal Creation Successful",
+  "data": {
+    "paymentid": "08160984",
+    "name": "Kofi Adeniyi",
+    "qrcode": null
+  },
+  "go": null
+}

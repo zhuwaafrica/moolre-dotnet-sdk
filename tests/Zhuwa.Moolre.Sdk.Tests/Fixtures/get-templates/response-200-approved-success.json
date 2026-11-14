@@ -1,0 +1,20 @@
+{
+  "status": 1,
+  "code": "WAS200",
+  "message": "Templates retrieved successfully",
+  "data": [
+    {
+      "id": "1218877297066056",
+      "name": "promotion",
+      "language": "en",
+      "status": "APPROVED",
+      "message": "Hello {{1}},\n\nMelchizedek Technologies would like to share information about our {{2}} designed to support businesses like {{3}}.\n\nIf you would like to learn more or speak with our team, please reply to this message and we will be happy to assist.\n",
+      "placeholders": [
+        "1",
+        "2",
+        "3"
+      ]
+    }
+  ],
+  "next": "opaque-cursor-for-the-next-page"
+}

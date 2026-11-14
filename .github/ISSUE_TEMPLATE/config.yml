@@ -1,0 +1,5 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Problem with Moolre's own service or account
+    url: https://docs.moolre.com/
+    about: This SDK is unofficial. Account, wallet, pricing and service problems go to Moolre support.

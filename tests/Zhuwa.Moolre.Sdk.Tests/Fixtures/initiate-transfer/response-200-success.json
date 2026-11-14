@@ -1,0 +1,21 @@
+{
+  "status": "1",
+  "code": "OBGH01",
+  "message": [
+    "Pay out Successful",
+    "Click close to view transactions."
+  ],
+  "data": {
+    "txstatus": 1,
+    "receiver": "0246798993",
+    "transactionid": "32759150",
+    "externalref": "28171451",
+    "thirdpartyref": "901733241086",
+    "receivername": "YUSIF YA-ADZAGEY",
+    "amount": "1",
+    "amountfee": "1.01",
+    "networkfee": "0.00",
+    "fee": "0.01"
+  },
+  "go": null
+}

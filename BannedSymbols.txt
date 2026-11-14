@@ -1,0 +1,8 @@
+T:System.Console;A library must not write to the console. Use ILogger.
+M:System.Enum.IsDefined(System.Type,System.Object);Do not use Enum.IsDefined to validate enum arguments. Use a switch.
+M:System.Enum.IsDefined``1(``0);Do not use Enum.IsDefined to validate enum arguments. Use a switch.
+P:System.DateTime.Now;Use DateTimeOffset.UtcNow (or TimeProvider) so behaviour does not depend on the machine time zone.
+P:System.DateTimeOffset.Now;Use DateTimeOffset.UtcNow (or TimeProvider) so behaviour does not depend on the machine time zone.
+M:System.Threading.Tasks.Task.Wait;Do not block on tasks (sync-over-async). Await them.
+P:System.Threading.Tasks.Task`1.Result;Do not block on tasks (sync-over-async). Await them.
+M:System.Net.Http.HttpClient.#ctor;Do not create HttpClient directly. Use IHttpClientFactory so handlers are pooled and recycled.

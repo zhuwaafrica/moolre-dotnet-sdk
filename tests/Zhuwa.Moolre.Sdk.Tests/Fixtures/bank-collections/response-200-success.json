@@ -1,0 +1,12 @@
+{
+  "status": 1,
+  "code": "AD19",
+  "message": "Account No. Creation Successful",
+  "data": {
+    "accountno": "0014730001001",
+    "accountname": "Kofi Adeniyi3 MoolrePay",
+    "bankname": "First Atlantic Bank",
+    "externalref": "BANK-1001"
+  },
+  "go": null
+}

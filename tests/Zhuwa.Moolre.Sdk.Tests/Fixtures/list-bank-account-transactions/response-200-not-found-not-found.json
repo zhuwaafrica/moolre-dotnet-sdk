@@ -1,0 +1,10 @@
+{
+  "status": 1,
+  "code": "AC03",
+  "message": "Payment ID / Bank Account Not Found",
+  "data": {
+    "account": null,
+    "transactions": [],
+    "go": null
+  }
+}

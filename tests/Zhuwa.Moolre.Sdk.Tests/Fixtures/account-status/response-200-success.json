@@ -1,0 +1,12 @@
+{
+  "status": 1,
+  "code": "SW01",
+  "message": "Wallet Found",
+  "data": {
+    "balance": 10.67,
+    "accountname": "Zagey",
+    "activated": "1",
+    "callback": "https://moolre.requestcatcher.com/test"
+  },
+  "go": null
+}

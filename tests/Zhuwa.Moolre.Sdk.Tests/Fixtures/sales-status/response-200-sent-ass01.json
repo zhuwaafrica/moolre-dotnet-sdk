@@ -1,0 +1,24 @@
+{
+  "status": "1",
+  "code": "ASS01",
+  "message": "Sale Successful",
+  "data": {
+    "txstatus": 1,
+    "product": "data",
+    "network": "mtn",
+    "bundle": "RACT_Data_GHC_3_Others",
+    "receiver": "233240000000",
+    "amount": "3.00",
+    "discount": "0.18",
+    "charged": "2.82",
+    "accountnumber": "10XXXXXXXXXXXX",
+    "transactionid": "123456789",
+    "refundid": null,
+    "reference": "SALE-REFERENCE",
+    "externalref": "your-extid",
+    "thirdpartyref": "PROVIDER-REF",
+    "ts": "2026-10-16 09:00:00",
+    "updated": "2026-10-16 09:00:03"
+  },
+  "go": null
+}

@@ -1,0 +1,7 @@
+{
+  "status": 0,
+  "code": "ASMQ09",
+  "message": "You do not have permission to update Sender IDs. Contact Customer Support.",
+  "data": "senderid",
+  "go": null
+}

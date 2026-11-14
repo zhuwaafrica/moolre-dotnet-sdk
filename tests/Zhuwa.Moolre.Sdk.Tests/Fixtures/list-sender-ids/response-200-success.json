@@ -1,0 +1,32 @@
+{
+  "status": 1,
+  "code": "ASMQ08",
+  "message": "List of Your Sender IDs.",
+  "data": [
+    {
+      "id": 13,
+      "senderid": "SmartSMS",
+      "approval": "Approved",
+      "whitelisted": false
+    },
+    {
+      "id": 14,
+      "senderid": "Dummy",
+      "approval": "Pending",
+      "whitelisted": false
+    },
+    {
+      "id": 15,
+      "senderid": "Dymmy ID",
+      "approval": "Pending",
+      "whitelisted": false
+    },
+    {
+      "id": 4010,
+      "senderid": "Momo",
+      "approval": "Rejected",
+      "whitelisted": false
+    }
+  ],
+  "go": null
+}

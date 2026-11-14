@@ -1,0 +1,24 @@
+{
+  "status": 1,
+  "code": "ST08",
+  "message": "Transactions Found",
+  "data": {
+    "txcount": "1",
+    "transactions": [
+      {
+        "txstatus": 1,
+        "txtype": 1,
+        "accountnumber": "100000100002",
+        "payer": "233551300186",
+        "payee": "Zagey",
+        "amount": "1.00",
+        "value": "1",
+        "transactionid": "34008096",
+        "externalref": "0",
+        "thirdpartyref": "55730796319",
+        "ts": "2025-04-15 12:36:28"
+      }
+    ]
+  },
+  "go": null
+}

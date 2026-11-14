@@ -1,0 +1,7 @@
+{
+  "status": 0,
+  "code": "AIN04",
+  "message": "Authentication Error, API Access not activated.",
+  "data": "all",
+  "go": null
+}

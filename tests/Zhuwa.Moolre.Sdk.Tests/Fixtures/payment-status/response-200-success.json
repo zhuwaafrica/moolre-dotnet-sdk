@@ -1,0 +1,19 @@
+{
+  "status": 1,
+  "code": "SS01",
+  "message": "Transaction Successful",
+  "data": {
+    "txstatus": 1,
+    "txtype": 2,
+    "accountnumber": "100000100002",
+    "payer": "",
+    "payee": "0209151872",
+    "amount": "1",
+    "value": "1",
+    "transactionid": "31772290",
+    "externalref": "1231231-128",
+    "thirdpartyref": "471700539041",
+    "ts": "2023-11-21 03:57:25"
+  },
+  "go": null
+}

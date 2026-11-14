@@ -1,0 +1,22 @@
+{
+  "status": "1",
+  "code": "WCU02",
+  "message": "Account Updated Successfully",
+  "data": {
+    "status": 1,
+    "accountnumber": "100000157257",
+    "accountname": "My Business PLC",
+    "paymentid": "0757257",
+    "api": 0,
+    "callback": "https://nocall.com/noend",
+    "settlement": {
+      "currency": "GHS",
+      "frequency": "1",
+      "channel": "1",
+      "recipient": "0246798090",
+      "sublist": "300303"
+    },
+    "secret": "bcec3865-bea1-4a99-8e70-c6a434cac757"
+  },
+  "go": null
+}

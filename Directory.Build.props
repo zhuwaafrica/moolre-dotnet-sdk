@@ -1,0 +1,43 @@
+<Project>
+
+  <!-- Language and compiler -->
+  <PropertyGroup>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <WarningLevel>9999</WarningLevel>
+    <Deterministic>true</Deterministic>
+    <!-- One artifacts/ folder for bin, obj and packages (keeps src/ and tests/ free of build output). -->
+    <UseArtifactsOutput>true</UseArtifactsOutput>
+  </PropertyGroup>
+
+  <!-- Code analysis: pinned to the SDK generation we build with, so a newer SDK never adds rules silently. -->
+  <PropertyGroup>
+    <AnalysisLevel>10.0-recommended</AnalysisLevel>
+    <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+    <CodeAnalysisTreatWarningsAsErrors>true</CodeAnalysisTreatWarningsAsErrors>
+  </PropertyGroup>
+
+  <!-- NuGet restore: fail on known-vulnerable packages, direct and transitive. -->
+  <PropertyGroup>
+    <NuGetAudit>true</NuGetAudit>
+    <NuGetAuditMode>all</NuGetAuditMode>
+    <NuGetAuditLevel>low</NuGetAuditLevel>
+  </PropertyGroup>
+
+  <!-- Version. SemVer 2.0.0; a prerelease suffix until the SDK is complete and sandbox-verified.
+       AssemblyVersion carries only the major version (Microsoft library guidance); FileVersion carries the CI run number. -->
+  <PropertyGroup>
+    <VersionPrefix>0.1.0</VersionPrefix>
+    <VersionSuffix>preview.1</VersionSuffix>
+    <AssemblyVersion>$([System.Version]::Parse('$(VersionPrefix)').Major).0.0.0</AssemblyVersion>
+    <FileVersion Condition="'$(GITHUB_RUN_NUMBER)' != ''">$(VersionPrefix).$(GITHUB_RUN_NUMBER)</FileVersion>
+    <FileVersion Condition="'$(GITHUB_RUN_NUMBER)' == ''">$(VersionPrefix).0</FileVersion>
+  </PropertyGroup>
+
+  <!-- Official-build settings only on CI (a local build keeps debugger source paths working). -->
+  <PropertyGroup Condition="'$(GITHUB_ACTIONS)' == 'true'">
+    <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
+  </PropertyGroup>
+
+</Project>

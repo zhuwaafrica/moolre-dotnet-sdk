@@ -1,0 +1,11 @@
+{
+  "status": 1,
+  "code": "ASMQ01",
+  "message": "Sender ID Status",
+  "data": {
+    "senderid": "Dummy",
+    "approval": "Pending",
+    "whitelisted": false
+  },
+  "go": null
+}

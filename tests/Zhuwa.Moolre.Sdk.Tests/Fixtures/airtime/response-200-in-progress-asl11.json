@@ -1,0 +1,13 @@
+{
+  "status": "1",
+  "code": "ASL11",
+  "message": "Airtime sale in progress, please check its status.",
+  "data": {
+    "txstatus": 0,
+    "receiver": "233240000000",
+    "transactionid": "Pending",
+    "externalref": "your-extid",
+    "amount": "1.00"
+  },
+  "go": null
+}

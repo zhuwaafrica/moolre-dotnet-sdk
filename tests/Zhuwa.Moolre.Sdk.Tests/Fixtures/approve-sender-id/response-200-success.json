@@ -1,0 +1,20 @@
+{
+  "status": 1,
+  "code": "ASMQ07",
+  "message": "Sender IDs updated successfully.",
+  "data": [
+    {
+      "id": "14",
+      "senderid": "Dummy",
+      "approval": "Approved",
+      "whitelisted": false
+    },
+    {
+      "id": "13",
+      "senderid": "SmartSMS",
+      "approval": "Rejected",
+      "whitelisted": false
+    }
+  ],
+  "go": null
+}

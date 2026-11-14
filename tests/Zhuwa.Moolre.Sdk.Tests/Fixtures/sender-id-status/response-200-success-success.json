@@ -1,0 +1,11 @@
+{
+  "status": 1,
+  "code": "ASMQ01",
+  "message": "Sender ID Status",
+  "data": {
+    "senderid": "SmartSMS",
+    "approval": "Approved",
+    "whitelisted": false
+  },
+  "go": null
+}

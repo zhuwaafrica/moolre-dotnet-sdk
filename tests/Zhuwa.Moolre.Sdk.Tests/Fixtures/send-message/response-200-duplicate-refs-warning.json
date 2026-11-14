@@ -1,0 +1,16 @@
+{
+  "status": 1,
+  "code": "WAS200",
+  "error": "Some ref are not unique, corresponding messages will not be sent",
+  "message": "",
+  "data": [
+    {
+      "recipient": "233531419000",
+      "ref": "879883HGU334553GF887799HF20004"
+    },
+    {
+      "recipient": "233531419011",
+      "ref": "879883HGU334553GF887799HF20006"
+    }
+  ]
+}
