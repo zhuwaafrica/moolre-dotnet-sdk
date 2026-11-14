@@ -46,6 +46,8 @@ Zhuwa.Moolre.Accounts.ListAccountTransactionsRequest.Status.get -> Zhuwa.Moolre.
 Zhuwa.Moolre.Accounts.ListAccountTransactionsRequest.Status.init -> void
 Zhuwa.Moolre.Accounts.ListAccountTransactionsRequest.To.get -> System.DateTimeOffset?
 Zhuwa.Moolre.Accounts.ListAccountTransactionsRequest.To.init -> void
+Zhuwa.Moolre.Accounts.MoolreAccounts
+Zhuwa.Moolre.Accounts.MoolreAccounts.MoolreAccounts() -> void
 Zhuwa.Moolre.Accounts.SettlementSettings
 Zhuwa.Moolre.Accounts.SettlementSettings.BankCode.get -> string?
 Zhuwa.Moolre.Accounts.SettlementSettings.BankCode.set -> void
@@ -74,6 +76,7 @@ Zhuwa.Moolre.Currency
 Zhuwa.Moolre.Currency.Ghs = 1 -> Zhuwa.Moolre.Currency
 Zhuwa.Moolre.Currency.Ngn = 2 -> Zhuwa.Moolre.Currency
 Zhuwa.Moolre.Currency.None = 0 -> Zhuwa.Moolre.Currency
+Zhuwa.Moolre.DependencyInjection.MoolreServiceCollectionExtensions
 Zhuwa.Moolre.GetTransactionStatusRequest
 Zhuwa.Moolre.GetTransactionStatusRequest.AccountNumber.get -> string?
 Zhuwa.Moolre.GetTransactionStatusRequest.AccountNumber.init -> void
@@ -82,9 +85,34 @@ Zhuwa.Moolre.GetTransactionStatusRequest.Id.get -> string!
 Zhuwa.Moolre.GetTransactionStatusRequest.Id.init -> void
 Zhuwa.Moolre.GetTransactionStatusRequest.IdKind.get -> Zhuwa.Moolre.TransactionIdKind
 Zhuwa.Moolre.GetTransactionStatusRequest.IdKind.init -> void
+Zhuwa.Moolre.MoolreApiException
+Zhuwa.Moolre.MoolreApiException.Code.get -> Zhuwa.Moolre.MoolreResponseCode
+Zhuwa.Moolre.MoolreApiException.Detail.get -> string?
+Zhuwa.Moolre.MoolreApiException.HttpStatusCode.get -> System.Net.HttpStatusCode
+Zhuwa.Moolre.MoolreApiException.Messages.get -> System.Collections.Generic.IReadOnlyList<string!>!
+Zhuwa.Moolre.MoolreApiException.MoolreApiException() -> void
+Zhuwa.Moolre.MoolreApiException.MoolreApiException(string! message) -> void
+Zhuwa.Moolre.MoolreApiException.MoolreApiException(string! message, System.Exception! innerException) -> void
+Zhuwa.Moolre.MoolreApiException.MoolreApiException(string! message, Zhuwa.Moolre.MoolreResponseCode code, System.Net.HttpStatusCode httpStatusCode) -> void
+Zhuwa.Moolre.MoolreAuthenticationException
+Zhuwa.Moolre.MoolreAuthenticationException.MoolreAuthenticationException() -> void
+Zhuwa.Moolre.MoolreAuthenticationException.MoolreAuthenticationException(string! message) -> void
+Zhuwa.Moolre.MoolreAuthenticationException.MoolreAuthenticationException(string! message, System.Exception! innerException) -> void
+Zhuwa.Moolre.MoolreAuthenticationException.MoolreAuthenticationException(string! message, Zhuwa.Moolre.MoolreResponseCode code, System.Net.HttpStatusCode httpStatusCode) -> void
+Zhuwa.Moolre.MoolreClient
+Zhuwa.Moolre.MoolreClient.MoolreClient() -> void
+Zhuwa.Moolre.MoolreDuplicateReferenceException
+Zhuwa.Moolre.MoolreDuplicateReferenceException.MoolreDuplicateReferenceException() -> void
+Zhuwa.Moolre.MoolreDuplicateReferenceException.MoolreDuplicateReferenceException(string! message) -> void
+Zhuwa.Moolre.MoolreDuplicateReferenceException.MoolreDuplicateReferenceException(string! message, System.Exception! innerException) -> void
+Zhuwa.Moolre.MoolreDuplicateReferenceException.MoolreDuplicateReferenceException(string! message, Zhuwa.Moolre.MoolreResponseCode code, System.Net.HttpStatusCode httpStatusCode) -> void
 Zhuwa.Moolre.MoolreEnvironment
 Zhuwa.Moolre.MoolreEnvironment.Live = 1 -> Zhuwa.Moolre.MoolreEnvironment
 Zhuwa.Moolre.MoolreEnvironment.Sandbox = 0 -> Zhuwa.Moolre.MoolreEnvironment
+Zhuwa.Moolre.MoolreException
+Zhuwa.Moolre.MoolreException.MoolreException() -> void
+Zhuwa.Moolre.MoolreException.MoolreException(string! message) -> void
+Zhuwa.Moolre.MoolreException.MoolreException(string! message, System.Exception! innerException) -> void
 Zhuwa.Moolre.MoolreOptions
 Zhuwa.Moolre.MoolreOptions.AccountNumber.get -> string?
 Zhuwa.Moolre.MoolreOptions.AccountNumber.set -> void
@@ -105,11 +133,24 @@ Zhuwa.Moolre.MoolreOptions.Timeout.get -> System.TimeSpan
 Zhuwa.Moolre.MoolreOptions.Timeout.set -> void
 Zhuwa.Moolre.MoolreOptions.WhatsAppVasKey.get -> string?
 Zhuwa.Moolre.MoolreOptions.WhatsAppVasKey.set -> void
+Zhuwa.Moolre.MoolreOutcomeUncertainException
+Zhuwa.Moolre.MoolreOutcomeUncertainException.ExternalReference.get -> string?
+Zhuwa.Moolre.MoolreOutcomeUncertainException.MoolreOutcomeUncertainException() -> void
+Zhuwa.Moolre.MoolreOutcomeUncertainException.MoolreOutcomeUncertainException(string! message) -> void
+Zhuwa.Moolre.MoolreOutcomeUncertainException.MoolreOutcomeUncertainException(string! message, System.Exception! innerException) -> void
+Zhuwa.Moolre.MoolreOutcomeUncertainException.MoolreOutcomeUncertainException(string! message, string! operation, string? externalReference, System.Exception? innerException = null) -> void
+Zhuwa.Moolre.MoolreOutcomeUncertainException.Operation.get -> string!
 Zhuwa.Moolre.MoolreResponseCode
 Zhuwa.Moolre.MoolreResponseCode.Equals(Zhuwa.Moolre.MoolreResponseCode other) -> bool
 Zhuwa.Moolre.MoolreResponseCode.MoolreResponseCode() -> void
 Zhuwa.Moolre.MoolreResponseCode.MoolreResponseCode(string! value) -> void
 Zhuwa.Moolre.MoolreResponseCode.Value.get -> string!
+Zhuwa.Moolre.MoolreResponseException
+Zhuwa.Moolre.MoolreResponseException.HttpStatusCode.get -> System.Net.HttpStatusCode
+Zhuwa.Moolre.MoolreResponseException.MoolreResponseException() -> void
+Zhuwa.Moolre.MoolreResponseException.MoolreResponseException(string! message) -> void
+Zhuwa.Moolre.MoolreResponseException.MoolreResponseException(string! message, System.Exception! innerException) -> void
+Zhuwa.Moolre.MoolreResponseException.MoolreResponseException(string! message, System.Net.HttpStatusCode httpStatusCode, System.Exception? innerException = null) -> void
 Zhuwa.Moolre.MoolreResult
 Zhuwa.Moolre.MoolreResult.Code.get -> Zhuwa.Moolre.MoolreResponseCode
 Zhuwa.Moolre.MoolreResult.HttpStatusCode.get -> System.Net.HttpStatusCode
@@ -261,6 +302,8 @@ Zhuwa.Moolre.Reference.BankListResult.Banks.get -> System.Collections.Generic.IR
 Zhuwa.Moolre.Reference.MoolreBank
 Zhuwa.Moolre.Reference.MoolreBank.Code.get -> string!
 Zhuwa.Moolre.Reference.MoolreBank.Name.get -> string!
+Zhuwa.Moolre.Reference.MoolreReferenceData
+Zhuwa.Moolre.Reference.MoolreReferenceData.MoolreReferenceData() -> void
 Zhuwa.Moolre.Sales.BundleCatalogResult
 Zhuwa.Moolre.Sales.BundleCatalogResult.At.get -> System.Collections.Generic.IReadOnlyList<Zhuwa.Moolre.Sales.DataBundle!>!
 Zhuwa.Moolre.Sales.BundleCatalogResult.Mtn.get -> System.Collections.Generic.IReadOnlyList<Zhuwa.Moolre.Sales.DataBundle!>!
@@ -602,6 +645,7 @@ override Zhuwa.Moolre.WhatsApp.WhatsAppDeliveryStatus.ToString() -> string!
 override Zhuwa.Moolre.WhatsApp.WhatsAppTemplateStatus.Equals(object? obj) -> bool
 override Zhuwa.Moolre.WhatsApp.WhatsAppTemplateStatus.GetHashCode() -> int
 override Zhuwa.Moolre.WhatsApp.WhatsAppTemplateStatus.ToString() -> string!
+static Zhuwa.Moolre.DependencyInjection.MoolreServiceCollectionExtensions.AddMoolre(this Microsoft.Extensions.DependencyInjection.IServiceCollection! services, System.Action<Zhuwa.Moolre.MoolreOptions!>! configure) -> Microsoft.Extensions.DependencyInjection.IServiceCollection!
 static Zhuwa.Moolre.MoolreResponseCode.AccountUpdated.get -> Zhuwa.Moolre.MoolreResponseCode
 static Zhuwa.Moolre.MoolreResponseCode.ApiAccessNotActivated.get -> Zhuwa.Moolre.MoolreResponseCode
 static Zhuwa.Moolre.MoolreResponseCode.AuthenticationError.get -> Zhuwa.Moolre.MoolreResponseCode
@@ -707,3 +751,9 @@ static Zhuwa.Moolre.WhatsApp.WhatsAppTemplateStatus.Rejected.get -> Zhuwa.Moolre
 static Zhuwa.Moolre.WhatsApp.WhatsAppTemplateStatus.implicit operator Zhuwa.Moolre.WhatsApp.WhatsAppTemplateStatus(string! value) -> Zhuwa.Moolre.WhatsApp.WhatsAppTemplateStatus
 static Zhuwa.Moolre.WhatsApp.WhatsAppTemplateStatus.operator !=(Zhuwa.Moolre.WhatsApp.WhatsAppTemplateStatus left, Zhuwa.Moolre.WhatsApp.WhatsAppTemplateStatus right) -> bool
 static Zhuwa.Moolre.WhatsApp.WhatsAppTemplateStatus.operator ==(Zhuwa.Moolre.WhatsApp.WhatsAppTemplateStatus left, Zhuwa.Moolre.WhatsApp.WhatsAppTemplateStatus right) -> bool
+virtual Zhuwa.Moolre.Accounts.MoolreAccounts.GetStatusAsync() -> System.Threading.Tasks.Task<Zhuwa.Moolre.Accounts.AccountStatusResult!>!
+virtual Zhuwa.Moolre.Accounts.MoolreAccounts.GetStatusAsync(System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Zhuwa.Moolre.Accounts.AccountStatusResult!>!
+virtual Zhuwa.Moolre.Accounts.MoolreAccounts.GetStatusAsync(Zhuwa.Moolre.Accounts.GetAccountStatusRequest! request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task<Zhuwa.Moolre.Accounts.AccountStatusResult!>!
+virtual Zhuwa.Moolre.MoolreClient.Accounts.get -> Zhuwa.Moolre.Accounts.MoolreAccounts!
+virtual Zhuwa.Moolre.MoolreClient.ReferenceData.get -> Zhuwa.Moolre.Reference.MoolreReferenceData!
+virtual Zhuwa.Moolre.Reference.MoolreReferenceData.GetBanksAsync(string! countryCode, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task<Zhuwa.Moolre.Reference.BankListResult!>!

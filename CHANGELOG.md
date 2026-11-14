@@ -15,4 +15,7 @@ All notable changes to this project are documented here. The format follows [Kee
 - The public data types: 25 request types, 25 result types, 18 shared models, the enums, `MoolreOptions`, the extensible code structs (`MoolreResponseCode` with every documented Moolre code, `SenderIdApproval`, `WhatsAppTemplateStatus`, `WhatsAppDeliveryStatus`) and the webhook payload types. Results are immutable; their constructors are internal.
 - The endpoint table (`MoolreEndpoints`): every Moolre path, HTTP method, `type` selector, credential kind and whether the call is safe to repeat, in one place.
 
-The client methods that call Moolre, the JSON parsing, the exceptions and `AddMoolre` are not implemented yet.
+- The call pipeline: the exception types (`MoolreException`, `MoolreApiException`, `MoolreAuthenticationException`, `MoolreDuplicateReferenceException`, `MoolreResponseException`, `MoolreOutcomeUncertainException`), tolerant response parsing, credential headers per operation, the timeout, and `AddMoolre`. Calls that move money or send messages are never retried and report an uncertain outcome with the caller's reference.
+- Two working operations so far: `Accounts.GetStatusAsync` and `ReferenceData.GetBanksAsync`.
+
+The other 29 operations, `MoolreClientFactory`, `MoolreModelFactory`, the webhook parser and verifier are not implemented yet.
