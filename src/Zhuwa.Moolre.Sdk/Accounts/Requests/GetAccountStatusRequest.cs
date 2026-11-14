@@ -1,2 +1,8 @@
-// GetAccountStatusRequest  (public, namespace Zhuwa.Moolre.Accounts)
-// Not implemented yet. Specification: _planning/sdk-types.md section 2.
+namespace Zhuwa.Moolre.Accounts;
+
+/// <summary>Parameters for the get account status operation.</summary>
+public class GetAccountStatusRequest
+{
+    /// <summary>Account number. Moolre field <c>accountnumber</c>.</summary>
+    public string? AccountNumber { get; init; }
+}

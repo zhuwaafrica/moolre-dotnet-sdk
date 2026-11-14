@@ -4,9 +4,9 @@ An **unofficial, community-built** .NET client for the [Moolre](https://docs.moo
 
 > This project is independent. It is not affiliated with, endorsed by, or supported by Moolre.
 
-## Status: preview, nothing implemented yet
+## Status: preview, calls not implemented yet
 
-The package builds, tests and packs, but **no Moolre endpoint is implemented yet**. Do not use it in production. The usage below is the design, not what ships today.
+The request and response types exist, but **no call to Moolre is implemented yet**. Do not use it in production. The usage below is the design, not what ships today.
 
 ## What it will cover
 

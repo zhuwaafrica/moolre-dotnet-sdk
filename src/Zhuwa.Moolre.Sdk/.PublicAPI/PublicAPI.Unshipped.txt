@@ -1,1 +1,709 @@
 #nullable enable
+Zhuwa.Moolre.Accounts.AccountDetails
+Zhuwa.Moolre.Accounts.AccountDetails.AccountName.get -> string!
+Zhuwa.Moolre.Accounts.AccountDetails.AccountNumber.get -> string!
+Zhuwa.Moolre.Accounts.AccountDetails.ApiEnabled.get -> bool
+Zhuwa.Moolre.Accounts.AccountDetails.CallbackUrl.get -> System.Uri?
+Zhuwa.Moolre.Accounts.AccountDetails.IsEnabled.get -> bool
+Zhuwa.Moolre.Accounts.AccountDetails.PaymentId.get -> string!
+Zhuwa.Moolre.Accounts.AccountDetails.Secret.get -> string!
+Zhuwa.Moolre.Accounts.AccountDetails.Settlement.get -> Zhuwa.Moolre.Accounts.SettlementSettings!
+Zhuwa.Moolre.Accounts.AccountResult
+Zhuwa.Moolre.Accounts.AccountResult.Account.get -> Zhuwa.Moolre.Accounts.AccountDetails!
+Zhuwa.Moolre.Accounts.AccountStatusResult
+Zhuwa.Moolre.Accounts.AccountStatusResult.AccountName.get -> string!
+Zhuwa.Moolre.Accounts.AccountStatusResult.Balance.get -> decimal
+Zhuwa.Moolre.Accounts.AccountStatusResult.CallbackUrl.get -> System.Uri?
+Zhuwa.Moolre.Accounts.AccountStatusResult.IsActivated.get -> bool
+Zhuwa.Moolre.Accounts.AccountTransactionsResult
+Zhuwa.Moolre.Accounts.AccountTransactionsResult.TransactionCount.get -> int
+Zhuwa.Moolre.Accounts.AccountTransactionsResult.Transactions.get -> System.Collections.Generic.IReadOnlyList<Zhuwa.Moolre.MoolreTransaction!>!
+Zhuwa.Moolre.Accounts.CreateSandboxAccountRequest
+Zhuwa.Moolre.Accounts.CreateSandboxAccountRequest.AccountName.get -> string!
+Zhuwa.Moolre.Accounts.CreateSandboxAccountRequest.AccountName.init -> void
+Zhuwa.Moolre.Accounts.CreateSandboxAccountRequest.ApiEnabled.get -> bool?
+Zhuwa.Moolre.Accounts.CreateSandboxAccountRequest.ApiEnabled.init -> void
+Zhuwa.Moolre.Accounts.CreateSandboxAccountRequest.CallbackUrl.get -> System.Uri!
+Zhuwa.Moolre.Accounts.CreateSandboxAccountRequest.CallbackUrl.init -> void
+Zhuwa.Moolre.Accounts.CreateSandboxAccountRequest.CreateSandboxAccountRequest() -> void
+Zhuwa.Moolre.Accounts.CreateSandboxAccountRequest.Currency.get -> Zhuwa.Moolre.Currency
+Zhuwa.Moolre.Accounts.CreateSandboxAccountRequest.Currency.init -> void
+Zhuwa.Moolre.Accounts.CreateSandboxAccountRequest.Settlement.get -> Zhuwa.Moolre.Accounts.SettlementSettings!
+Zhuwa.Moolre.Accounts.CreateSandboxAccountRequest.Settlement.init -> void
+Zhuwa.Moolre.Accounts.GetAccountStatusRequest
+Zhuwa.Moolre.Accounts.GetAccountStatusRequest.AccountNumber.get -> string?
+Zhuwa.Moolre.Accounts.GetAccountStatusRequest.AccountNumber.init -> void
+Zhuwa.Moolre.Accounts.GetAccountStatusRequest.GetAccountStatusRequest() -> void
+Zhuwa.Moolre.Accounts.ListAccountTransactionsRequest
+Zhuwa.Moolre.Accounts.ListAccountTransactionsRequest.AccountNumber.get -> string?
+Zhuwa.Moolre.Accounts.ListAccountTransactionsRequest.AccountNumber.init -> void
+Zhuwa.Moolre.Accounts.ListAccountTransactionsRequest.From.get -> System.DateTimeOffset?
+Zhuwa.Moolre.Accounts.ListAccountTransactionsRequest.From.init -> void
+Zhuwa.Moolre.Accounts.ListAccountTransactionsRequest.Limit.get -> int?
+Zhuwa.Moolre.Accounts.ListAccountTransactionsRequest.Limit.init -> void
+Zhuwa.Moolre.Accounts.ListAccountTransactionsRequest.ListAccountTransactionsRequest() -> void
+Zhuwa.Moolre.Accounts.ListAccountTransactionsRequest.Status.get -> Zhuwa.Moolre.TransactionStatus?
+Zhuwa.Moolre.Accounts.ListAccountTransactionsRequest.Status.init -> void
+Zhuwa.Moolre.Accounts.ListAccountTransactionsRequest.To.get -> System.DateTimeOffset?
+Zhuwa.Moolre.Accounts.ListAccountTransactionsRequest.To.init -> void
+Zhuwa.Moolre.Accounts.SettlementSettings
+Zhuwa.Moolre.Accounts.SettlementSettings.BankCode.get -> string?
+Zhuwa.Moolre.Accounts.SettlementSettings.BankCode.set -> void
+Zhuwa.Moolre.Accounts.SettlementSettings.Channel.get -> string?
+Zhuwa.Moolre.Accounts.SettlementSettings.Channel.set -> void
+Zhuwa.Moolre.Accounts.SettlementSettings.Currency.get -> string?
+Zhuwa.Moolre.Accounts.SettlementSettings.Currency.set -> void
+Zhuwa.Moolre.Accounts.SettlementSettings.Frequency.get -> string?
+Zhuwa.Moolre.Accounts.SettlementSettings.Frequency.set -> void
+Zhuwa.Moolre.Accounts.SettlementSettings.Recipient.get -> string?
+Zhuwa.Moolre.Accounts.SettlementSettings.Recipient.set -> void
+Zhuwa.Moolre.Accounts.SettlementSettings.SettlementSettings() -> void
+Zhuwa.Moolre.Accounts.UpdateAccountRequest
+Zhuwa.Moolre.Accounts.UpdateAccountRequest.AccountName.get -> string?
+Zhuwa.Moolre.Accounts.UpdateAccountRequest.AccountName.init -> void
+Zhuwa.Moolre.Accounts.UpdateAccountRequest.AccountNumber.get -> string?
+Zhuwa.Moolre.Accounts.UpdateAccountRequest.AccountNumber.init -> void
+Zhuwa.Moolre.Accounts.UpdateAccountRequest.ApiEnabled.get -> bool?
+Zhuwa.Moolre.Accounts.UpdateAccountRequest.ApiEnabled.init -> void
+Zhuwa.Moolre.Accounts.UpdateAccountRequest.CallbackUrl.get -> System.Uri?
+Zhuwa.Moolre.Accounts.UpdateAccountRequest.CallbackUrl.init -> void
+Zhuwa.Moolre.Accounts.UpdateAccountRequest.Settlement.get -> Zhuwa.Moolre.Accounts.SettlementSettings?
+Zhuwa.Moolre.Accounts.UpdateAccountRequest.Settlement.init -> void
+Zhuwa.Moolre.Accounts.UpdateAccountRequest.UpdateAccountRequest() -> void
+Zhuwa.Moolre.Currency
+Zhuwa.Moolre.Currency.Ghs = 1 -> Zhuwa.Moolre.Currency
+Zhuwa.Moolre.Currency.Ngn = 2 -> Zhuwa.Moolre.Currency
+Zhuwa.Moolre.Currency.None = 0 -> Zhuwa.Moolre.Currency
+Zhuwa.Moolre.GetTransactionStatusRequest
+Zhuwa.Moolre.GetTransactionStatusRequest.AccountNumber.get -> string?
+Zhuwa.Moolre.GetTransactionStatusRequest.AccountNumber.init -> void
+Zhuwa.Moolre.GetTransactionStatusRequest.GetTransactionStatusRequest() -> void
+Zhuwa.Moolre.GetTransactionStatusRequest.Id.get -> string!
+Zhuwa.Moolre.GetTransactionStatusRequest.Id.init -> void
+Zhuwa.Moolre.GetTransactionStatusRequest.IdKind.get -> Zhuwa.Moolre.TransactionIdKind
+Zhuwa.Moolre.GetTransactionStatusRequest.IdKind.init -> void
+Zhuwa.Moolre.MoolreEnvironment
+Zhuwa.Moolre.MoolreEnvironment.Live = 1 -> Zhuwa.Moolre.MoolreEnvironment
+Zhuwa.Moolre.MoolreEnvironment.Sandbox = 0 -> Zhuwa.Moolre.MoolreEnvironment
+Zhuwa.Moolre.MoolreOptions
+Zhuwa.Moolre.MoolreOptions.AccountNumber.get -> string?
+Zhuwa.Moolre.MoolreOptions.AccountNumber.set -> void
+Zhuwa.Moolre.MoolreOptions.ApiUser.get -> string?
+Zhuwa.Moolre.MoolreOptions.ApiUser.set -> void
+Zhuwa.Moolre.MoolreOptions.BaseAddress.get -> System.Uri?
+Zhuwa.Moolre.MoolreOptions.BaseAddress.set -> void
+Zhuwa.Moolre.MoolreOptions.Environment.get -> Zhuwa.Moolre.MoolreEnvironment
+Zhuwa.Moolre.MoolreOptions.Environment.set -> void
+Zhuwa.Moolre.MoolreOptions.MoolreOptions() -> void
+Zhuwa.Moolre.MoolreOptions.PrivateKey.get -> string?
+Zhuwa.Moolre.MoolreOptions.PrivateKey.set -> void
+Zhuwa.Moolre.MoolreOptions.PublicKey.get -> string?
+Zhuwa.Moolre.MoolreOptions.PublicKey.set -> void
+Zhuwa.Moolre.MoolreOptions.SmsVasKey.get -> string?
+Zhuwa.Moolre.MoolreOptions.SmsVasKey.set -> void
+Zhuwa.Moolre.MoolreOptions.Timeout.get -> System.TimeSpan
+Zhuwa.Moolre.MoolreOptions.Timeout.set -> void
+Zhuwa.Moolre.MoolreOptions.WhatsAppVasKey.get -> string?
+Zhuwa.Moolre.MoolreOptions.WhatsAppVasKey.set -> void
+Zhuwa.Moolre.MoolreResponseCode
+Zhuwa.Moolre.MoolreResponseCode.Equals(Zhuwa.Moolre.MoolreResponseCode other) -> bool
+Zhuwa.Moolre.MoolreResponseCode.MoolreResponseCode() -> void
+Zhuwa.Moolre.MoolreResponseCode.MoolreResponseCode(string! value) -> void
+Zhuwa.Moolre.MoolreResponseCode.Value.get -> string!
+Zhuwa.Moolre.MoolreResult
+Zhuwa.Moolre.MoolreResult.Code.get -> Zhuwa.Moolre.MoolreResponseCode
+Zhuwa.Moolre.MoolreResult.HttpStatusCode.get -> System.Net.HttpStatusCode
+Zhuwa.Moolre.MoolreResult.Message.get -> string?
+Zhuwa.Moolre.MoolreResult.Messages.get -> System.Collections.Generic.IReadOnlyList<string!>!
+Zhuwa.Moolre.MoolreTransaction
+Zhuwa.Moolre.MoolreTransaction.AccountNumber.get -> string!
+Zhuwa.Moolre.MoolreTransaction.Amount.get -> decimal
+Zhuwa.Moolre.MoolreTransaction.ExternalReference.get -> string!
+Zhuwa.Moolre.MoolreTransaction.Fee.get -> decimal?
+Zhuwa.Moolre.MoolreTransaction.NetworkFee.get -> decimal?
+Zhuwa.Moolre.MoolreTransaction.Payee.get -> string!
+Zhuwa.Moolre.MoolreTransaction.Payer.get -> string!
+Zhuwa.Moolre.MoolreTransaction.Status.get -> Zhuwa.Moolre.TransactionStatus
+Zhuwa.Moolre.MoolreTransaction.ThirdPartyReference.get -> string!
+Zhuwa.Moolre.MoolreTransaction.Timestamp.get -> System.DateTimeOffset
+Zhuwa.Moolre.MoolreTransaction.TransactionId.get -> string!
+Zhuwa.Moolre.MoolreTransaction.TransactionType.get -> int
+Zhuwa.Moolre.MoolreTransaction.Value.get -> decimal
+Zhuwa.Moolre.Payments.BankAccountListResult
+Zhuwa.Moolre.Payments.BankAccountListResult.Accounts.get -> System.Collections.Generic.IReadOnlyList<Zhuwa.Moolre.Payments.BankAccountSummary!>!
+Zhuwa.Moolre.Payments.BankAccountListResult.Count.get -> int
+Zhuwa.Moolre.Payments.BankAccountResult
+Zhuwa.Moolre.Payments.BankAccountResult.AccountName.get -> string!
+Zhuwa.Moolre.Payments.BankAccountResult.BankAccountNumber.get -> string!
+Zhuwa.Moolre.Payments.BankAccountResult.BankName.get -> string!
+Zhuwa.Moolre.Payments.BankAccountResult.ExternalReference.get -> string!
+Zhuwa.Moolre.Payments.BankAccountSummary
+Zhuwa.Moolre.Payments.BankAccountSummary.AccountName.get -> string!
+Zhuwa.Moolre.Payments.BankAccountSummary.BankAccountNumber.get -> string!
+Zhuwa.Moolre.Payments.BankAccountSummary.BankName.get -> string!
+Zhuwa.Moolre.Payments.BankAccountSummary.CreatedAt.get -> System.DateTimeOffset
+Zhuwa.Moolre.Payments.BankAccountSummary.ExternalReference.get -> string!
+Zhuwa.Moolre.Payments.CreateBankAccountRequest
+Zhuwa.Moolre.Payments.CreateBankAccountRequest.AccountNumber.get -> string?
+Zhuwa.Moolre.Payments.CreateBankAccountRequest.AccountNumber.init -> void
+Zhuwa.Moolre.Payments.CreateBankAccountRequest.Amount.get -> decimal?
+Zhuwa.Moolre.Payments.CreateBankAccountRequest.Amount.init -> void
+Zhuwa.Moolre.Payments.CreateBankAccountRequest.CreateBankAccountRequest() -> void
+Zhuwa.Moolre.Payments.CreateBankAccountRequest.Currency.get -> Zhuwa.Moolre.Currency
+Zhuwa.Moolre.Payments.CreateBankAccountRequest.Currency.init -> void
+Zhuwa.Moolre.Payments.CreateBankAccountRequest.Email.get -> string!
+Zhuwa.Moolre.Payments.CreateBankAccountRequest.Email.init -> void
+Zhuwa.Moolre.Payments.CreateBankAccountRequest.ExternalReference.get -> string!
+Zhuwa.Moolre.Payments.CreateBankAccountRequest.ExternalReference.init -> void
+Zhuwa.Moolre.Payments.CreateBankAccountRequest.FirstName.get -> string!
+Zhuwa.Moolre.Payments.CreateBankAccountRequest.FirstName.init -> void
+Zhuwa.Moolre.Payments.CreateBankAccountRequest.LastName.get -> string!
+Zhuwa.Moolre.Payments.CreateBankAccountRequest.LastName.init -> void
+Zhuwa.Moolre.Payments.CreateBankAccountRequest.PhoneNumber.get -> string!
+Zhuwa.Moolre.Payments.CreateBankAccountRequest.PhoneNumber.init -> void
+Zhuwa.Moolre.Payments.CreatePaymentIdRequest
+Zhuwa.Moolre.Payments.CreatePaymentIdRequest.AccountNumber.get -> string?
+Zhuwa.Moolre.Payments.CreatePaymentIdRequest.AccountNumber.init -> void
+Zhuwa.Moolre.Payments.CreatePaymentIdRequest.Amount.get -> decimal?
+Zhuwa.Moolre.Payments.CreatePaymentIdRequest.Amount.init -> void
+Zhuwa.Moolre.Payments.CreatePaymentIdRequest.CreatePaymentIdRequest() -> void
+Zhuwa.Moolre.Payments.CreatePaymentIdRequest.Currency.get -> Zhuwa.Moolre.Currency
+Zhuwa.Moolre.Payments.CreatePaymentIdRequest.Currency.init -> void
+Zhuwa.Moolre.Payments.CreatePaymentIdRequest.ExternalReference.get -> string!
+Zhuwa.Moolre.Payments.CreatePaymentIdRequest.ExternalReference.init -> void
+Zhuwa.Moolre.Payments.CreatePaymentIdRequest.Name.get -> string!
+Zhuwa.Moolre.Payments.CreatePaymentIdRequest.Name.init -> void
+Zhuwa.Moolre.Payments.CreatePaymentIdRequest.PhoneNumber.get -> string!
+Zhuwa.Moolre.Payments.CreatePaymentIdRequest.PhoneNumber.init -> void
+Zhuwa.Moolre.Payments.CreatePaymentLinkRequest
+Zhuwa.Moolre.Payments.CreatePaymentLinkRequest.AccountNumber.get -> string?
+Zhuwa.Moolre.Payments.CreatePaymentLinkRequest.AccountNumber.init -> void
+Zhuwa.Moolre.Payments.CreatePaymentLinkRequest.Amount.get -> decimal
+Zhuwa.Moolre.Payments.CreatePaymentLinkRequest.Amount.init -> void
+Zhuwa.Moolre.Payments.CreatePaymentLinkRequest.CallbackUrl.get -> System.Uri?
+Zhuwa.Moolre.Payments.CreatePaymentLinkRequest.CallbackUrl.init -> void
+Zhuwa.Moolre.Payments.CreatePaymentLinkRequest.CreatePaymentLinkRequest() -> void
+Zhuwa.Moolre.Payments.CreatePaymentLinkRequest.Currency.get -> Zhuwa.Moolre.Currency
+Zhuwa.Moolre.Payments.CreatePaymentLinkRequest.Currency.init -> void
+Zhuwa.Moolre.Payments.CreatePaymentLinkRequest.Email.get -> string!
+Zhuwa.Moolre.Payments.CreatePaymentLinkRequest.Email.init -> void
+Zhuwa.Moolre.Payments.CreatePaymentLinkRequest.ExpiresAfter.get -> System.TimeSpan?
+Zhuwa.Moolre.Payments.CreatePaymentLinkRequest.ExpiresAfter.init -> void
+Zhuwa.Moolre.Payments.CreatePaymentLinkRequest.ExternalReference.get -> string!
+Zhuwa.Moolre.Payments.CreatePaymentLinkRequest.ExternalReference.init -> void
+Zhuwa.Moolre.Payments.CreatePaymentLinkRequest.IsReusable.get -> bool
+Zhuwa.Moolre.Payments.CreatePaymentLinkRequest.IsReusable.init -> void
+Zhuwa.Moolre.Payments.CreatePaymentLinkRequest.Metadata.get -> System.Collections.Generic.IDictionary<string!, string!>!
+Zhuwa.Moolre.Payments.CreatePaymentLinkRequest.RedirectUrl.get -> System.Uri?
+Zhuwa.Moolre.Payments.CreatePaymentLinkRequest.RedirectUrl.init -> void
+Zhuwa.Moolre.Payments.GetPaymentAccountRequest
+Zhuwa.Moolre.Payments.GetPaymentAccountRequest.AccountNumber.get -> string?
+Zhuwa.Moolre.Payments.GetPaymentAccountRequest.AccountNumber.init -> void
+Zhuwa.Moolre.Payments.GetPaymentAccountRequest.ExternalReference.get -> string!
+Zhuwa.Moolre.Payments.GetPaymentAccountRequest.ExternalReference.init -> void
+Zhuwa.Moolre.Payments.GetPaymentAccountRequest.GetPaymentAccountRequest() -> void
+Zhuwa.Moolre.Payments.ListBankAccountsRequest
+Zhuwa.Moolre.Payments.ListBankAccountsRequest.AccountNumber.get -> string?
+Zhuwa.Moolre.Payments.ListBankAccountsRequest.AccountNumber.init -> void
+Zhuwa.Moolre.Payments.ListBankAccountsRequest.ListBankAccountsRequest() -> void
+Zhuwa.Moolre.Payments.MobileMoneyOutcome
+Zhuwa.Moolre.Payments.MobileMoneyOutcome.None = 0 -> Zhuwa.Moolre.Payments.MobileMoneyOutcome
+Zhuwa.Moolre.Payments.MobileMoneyOutcome.OtpRequired = 2 -> Zhuwa.Moolre.Payments.MobileMoneyOutcome
+Zhuwa.Moolre.Payments.MobileMoneyOutcome.PhoneVerified = 3 -> Zhuwa.Moolre.Payments.MobileMoneyOutcome
+Zhuwa.Moolre.Payments.MobileMoneyOutcome.PromptSent = 1 -> Zhuwa.Moolre.Payments.MobileMoneyOutcome
+Zhuwa.Moolre.Payments.MobileMoneyResult
+Zhuwa.Moolre.Payments.MobileMoneyResult.Outcome.get -> Zhuwa.Moolre.Payments.MobileMoneyOutcome
+Zhuwa.Moolre.Payments.MobileMoneyResult.RequestId.get -> string?
+Zhuwa.Moolre.Payments.PaymentAccountLookupResult
+Zhuwa.Moolre.Payments.PaymentAccountLookupResult.Account.get -> Zhuwa.Moolre.Payments.PaymentAccountSummary?
+Zhuwa.Moolre.Payments.PaymentAccountLookupResult.Found.get -> bool
+Zhuwa.Moolre.Payments.PaymentAccountLookupResult.Transactions.get -> System.Collections.Generic.IReadOnlyList<Zhuwa.Moolre.MoolreTransaction!>!
+Zhuwa.Moolre.Payments.PaymentAccountSummary
+Zhuwa.Moolre.Payments.PaymentAccountSummary.BankAccountNumber.get -> string!
+Zhuwa.Moolre.Payments.PaymentAccountSummary.TransactionCount.get -> int
+Zhuwa.Moolre.Payments.PaymentAccountSummary.TransactionValue.get -> decimal
+Zhuwa.Moolre.Payments.PaymentChannel
+Zhuwa.Moolre.Payments.PaymentChannel.At = 7 -> Zhuwa.Moolre.Payments.PaymentChannel
+Zhuwa.Moolre.Payments.PaymentChannel.Mtn = 13 -> Zhuwa.Moolre.Payments.PaymentChannel
+Zhuwa.Moolre.Payments.PaymentChannel.None = 0 -> Zhuwa.Moolre.Payments.PaymentChannel
+Zhuwa.Moolre.Payments.PaymentChannel.Telecel = 6 -> Zhuwa.Moolre.Payments.PaymentChannel
+Zhuwa.Moolre.Payments.PaymentIdResult
+Zhuwa.Moolre.Payments.PaymentIdResult.Name.get -> string!
+Zhuwa.Moolre.Payments.PaymentIdResult.PaymentId.get -> string!
+Zhuwa.Moolre.Payments.PaymentIdResult.QrCode.get -> string?
+Zhuwa.Moolre.Payments.PaymentLinkResult
+Zhuwa.Moolre.Payments.PaymentLinkResult.AuthorizationUrl.get -> System.Uri!
+Zhuwa.Moolre.Payments.PaymentLinkResult.Reference.get -> string!
+Zhuwa.Moolre.Payments.RequestMobileMoneyRequest
+Zhuwa.Moolre.Payments.RequestMobileMoneyRequest.AccountNumber.get -> string?
+Zhuwa.Moolre.Payments.RequestMobileMoneyRequest.AccountNumber.init -> void
+Zhuwa.Moolre.Payments.RequestMobileMoneyRequest.Amount.get -> decimal
+Zhuwa.Moolre.Payments.RequestMobileMoneyRequest.Amount.init -> void
+Zhuwa.Moolre.Payments.RequestMobileMoneyRequest.Channel.get -> Zhuwa.Moolre.Payments.PaymentChannel
+Zhuwa.Moolre.Payments.RequestMobileMoneyRequest.Channel.init -> void
+Zhuwa.Moolre.Payments.RequestMobileMoneyRequest.Currency.get -> Zhuwa.Moolre.Currency
+Zhuwa.Moolre.Payments.RequestMobileMoneyRequest.Currency.init -> void
+Zhuwa.Moolre.Payments.RequestMobileMoneyRequest.ExternalReference.get -> string!
+Zhuwa.Moolre.Payments.RequestMobileMoneyRequest.ExternalReference.init -> void
+Zhuwa.Moolre.Payments.RequestMobileMoneyRequest.OtpCode.get -> string?
+Zhuwa.Moolre.Payments.RequestMobileMoneyRequest.OtpCode.init -> void
+Zhuwa.Moolre.Payments.RequestMobileMoneyRequest.PayerPhoneNumber.get -> string!
+Zhuwa.Moolre.Payments.RequestMobileMoneyRequest.PayerPhoneNumber.init -> void
+Zhuwa.Moolre.Payments.RequestMobileMoneyRequest.Reference.get -> string?
+Zhuwa.Moolre.Payments.RequestMobileMoneyRequest.Reference.init -> void
+Zhuwa.Moolre.Payments.RequestMobileMoneyRequest.RequestMobileMoneyRequest() -> void
+Zhuwa.Moolre.Payments.RequestMobileMoneyRequest.SessionId.get -> string?
+Zhuwa.Moolre.Payments.RequestMobileMoneyRequest.SessionId.init -> void
+Zhuwa.Moolre.Payments.RequestMobileMoneyRequest.SkipOtp.get -> bool?
+Zhuwa.Moolre.Payments.RequestMobileMoneyRequest.SkipOtp.init -> void
+Zhuwa.Moolre.Reference.BankListResult
+Zhuwa.Moolre.Reference.BankListResult.Banks.get -> System.Collections.Generic.IReadOnlyList<Zhuwa.Moolre.Reference.MoolreBank!>!
+Zhuwa.Moolre.Reference.MoolreBank
+Zhuwa.Moolre.Reference.MoolreBank.Code.get -> string!
+Zhuwa.Moolre.Reference.MoolreBank.Name.get -> string!
+Zhuwa.Moolre.Sales.BundleCatalogResult
+Zhuwa.Moolre.Sales.BundleCatalogResult.At.get -> System.Collections.Generic.IReadOnlyList<Zhuwa.Moolre.Sales.DataBundle!>!
+Zhuwa.Moolre.Sales.BundleCatalogResult.Mtn.get -> System.Collections.Generic.IReadOnlyList<Zhuwa.Moolre.Sales.DataBundle!>!
+Zhuwa.Moolre.Sales.BundleCatalogResult.Telecel.get -> System.Collections.Generic.IReadOnlyList<Zhuwa.Moolre.Sales.DataBundle!>!
+Zhuwa.Moolre.Sales.DataBundle
+Zhuwa.Moolre.Sales.DataBundle.BundleId.get -> string!
+Zhuwa.Moolre.Sales.DataBundle.Category.get -> string!
+Zhuwa.Moolre.Sales.DataBundle.Label.get -> string!
+Zhuwa.Moolre.Sales.DataBundle.Megabytes.get -> double
+Zhuwa.Moolre.Sales.DataBundle.Price.get -> decimal
+Zhuwa.Moolre.Sales.DataBundle.Validity.get -> string!
+Zhuwa.Moolre.Sales.GetSaleStatusRequest
+Zhuwa.Moolre.Sales.GetSaleStatusRequest.AccountNumber.get -> string?
+Zhuwa.Moolre.Sales.GetSaleStatusRequest.AccountNumber.init -> void
+Zhuwa.Moolre.Sales.GetSaleStatusRequest.GetSaleStatusRequest() -> void
+Zhuwa.Moolre.Sales.GetSaleStatusRequest.Id.get -> string!
+Zhuwa.Moolre.Sales.GetSaleStatusRequest.Id.init -> void
+Zhuwa.Moolre.Sales.GetSaleStatusRequest.IdKind.get -> Zhuwa.Moolre.Sales.SaleIdKind
+Zhuwa.Moolre.Sales.GetSaleStatusRequest.IdKind.init -> void
+Zhuwa.Moolre.Sales.ListBundlesRequest
+Zhuwa.Moolre.Sales.ListBundlesRequest.AccountNumber.get -> string?
+Zhuwa.Moolre.Sales.ListBundlesRequest.AccountNumber.init -> void
+Zhuwa.Moolre.Sales.ListBundlesRequest.ListBundlesRequest() -> void
+Zhuwa.Moolre.Sales.ListBundlesRequest.Network.get -> Zhuwa.Moolre.Sales.SalesNetwork?
+Zhuwa.Moolre.Sales.ListBundlesRequest.Network.init -> void
+Zhuwa.Moolre.Sales.SaleIdKind
+Zhuwa.Moolre.Sales.SaleIdKind.ExternalReference = 1 -> Zhuwa.Moolre.Sales.SaleIdKind
+Zhuwa.Moolre.Sales.SaleIdKind.None = 0 -> Zhuwa.Moolre.Sales.SaleIdKind
+Zhuwa.Moolre.Sales.SaleIdKind.SaleReference = 3 -> Zhuwa.Moolre.Sales.SaleIdKind
+Zhuwa.Moolre.Sales.SaleIdKind.TransactionId = 2 -> Zhuwa.Moolre.Sales.SaleIdKind
+Zhuwa.Moolre.Sales.SaleResult
+Zhuwa.Moolre.Sales.SaleResult.Amount.get -> decimal
+Zhuwa.Moolre.Sales.SaleResult.ExternalReference.get -> string!
+Zhuwa.Moolre.Sales.SaleResult.IsInProgress.get -> bool
+Zhuwa.Moolre.Sales.SaleResult.Receiver.get -> string!
+Zhuwa.Moolre.Sales.SaleResult.Status.get -> Zhuwa.Moolre.TransactionStatus
+Zhuwa.Moolre.Sales.SaleResult.TransactionId.get -> string!
+Zhuwa.Moolre.Sales.SaleStatus
+Zhuwa.Moolre.Sales.SaleStatus.FailedAndRefunded = 2 -> Zhuwa.Moolre.Sales.SaleStatus
+Zhuwa.Moolre.Sales.SaleStatus.NotFound = 3 -> Zhuwa.Moolre.Sales.SaleStatus
+Zhuwa.Moolre.Sales.SaleStatus.Pending = 0 -> Zhuwa.Moolre.Sales.SaleStatus
+Zhuwa.Moolre.Sales.SaleStatus.Sent = 1 -> Zhuwa.Moolre.Sales.SaleStatus
+Zhuwa.Moolre.Sales.SaleStatusResult
+Zhuwa.Moolre.Sales.SaleStatusResult.AccountNumber.get -> string?
+Zhuwa.Moolre.Sales.SaleStatusResult.Amount.get -> decimal?
+Zhuwa.Moolre.Sales.SaleStatusResult.BundleId.get -> string?
+Zhuwa.Moolre.Sales.SaleStatusResult.Charged.get -> decimal?
+Zhuwa.Moolre.Sales.SaleStatusResult.CreatedAt.get -> System.DateTimeOffset?
+Zhuwa.Moolre.Sales.SaleStatusResult.Discount.get -> decimal?
+Zhuwa.Moolre.Sales.SaleStatusResult.ExternalReference.get -> string?
+Zhuwa.Moolre.Sales.SaleStatusResult.Network.get -> string?
+Zhuwa.Moolre.Sales.SaleStatusResult.Product.get -> string?
+Zhuwa.Moolre.Sales.SaleStatusResult.Receiver.get -> string?
+Zhuwa.Moolre.Sales.SaleStatusResult.RefundId.get -> string?
+Zhuwa.Moolre.Sales.SaleStatusResult.SaleReference.get -> string?
+Zhuwa.Moolre.Sales.SaleStatusResult.Status.get -> Zhuwa.Moolre.Sales.SaleStatus
+Zhuwa.Moolre.Sales.SaleStatusResult.ThirdPartyReference.get -> string?
+Zhuwa.Moolre.Sales.SaleStatusResult.TransactionId.get -> string?
+Zhuwa.Moolre.Sales.SaleStatusResult.UpdatedAt.get -> System.DateTimeOffset?
+Zhuwa.Moolre.Sales.SalesNetwork
+Zhuwa.Moolre.Sales.SalesNetwork.At = 7 -> Zhuwa.Moolre.Sales.SalesNetwork
+Zhuwa.Moolre.Sales.SalesNetwork.Mtn = 1 -> Zhuwa.Moolre.Sales.SalesNetwork
+Zhuwa.Moolre.Sales.SalesNetwork.None = 0 -> Zhuwa.Moolre.Sales.SalesNetwork
+Zhuwa.Moolre.Sales.SalesNetwork.Telecel = 6 -> Zhuwa.Moolre.Sales.SalesNetwork
+Zhuwa.Moolre.Sales.SendAirtimeRequest
+Zhuwa.Moolre.Sales.SendAirtimeRequest.AccountNumber.get -> string?
+Zhuwa.Moolre.Sales.SendAirtimeRequest.AccountNumber.init -> void
+Zhuwa.Moolre.Sales.SendAirtimeRequest.Amount.get -> decimal
+Zhuwa.Moolre.Sales.SendAirtimeRequest.Amount.init -> void
+Zhuwa.Moolre.Sales.SendAirtimeRequest.ExternalReference.get -> string!
+Zhuwa.Moolre.Sales.SendAirtimeRequest.ExternalReference.init -> void
+Zhuwa.Moolre.Sales.SendAirtimeRequest.Narration.get -> string?
+Zhuwa.Moolre.Sales.SendAirtimeRequest.Narration.init -> void
+Zhuwa.Moolre.Sales.SendAirtimeRequest.Network.get -> Zhuwa.Moolre.Sales.SalesNetwork
+Zhuwa.Moolre.Sales.SendAirtimeRequest.Network.init -> void
+Zhuwa.Moolre.Sales.SendAirtimeRequest.ReceiverPhoneNumber.get -> string!
+Zhuwa.Moolre.Sales.SendAirtimeRequest.ReceiverPhoneNumber.init -> void
+Zhuwa.Moolre.Sales.SendAirtimeRequest.SendAirtimeRequest() -> void
+Zhuwa.Moolre.Sales.SendDataRequest
+Zhuwa.Moolre.Sales.SendDataRequest.AccountNumber.get -> string?
+Zhuwa.Moolre.Sales.SendDataRequest.AccountNumber.init -> void
+Zhuwa.Moolre.Sales.SendDataRequest.BundleId.get -> string!
+Zhuwa.Moolre.Sales.SendDataRequest.BundleId.init -> void
+Zhuwa.Moolre.Sales.SendDataRequest.ExternalReference.get -> string!
+Zhuwa.Moolre.Sales.SendDataRequest.ExternalReference.init -> void
+Zhuwa.Moolre.Sales.SendDataRequest.Narration.get -> string?
+Zhuwa.Moolre.Sales.SendDataRequest.Narration.init -> void
+Zhuwa.Moolre.Sales.SendDataRequest.Network.get -> Zhuwa.Moolre.Sales.SalesNetwork
+Zhuwa.Moolre.Sales.SendDataRequest.Network.init -> void
+Zhuwa.Moolre.Sales.SendDataRequest.ReceiverPhoneNumber.get -> string!
+Zhuwa.Moolre.Sales.SendDataRequest.ReceiverPhoneNumber.init -> void
+Zhuwa.Moolre.Sales.SendDataRequest.SendDataRequest() -> void
+Zhuwa.Moolre.Sms.ApproveSenderIdsRequest
+Zhuwa.Moolre.Sms.ApproveSenderIdsRequest.ApproveSenderIdsRequest() -> void
+Zhuwa.Moolre.Sms.ApproveSenderIdsRequest.Decisions.get -> System.Collections.ObjectModel.Collection<Zhuwa.Moolre.Sms.SenderIdDecision!>!
+Zhuwa.Moolre.Sms.CreateSenderIdsRequest
+Zhuwa.Moolre.Sms.CreateSenderIdsRequest.CreateSenderIdsRequest() -> void
+Zhuwa.Moolre.Sms.CreateSenderIdsRequest.SenderIds.get -> System.Collections.ObjectModel.Collection<Zhuwa.Moolre.Sms.SenderIdRegistration!>!
+Zhuwa.Moolre.Sms.GetSenderIdStatusRequest
+Zhuwa.Moolre.Sms.GetSenderIdStatusRequest.GetSenderIdStatusRequest() -> void
+Zhuwa.Moolre.Sms.GetSenderIdStatusRequest.SenderId.get -> string!
+Zhuwa.Moolre.Sms.GetSenderIdStatusRequest.SenderId.init -> void
+Zhuwa.Moolre.Sms.GetSmsStatusRequest
+Zhuwa.Moolre.Sms.GetSmsStatusRequest.GetSmsStatusRequest() -> void
+Zhuwa.Moolre.Sms.GetSmsStatusRequest.References.get -> System.Collections.ObjectModel.Collection<string!>!
+Zhuwa.Moolre.Sms.SendSingleSmsRequest
+Zhuwa.Moolre.Sms.SendSingleSmsRequest.Network.get -> Zhuwa.Moolre.Sms.SmsDeliveryNetwork
+Zhuwa.Moolre.Sms.SendSingleSmsRequest.Network.init -> void
+Zhuwa.Moolre.Sms.SendSingleSmsRequest.Recipient.get -> string!
+Zhuwa.Moolre.Sms.SendSingleSmsRequest.Recipient.init -> void
+Zhuwa.Moolre.Sms.SendSingleSmsRequest.SendSingleSmsRequest() -> void
+Zhuwa.Moolre.Sms.SendSingleSmsRequest.SenderId.get -> string!
+Zhuwa.Moolre.Sms.SendSingleSmsRequest.SenderId.init -> void
+Zhuwa.Moolre.Sms.SendSingleSmsRequest.Text.get -> string!
+Zhuwa.Moolre.Sms.SendSingleSmsRequest.Text.init -> void
+Zhuwa.Moolre.Sms.SendSmsRequest
+Zhuwa.Moolre.Sms.SendSmsRequest.Messages.get -> System.Collections.ObjectModel.Collection<Zhuwa.Moolre.Sms.SmsMessage!>!
+Zhuwa.Moolre.Sms.SendSmsRequest.Network.get -> Zhuwa.Moolre.Sms.SmsDeliveryNetwork
+Zhuwa.Moolre.Sms.SendSmsRequest.Network.init -> void
+Zhuwa.Moolre.Sms.SendSmsRequest.SendSmsRequest() -> void
+Zhuwa.Moolre.Sms.SendSmsRequest.SenderId.get -> string!
+Zhuwa.Moolre.Sms.SendSmsRequest.SenderId.init -> void
+Zhuwa.Moolre.Sms.SenderIdApproval
+Zhuwa.Moolre.Sms.SenderIdApproval.Equals(Zhuwa.Moolre.Sms.SenderIdApproval other) -> bool
+Zhuwa.Moolre.Sms.SenderIdApproval.SenderIdApproval() -> void
+Zhuwa.Moolre.Sms.SenderIdApproval.SenderIdApproval(string! value) -> void
+Zhuwa.Moolre.Sms.SenderIdApproval.Value.get -> string!
+Zhuwa.Moolre.Sms.SenderIdDecision
+Zhuwa.Moolre.Sms.SenderIdDecision.Decision.get -> Zhuwa.Moolre.Sms.SenderIdDecisionKind
+Zhuwa.Moolre.Sms.SenderIdDecision.Decision.init -> void
+Zhuwa.Moolre.Sms.SenderIdDecision.SenderId.get -> string!
+Zhuwa.Moolre.Sms.SenderIdDecision.SenderId.init -> void
+Zhuwa.Moolre.Sms.SenderIdDecision.SenderIdDecision() -> void
+Zhuwa.Moolre.Sms.SenderIdDecisionKind
+Zhuwa.Moolre.Sms.SenderIdDecisionKind.Approved = 1 -> Zhuwa.Moolre.Sms.SenderIdDecisionKind
+Zhuwa.Moolre.Sms.SenderIdDecisionKind.Pending = 0 -> Zhuwa.Moolre.Sms.SenderIdDecisionKind
+Zhuwa.Moolre.Sms.SenderIdDecisionKind.Rejected = 2 -> Zhuwa.Moolre.Sms.SenderIdDecisionKind
+Zhuwa.Moolre.Sms.SenderIdInfo
+Zhuwa.Moolre.Sms.SenderIdInfo.Approval.get -> Zhuwa.Moolre.Sms.SenderIdApproval
+Zhuwa.Moolre.Sms.SenderIdInfo.Id.get -> string!
+Zhuwa.Moolre.Sms.SenderIdInfo.IsWhitelisted.get -> bool
+Zhuwa.Moolre.Sms.SenderIdInfo.SenderId.get -> string!
+Zhuwa.Moolre.Sms.SenderIdListResult
+Zhuwa.Moolre.Sms.SenderIdListResult.SenderIds.get -> System.Collections.Generic.IReadOnlyList<Zhuwa.Moolre.Sms.SenderIdInfo!>!
+Zhuwa.Moolre.Sms.SenderIdRegistration
+Zhuwa.Moolre.Sms.SenderIdRegistration.Approve.get -> bool?
+Zhuwa.Moolre.Sms.SenderIdRegistration.Approve.init -> void
+Zhuwa.Moolre.Sms.SenderIdRegistration.SenderId.get -> string!
+Zhuwa.Moolre.Sms.SenderIdRegistration.SenderId.init -> void
+Zhuwa.Moolre.Sms.SenderIdRegistration.SenderIdRegistration() -> void
+Zhuwa.Moolre.Sms.SenderIdStatusResult
+Zhuwa.Moolre.Sms.SenderIdStatusResult.Approval.get -> Zhuwa.Moolre.Sms.SenderIdApproval
+Zhuwa.Moolre.Sms.SenderIdStatusResult.IsWhitelisted.get -> bool
+Zhuwa.Moolre.Sms.SenderIdStatusResult.SenderId.get -> string!
+Zhuwa.Moolre.Sms.SenderIdsCreatedResult
+Zhuwa.Moolre.Sms.SmsBalanceResult
+Zhuwa.Moolre.Sms.SmsBalanceResult.Balance.get -> decimal
+Zhuwa.Moolre.Sms.SmsDeliveryNetwork
+Zhuwa.Moolre.Sms.SmsDeliveryNetwork.Default = 0 -> Zhuwa.Moolre.Sms.SmsDeliveryNetwork
+Zhuwa.Moolre.Sms.SmsDeliveryNetwork.Mtn = 2 -> Zhuwa.Moolre.Sms.SmsDeliveryNetwork
+Zhuwa.Moolre.Sms.SmsDeliveryNetwork.Telecel = 1 -> Zhuwa.Moolre.Sms.SmsDeliveryNetwork
+Zhuwa.Moolre.Sms.SmsDeliveryStatus
+Zhuwa.Moolre.Sms.SmsDeliveryStatus.Reference.get -> string!
+Zhuwa.Moolre.Sms.SmsDeliveryStatus.Status.get -> int
+Zhuwa.Moolre.Sms.SmsMessage
+Zhuwa.Moolre.Sms.SmsMessage.Recipient.get -> string!
+Zhuwa.Moolre.Sms.SmsMessage.Recipient.init -> void
+Zhuwa.Moolre.Sms.SmsMessage.Reference.get -> string?
+Zhuwa.Moolre.Sms.SmsMessage.Reference.init -> void
+Zhuwa.Moolre.Sms.SmsMessage.SmsMessage() -> void
+Zhuwa.Moolre.Sms.SmsMessage.Text.get -> string!
+Zhuwa.Moolre.Sms.SmsMessage.Text.init -> void
+Zhuwa.Moolre.Sms.SmsSendResult
+Zhuwa.Moolre.Sms.SmsStatusResult
+Zhuwa.Moolre.Sms.SmsStatusResult.Statuses.get -> System.Collections.Generic.IReadOnlyList<Zhuwa.Moolre.Sms.SmsDeliveryStatus!>!
+Zhuwa.Moolre.TransactionIdKind
+Zhuwa.Moolre.TransactionIdKind.ExternalReference = 1 -> Zhuwa.Moolre.TransactionIdKind
+Zhuwa.Moolre.TransactionIdKind.MoolreId = 2 -> Zhuwa.Moolre.TransactionIdKind
+Zhuwa.Moolre.TransactionIdKind.None = 0 -> Zhuwa.Moolre.TransactionIdKind
+Zhuwa.Moolre.TransactionResult
+Zhuwa.Moolre.TransactionResult.Transaction.get -> Zhuwa.Moolre.MoolreTransaction!
+Zhuwa.Moolre.TransactionStatus
+Zhuwa.Moolre.TransactionStatus.Failed = 2 -> Zhuwa.Moolre.TransactionStatus
+Zhuwa.Moolre.TransactionStatus.Pending = 0 -> Zhuwa.Moolre.TransactionStatus
+Zhuwa.Moolre.TransactionStatus.Successful = 1 -> Zhuwa.Moolre.TransactionStatus
+Zhuwa.Moolre.Transfers.InternalTransferResult
+Zhuwa.Moolre.Transfers.InternalTransferResult.TransferId.get -> string!
+Zhuwa.Moolre.Transfers.NameValidationResult
+Zhuwa.Moolre.Transfers.NameValidationResult.AccountHolderName.get -> string!
+Zhuwa.Moolre.Transfers.SendInternalTransferRequest
+Zhuwa.Moolre.Transfers.SendInternalTransferRequest.AccountNumber.get -> string?
+Zhuwa.Moolre.Transfers.SendInternalTransferRequest.AccountNumber.init -> void
+Zhuwa.Moolre.Transfers.SendInternalTransferRequest.Amount.get -> decimal
+Zhuwa.Moolre.Transfers.SendInternalTransferRequest.Amount.init -> void
+Zhuwa.Moolre.Transfers.SendInternalTransferRequest.Currency.get -> Zhuwa.Moolre.Currency
+Zhuwa.Moolre.Transfers.SendInternalTransferRequest.Currency.init -> void
+Zhuwa.Moolre.Transfers.SendInternalTransferRequest.ExternalReference.get -> string!
+Zhuwa.Moolre.Transfers.SendInternalTransferRequest.ExternalReference.init -> void
+Zhuwa.Moolre.Transfers.SendInternalTransferRequest.Narration.get -> string?
+Zhuwa.Moolre.Transfers.SendInternalTransferRequest.Narration.init -> void
+Zhuwa.Moolre.Transfers.SendInternalTransferRequest.ReceiverAccountNumber.get -> string!
+Zhuwa.Moolre.Transfers.SendInternalTransferRequest.ReceiverAccountNumber.init -> void
+Zhuwa.Moolre.Transfers.SendInternalTransferRequest.SendInternalTransferRequest() -> void
+Zhuwa.Moolre.Transfers.SendTransferRequest
+Zhuwa.Moolre.Transfers.SendTransferRequest.AccountNumber.get -> string?
+Zhuwa.Moolre.Transfers.SendTransferRequest.AccountNumber.init -> void
+Zhuwa.Moolre.Transfers.SendTransferRequest.Amount.get -> decimal
+Zhuwa.Moolre.Transfers.SendTransferRequest.Amount.init -> void
+Zhuwa.Moolre.Transfers.SendTransferRequest.BankCode.get -> string?
+Zhuwa.Moolre.Transfers.SendTransferRequest.BankCode.init -> void
+Zhuwa.Moolre.Transfers.SendTransferRequest.Channel.get -> Zhuwa.Moolre.Transfers.TransferChannel
+Zhuwa.Moolre.Transfers.SendTransferRequest.Channel.init -> void
+Zhuwa.Moolre.Transfers.SendTransferRequest.Currency.get -> Zhuwa.Moolre.Currency
+Zhuwa.Moolre.Transfers.SendTransferRequest.Currency.init -> void
+Zhuwa.Moolre.Transfers.SendTransferRequest.ExternalReference.get -> string!
+Zhuwa.Moolre.Transfers.SendTransferRequest.ExternalReference.init -> void
+Zhuwa.Moolre.Transfers.SendTransferRequest.Narration.get -> string?
+Zhuwa.Moolre.Transfers.SendTransferRequest.Narration.init -> void
+Zhuwa.Moolre.Transfers.SendTransferRequest.Receiver.get -> string!
+Zhuwa.Moolre.Transfers.SendTransferRequest.Receiver.init -> void
+Zhuwa.Moolre.Transfers.SendTransferRequest.SendTransferRequest() -> void
+Zhuwa.Moolre.Transfers.TransferChannel
+Zhuwa.Moolre.Transfers.TransferChannel.At = 7 -> Zhuwa.Moolre.Transfers.TransferChannel
+Zhuwa.Moolre.Transfers.TransferChannel.Bank = 2 -> Zhuwa.Moolre.Transfers.TransferChannel
+Zhuwa.Moolre.Transfers.TransferChannel.Mtn = 1 -> Zhuwa.Moolre.Transfers.TransferChannel
+Zhuwa.Moolre.Transfers.TransferChannel.None = 0 -> Zhuwa.Moolre.Transfers.TransferChannel
+Zhuwa.Moolre.Transfers.TransferChannel.Telecel = 6 -> Zhuwa.Moolre.Transfers.TransferChannel
+Zhuwa.Moolre.Transfers.TransferResult
+Zhuwa.Moolre.Transfers.TransferResult.Amount.get -> decimal
+Zhuwa.Moolre.Transfers.TransferResult.AmountWithFee.get -> decimal
+Zhuwa.Moolre.Transfers.TransferResult.ExternalReference.get -> string!
+Zhuwa.Moolre.Transfers.TransferResult.Fee.get -> decimal
+Zhuwa.Moolre.Transfers.TransferResult.NetworkFee.get -> decimal
+Zhuwa.Moolre.Transfers.TransferResult.Receiver.get -> string!
+Zhuwa.Moolre.Transfers.TransferResult.ReceiverName.get -> string!
+Zhuwa.Moolre.Transfers.TransferResult.Status.get -> Zhuwa.Moolre.TransactionStatus
+Zhuwa.Moolre.Transfers.TransferResult.ThirdPartyReference.get -> string!
+Zhuwa.Moolre.Transfers.TransferResult.TransactionId.get -> string!
+Zhuwa.Moolre.Transfers.ValidateNameRequest
+Zhuwa.Moolre.Transfers.ValidateNameRequest.AccountNumber.get -> string?
+Zhuwa.Moolre.Transfers.ValidateNameRequest.AccountNumber.init -> void
+Zhuwa.Moolre.Transfers.ValidateNameRequest.BankCode.get -> string?
+Zhuwa.Moolre.Transfers.ValidateNameRequest.BankCode.init -> void
+Zhuwa.Moolre.Transfers.ValidateNameRequest.Channel.get -> Zhuwa.Moolre.Transfers.TransferChannel
+Zhuwa.Moolre.Transfers.ValidateNameRequest.Channel.init -> void
+Zhuwa.Moolre.Transfers.ValidateNameRequest.Currency.get -> Zhuwa.Moolre.Currency
+Zhuwa.Moolre.Transfers.ValidateNameRequest.Currency.init -> void
+Zhuwa.Moolre.Transfers.ValidateNameRequest.Receiver.get -> string!
+Zhuwa.Moolre.Transfers.ValidateNameRequest.Receiver.init -> void
+Zhuwa.Moolre.Transfers.ValidateNameRequest.ValidateNameRequest() -> void
+Zhuwa.Moolre.Webhooks.MoolreWebhookOptions
+Zhuwa.Moolre.Webhooks.MoolreWebhookOptions.MoolreWebhookOptions() -> void
+Zhuwa.Moolre.Webhooks.MoolreWebhookOptions.Secret.get -> string?
+Zhuwa.Moolre.Webhooks.MoolreWebhookOptions.Secret.set -> void
+Zhuwa.Moolre.Webhooks.PaymentWebhook
+Zhuwa.Moolre.Webhooks.PaymentWebhook.Code.get -> Zhuwa.Moolre.MoolreResponseCode
+Zhuwa.Moolre.Webhooks.PaymentWebhook.Data.get -> Zhuwa.Moolre.Webhooks.PaymentWebhookData!
+Zhuwa.Moolre.Webhooks.PaymentWebhook.IsSuccessfulPayment.get -> bool
+Zhuwa.Moolre.Webhooks.PaymentWebhook.Message.get -> string?
+Zhuwa.Moolre.Webhooks.PaymentWebhookData
+Zhuwa.Moolre.Webhooks.PaymentWebhookData.AccountNumber.get -> string!
+Zhuwa.Moolre.Webhooks.PaymentWebhookData.Amount.get -> decimal
+Zhuwa.Moolre.Webhooks.PaymentWebhookData.ExternalReference.get -> string!
+Zhuwa.Moolre.Webhooks.PaymentWebhookData.Name.get -> string!
+Zhuwa.Moolre.Webhooks.PaymentWebhookData.Payer.get -> string!
+Zhuwa.Moolre.Webhooks.PaymentWebhookData.PayerInstitution.get -> string?
+Zhuwa.Moolre.Webhooks.PaymentWebhookData.PayerName.get -> string?
+Zhuwa.Moolre.Webhooks.PaymentWebhookData.PayerNetwork.get -> string?
+Zhuwa.Moolre.Webhooks.PaymentWebhookData.Reason.get -> string?
+Zhuwa.Moolre.Webhooks.PaymentWebhookData.Secret.get -> string!
+Zhuwa.Moolre.Webhooks.PaymentWebhookData.Status.get -> Zhuwa.Moolre.TransactionStatus
+Zhuwa.Moolre.Webhooks.PaymentWebhookData.TerminalId.get -> string!
+Zhuwa.Moolre.Webhooks.PaymentWebhookData.ThirdPartyReference.get -> string!
+Zhuwa.Moolre.Webhooks.PaymentWebhookData.Timestamp.get -> System.DateTimeOffset
+Zhuwa.Moolre.Webhooks.PaymentWebhookData.TransactionId.get -> string?
+Zhuwa.Moolre.Webhooks.PaymentWebhookData.Value.get -> decimal
+Zhuwa.Moolre.WhatsApp.GetWhatsAppMessageStatusRequest
+Zhuwa.Moolre.WhatsApp.GetWhatsAppMessageStatusRequest.GetWhatsAppMessageStatusRequest() -> void
+Zhuwa.Moolre.WhatsApp.GetWhatsAppMessageStatusRequest.References.get -> System.Collections.ObjectModel.Collection<string!>!
+Zhuwa.Moolre.WhatsApp.GetWhatsAppTemplatesRequest
+Zhuwa.Moolre.WhatsApp.GetWhatsAppTemplatesRequest.Cursor.get -> string?
+Zhuwa.Moolre.WhatsApp.GetWhatsAppTemplatesRequest.Cursor.init -> void
+Zhuwa.Moolre.WhatsApp.GetWhatsAppTemplatesRequest.GetWhatsAppTemplatesRequest() -> void
+Zhuwa.Moolre.WhatsApp.SendWhatsAppMessagesRequest
+Zhuwa.Moolre.WhatsApp.SendWhatsAppMessagesRequest.Language.get -> string!
+Zhuwa.Moolre.WhatsApp.SendWhatsAppMessagesRequest.Language.init -> void
+Zhuwa.Moolre.WhatsApp.SendWhatsAppMessagesRequest.Messages.get -> System.Collections.ObjectModel.Collection<Zhuwa.Moolre.WhatsApp.WhatsAppMessage!>!
+Zhuwa.Moolre.WhatsApp.SendWhatsAppMessagesRequest.SendWhatsAppMessagesRequest() -> void
+Zhuwa.Moolre.WhatsApp.SendWhatsAppMessagesRequest.TemplateName.get -> string!
+Zhuwa.Moolre.WhatsApp.SendWhatsAppMessagesRequest.TemplateName.init -> void
+Zhuwa.Moolre.WhatsApp.WhatsAppDeliveryStatus
+Zhuwa.Moolre.WhatsApp.WhatsAppDeliveryStatus.Equals(Zhuwa.Moolre.WhatsApp.WhatsAppDeliveryStatus other) -> bool
+Zhuwa.Moolre.WhatsApp.WhatsAppDeliveryStatus.Value.get -> string!
+Zhuwa.Moolre.WhatsApp.WhatsAppDeliveryStatus.WhatsAppDeliveryStatus() -> void
+Zhuwa.Moolre.WhatsApp.WhatsAppDeliveryStatus.WhatsAppDeliveryStatus(string! value) -> void
+Zhuwa.Moolre.WhatsApp.WhatsAppMessage
+Zhuwa.Moolre.WhatsApp.WhatsAppMessage.Placeholders.get -> System.Collections.ObjectModel.Collection<string!>!
+Zhuwa.Moolre.WhatsApp.WhatsAppMessage.Recipient.get -> string!
+Zhuwa.Moolre.WhatsApp.WhatsAppMessage.Recipient.init -> void
+Zhuwa.Moolre.WhatsApp.WhatsAppMessage.Reference.get -> string?
+Zhuwa.Moolre.WhatsApp.WhatsAppMessage.Reference.init -> void
+Zhuwa.Moolre.WhatsApp.WhatsAppMessage.WhatsAppMessage() -> void
+Zhuwa.Moolre.WhatsApp.WhatsAppMessageStatus
+Zhuwa.Moolre.WhatsApp.WhatsAppMessageStatus.Reference.get -> string!
+Zhuwa.Moolre.WhatsApp.WhatsAppMessageStatus.Status.get -> Zhuwa.Moolre.WhatsApp.WhatsAppDeliveryStatus
+Zhuwa.Moolre.WhatsApp.WhatsAppRejectedMessage
+Zhuwa.Moolre.WhatsApp.WhatsAppRejectedMessage.Recipient.get -> string!
+Zhuwa.Moolre.WhatsApp.WhatsAppRejectedMessage.Reference.get -> string!
+Zhuwa.Moolre.WhatsApp.WhatsAppSendResult
+Zhuwa.Moolre.WhatsApp.WhatsAppSendResult.AllSent.get -> bool
+Zhuwa.Moolre.WhatsApp.WhatsAppSendResult.NotSent.get -> System.Collections.Generic.IReadOnlyList<Zhuwa.Moolre.WhatsApp.WhatsAppRejectedMessage!>!
+Zhuwa.Moolre.WhatsApp.WhatsAppSendResult.Warning.get -> string?
+Zhuwa.Moolre.WhatsApp.WhatsAppStatusResult
+Zhuwa.Moolre.WhatsApp.WhatsAppStatusResult.Statuses.get -> System.Collections.Generic.IReadOnlyList<Zhuwa.Moolre.WhatsApp.WhatsAppMessageStatus!>!
+Zhuwa.Moolre.WhatsApp.WhatsAppTemplate
+Zhuwa.Moolre.WhatsApp.WhatsAppTemplate.Body.get -> string!
+Zhuwa.Moolre.WhatsApp.WhatsAppTemplate.Id.get -> string!
+Zhuwa.Moolre.WhatsApp.WhatsAppTemplate.Language.get -> string!
+Zhuwa.Moolre.WhatsApp.WhatsAppTemplate.Name.get -> string!
+Zhuwa.Moolre.WhatsApp.WhatsAppTemplate.Placeholders.get -> System.Collections.Generic.IReadOnlyList<string!>!
+Zhuwa.Moolre.WhatsApp.WhatsAppTemplate.Status.get -> Zhuwa.Moolre.WhatsApp.WhatsAppTemplateStatus
+Zhuwa.Moolre.WhatsApp.WhatsAppTemplateStatus
+Zhuwa.Moolre.WhatsApp.WhatsAppTemplateStatus.Equals(Zhuwa.Moolre.WhatsApp.WhatsAppTemplateStatus other) -> bool
+Zhuwa.Moolre.WhatsApp.WhatsAppTemplateStatus.Value.get -> string!
+Zhuwa.Moolre.WhatsApp.WhatsAppTemplateStatus.WhatsAppTemplateStatus() -> void
+Zhuwa.Moolre.WhatsApp.WhatsAppTemplateStatus.WhatsAppTemplateStatus(string! value) -> void
+Zhuwa.Moolre.WhatsApp.WhatsAppTemplatesPage
+Zhuwa.Moolre.WhatsApp.WhatsAppTemplatesPage.NextCursor.get -> string?
+Zhuwa.Moolre.WhatsApp.WhatsAppTemplatesPage.Templates.get -> System.Collections.Generic.IReadOnlyList<Zhuwa.Moolre.WhatsApp.WhatsAppTemplate!>!
+override Zhuwa.Moolre.MoolreResponseCode.Equals(object? obj) -> bool
+override Zhuwa.Moolre.MoolreResponseCode.GetHashCode() -> int
+override Zhuwa.Moolre.MoolreResponseCode.ToString() -> string!
+override Zhuwa.Moolre.Sms.SenderIdApproval.Equals(object? obj) -> bool
+override Zhuwa.Moolre.Sms.SenderIdApproval.GetHashCode() -> int
+override Zhuwa.Moolre.Sms.SenderIdApproval.ToString() -> string!
+override Zhuwa.Moolre.WhatsApp.WhatsAppDeliveryStatus.Equals(object? obj) -> bool
+override Zhuwa.Moolre.WhatsApp.WhatsAppDeliveryStatus.GetHashCode() -> int
+override Zhuwa.Moolre.WhatsApp.WhatsAppDeliveryStatus.ToString() -> string!
+override Zhuwa.Moolre.WhatsApp.WhatsAppTemplateStatus.Equals(object? obj) -> bool
+override Zhuwa.Moolre.WhatsApp.WhatsAppTemplateStatus.GetHashCode() -> int
+override Zhuwa.Moolre.WhatsApp.WhatsAppTemplateStatus.ToString() -> string!
+static Zhuwa.Moolre.MoolreResponseCode.AccountUpdated.get -> Zhuwa.Moolre.MoolreResponseCode
+static Zhuwa.Moolre.MoolreResponseCode.ApiAccessNotActivated.get -> Zhuwa.Moolre.MoolreResponseCode
+static Zhuwa.Moolre.MoolreResponseCode.AuthenticationError.get -> Zhuwa.Moolre.MoolreResponseCode
+static Zhuwa.Moolre.MoolreResponseCode.BankAccountCreated.get -> Zhuwa.Moolre.MoolreResponseCode
+static Zhuwa.Moolre.MoolreResponseCode.BankAccountCreationFailed.get -> Zhuwa.Moolre.MoolreResponseCode
+static Zhuwa.Moolre.MoolreResponseCode.BanksFound.get -> Zhuwa.Moolre.MoolreResponseCode
+static Zhuwa.Moolre.MoolreResponseCode.BanksFoundAlt.get -> Zhuwa.Moolre.MoolreResponseCode
+static Zhuwa.Moolre.MoolreResponseCode.BundleCatalog.get -> Zhuwa.Moolre.MoolreResponseCode
+static Zhuwa.Moolre.MoolreResponseCode.ChannelNotSupported.get -> Zhuwa.Moolre.MoolreResponseCode
+static Zhuwa.Moolre.MoolreResponseCode.CollectionDuplicateReference.get -> Zhuwa.Moolre.MoolreResponseCode
+static Zhuwa.Moolre.MoolreResponseCode.CurrencyInvalid.get -> Zhuwa.Moolre.MoolreResponseCode
+static Zhuwa.Moolre.MoolreResponseCode.CurrencyNotSupportedForApi.get -> Zhuwa.Moolre.MoolreResponseCode
+static Zhuwa.Moolre.MoolreResponseCode.DuplicateAccountName.get -> Zhuwa.Moolre.MoolreResponseCode
+static Zhuwa.Moolre.MoolreResponseCode.FromString(string! value) -> Zhuwa.Moolre.MoolreResponseCode
+static Zhuwa.Moolre.MoolreResponseCode.InsufficientWalletBalance.get -> Zhuwa.Moolre.MoolreResponseCode
+static Zhuwa.Moolre.MoolreResponseCode.InternalTransferCompleted.get -> Zhuwa.Moolre.MoolreResponseCode
+static Zhuwa.Moolre.MoolreResponseCode.InternalTransferDuplicateReference.get -> Zhuwa.Moolre.MoolreResponseCode
+static Zhuwa.Moolre.MoolreResponseCode.InternalTransferInsufficientBalance.get -> Zhuwa.Moolre.MoolreResponseCode
+static Zhuwa.Moolre.MoolreResponseCode.NameNotFound.get -> Zhuwa.Moolre.MoolreResponseCode
+static Zhuwa.Moolre.MoolreResponseCode.NameValidated.get -> Zhuwa.Moolre.MoolreResponseCode
+static Zhuwa.Moolre.MoolreResponseCode.OtpRequired.get -> Zhuwa.Moolre.MoolreResponseCode
+static Zhuwa.Moolre.MoolreResponseCode.PaymentAccountFound.get -> Zhuwa.Moolre.MoolreResponseCode
+static Zhuwa.Moolre.MoolreResponseCode.PaymentAccountNotFound.get -> Zhuwa.Moolre.MoolreResponseCode
+static Zhuwa.Moolre.MoolreResponseCode.PaymentFailed.get -> Zhuwa.Moolre.MoolreResponseCode
+static Zhuwa.Moolre.MoolreResponseCode.PaymentIdCreated.get -> Zhuwa.Moolre.MoolreResponseCode
+static Zhuwa.Moolre.MoolreResponseCode.PaymentLinkCreated.get -> Zhuwa.Moolre.MoolreResponseCode
+static Zhuwa.Moolre.MoolreResponseCode.PaymentLinkDuplicate.get -> Zhuwa.Moolre.MoolreResponseCode
+static Zhuwa.Moolre.MoolreResponseCode.PaymentSucceeded.get -> Zhuwa.Moolre.MoolreResponseCode
+static Zhuwa.Moolre.MoolreResponseCode.PayoutDuplicateReference.get -> Zhuwa.Moolre.MoolreResponseCode
+static Zhuwa.Moolre.MoolreResponseCode.PayoutFailed.get -> Zhuwa.Moolre.MoolreResponseCode
+static Zhuwa.Moolre.MoolreResponseCode.PayoutInProgress.get -> Zhuwa.Moolre.MoolreResponseCode
+static Zhuwa.Moolre.MoolreResponseCode.PayoutSuccessful.get -> Zhuwa.Moolre.MoolreResponseCode
+static Zhuwa.Moolre.MoolreResponseCode.PhoneVerified.get -> Zhuwa.Moolre.MoolreResponseCode
+static Zhuwa.Moolre.MoolreResponseCode.SaleAccountNotFound.get -> Zhuwa.Moolre.MoolreResponseCode
+static Zhuwa.Moolre.MoolreResponseCode.SaleAmountInvalid.get -> Zhuwa.Moolre.MoolreResponseCode
+static Zhuwa.Moolre.MoolreResponseCode.SaleAuthenticationError.get -> Zhuwa.Moolre.MoolreResponseCode
+static Zhuwa.Moolre.MoolreResponseCode.SaleBundleMissing.get -> Zhuwa.Moolre.MoolreResponseCode
+static Zhuwa.Moolre.MoolreResponseCode.SaleBundleNotOnNetwork.get -> Zhuwa.Moolre.MoolreResponseCode
+static Zhuwa.Moolre.MoolreResponseCode.SaleChannelNotSupported.get -> Zhuwa.Moolre.MoolreResponseCode
+static Zhuwa.Moolre.MoolreResponseCode.SaleCurrencyNotGhs.get -> Zhuwa.Moolre.MoolreResponseCode
+static Zhuwa.Moolre.MoolreResponseCode.SaleDuplicateReference.get -> Zhuwa.Moolre.MoolreResponseCode
+static Zhuwa.Moolre.MoolreResponseCode.SaleFailedAndRefunded.get -> Zhuwa.Moolre.MoolreResponseCode
+static Zhuwa.Moolre.MoolreResponseCode.SaleIdTypeInvalid.get -> Zhuwa.Moolre.MoolreResponseCode
+static Zhuwa.Moolre.MoolreResponseCode.SaleInProgress.get -> Zhuwa.Moolre.MoolreResponseCode
+static Zhuwa.Moolre.MoolreResponseCode.SaleIncomplete.get -> Zhuwa.Moolre.MoolreResponseCode
+static Zhuwa.Moolre.MoolreResponseCode.SaleNotFound.get -> Zhuwa.Moolre.MoolreResponseCode
+static Zhuwa.Moolre.MoolreResponseCode.SaleOutcomeUnknown.get -> Zhuwa.Moolre.MoolreResponseCode
+static Zhuwa.Moolre.MoolreResponseCode.SalePending.get -> Zhuwa.Moolre.MoolreResponseCode
+static Zhuwa.Moolre.MoolreResponseCode.SaleReceiverMissing.get -> Zhuwa.Moolre.MoolreResponseCode
+static Zhuwa.Moolre.MoolreResponseCode.SaleSent.get -> Zhuwa.Moolre.MoolreResponseCode
+static Zhuwa.Moolre.MoolreResponseCode.SaleStatusAuthenticationError.get -> Zhuwa.Moolre.MoolreResponseCode
+static Zhuwa.Moolre.MoolreResponseCode.SaleStatusIncomplete.get -> Zhuwa.Moolre.MoolreResponseCode
+static Zhuwa.Moolre.MoolreResponseCode.SaleStatusTypeInvalid.get -> Zhuwa.Moolre.MoolreResponseCode
+static Zhuwa.Moolre.MoolreResponseCode.SaleStatusUnknown.get -> Zhuwa.Moolre.MoolreResponseCode
+static Zhuwa.Moolre.MoolreResponseCode.SaleTypeInvalid.get -> Zhuwa.Moolre.MoolreResponseCode
+static Zhuwa.Moolre.MoolreResponseCode.SaleWalletCurrencyNotSupported.get -> Zhuwa.Moolre.MoolreResponseCode
+static Zhuwa.Moolre.MoolreResponseCode.SaleWalletInactive.get -> Zhuwa.Moolre.MoolreResponseCode
+static Zhuwa.Moolre.MoolreResponseCode.SenderIdList.get -> Zhuwa.Moolre.MoolreResponseCode
+static Zhuwa.Moolre.MoolreResponseCode.SenderIdNoPermission.get -> Zhuwa.Moolre.MoolreResponseCode
+static Zhuwa.Moolre.MoolreResponseCode.SenderIdNotApproved.get -> Zhuwa.Moolre.MoolreResponseCode
+static Zhuwa.Moolre.MoolreResponseCode.SenderIdRequestUnknown.get -> Zhuwa.Moolre.MoolreResponseCode
+static Zhuwa.Moolre.MoolreResponseCode.SenderIdRequired.get -> Zhuwa.Moolre.MoolreResponseCode
+static Zhuwa.Moolre.MoolreResponseCode.SenderIdStatus.get -> Zhuwa.Moolre.MoolreResponseCode
+static Zhuwa.Moolre.MoolreResponseCode.SenderIdsCreated.get -> Zhuwa.Moolre.MoolreResponseCode
+static Zhuwa.Moolre.MoolreResponseCode.SenderIdsUpdated.get -> Zhuwa.Moolre.MoolreResponseCode
+static Zhuwa.Moolre.MoolreResponseCode.SmsBalance.get -> Zhuwa.Moolre.MoolreResponseCode
+static Zhuwa.Moolre.MoolreResponseCode.SmsSent.get -> Zhuwa.Moolre.MoolreResponseCode
+static Zhuwa.Moolre.MoolreResponseCode.SmsStatus.get -> Zhuwa.Moolre.MoolreResponseCode
+static Zhuwa.Moolre.MoolreResponseCode.TransactionSuccessful.get -> Zhuwa.Moolre.MoolreResponseCode
+static Zhuwa.Moolre.MoolreResponseCode.TransactionsFound.get -> Zhuwa.Moolre.MoolreResponseCode
+static Zhuwa.Moolre.MoolreResponseCode.TransactionsNotFound.get -> Zhuwa.Moolre.MoolreResponseCode
+static Zhuwa.Moolre.MoolreResponseCode.TransferInitiated.get -> Zhuwa.Moolre.MoolreResponseCode
+static Zhuwa.Moolre.MoolreResponseCode.UpdateInvalidAccountNumber.get -> Zhuwa.Moolre.MoolreResponseCode
+static Zhuwa.Moolre.MoolreResponseCode.ValidateNameAuthenticationError.get -> Zhuwa.Moolre.MoolreResponseCode
+static Zhuwa.Moolre.MoolreResponseCode.WalletCreated.get -> Zhuwa.Moolre.MoolreResponseCode
+static Zhuwa.Moolre.MoolreResponseCode.WalletCreatedAlt.get -> Zhuwa.Moolre.MoolreResponseCode
+static Zhuwa.Moolre.MoolreResponseCode.WalletFound.get -> Zhuwa.Moolre.MoolreResponseCode
+static Zhuwa.Moolre.MoolreResponseCode.WalletNotFound.get -> Zhuwa.Moolre.MoolreResponseCode
+static Zhuwa.Moolre.MoolreResponseCode.WalletNotFoundOnUpdate.get -> Zhuwa.Moolre.MoolreResponseCode
+static Zhuwa.Moolre.MoolreResponseCode.WalletUpdated.get -> Zhuwa.Moolre.MoolreResponseCode
+static Zhuwa.Moolre.MoolreResponseCode.WhatsAppInsufficientBalance.get -> Zhuwa.Moolre.MoolreResponseCode
+static Zhuwa.Moolre.MoolreResponseCode.WhatsAppSuccess.get -> Zhuwa.Moolre.MoolreResponseCode
+static Zhuwa.Moolre.MoolreResponseCode.implicit operator Zhuwa.Moolre.MoolreResponseCode(string! value) -> Zhuwa.Moolre.MoolreResponseCode
+static Zhuwa.Moolre.MoolreResponseCode.operator !=(Zhuwa.Moolre.MoolreResponseCode left, Zhuwa.Moolre.MoolreResponseCode right) -> bool
+static Zhuwa.Moolre.MoolreResponseCode.operator ==(Zhuwa.Moolre.MoolreResponseCode left, Zhuwa.Moolre.MoolreResponseCode right) -> bool
+static Zhuwa.Moolre.Sms.SenderIdApproval.Approved.get -> Zhuwa.Moolre.Sms.SenderIdApproval
+static Zhuwa.Moolre.Sms.SenderIdApproval.FromString(string! value) -> Zhuwa.Moolre.Sms.SenderIdApproval
+static Zhuwa.Moolre.Sms.SenderIdApproval.Pending.get -> Zhuwa.Moolre.Sms.SenderIdApproval
+static Zhuwa.Moolre.Sms.SenderIdApproval.Rejected.get -> Zhuwa.Moolre.Sms.SenderIdApproval
+static Zhuwa.Moolre.Sms.SenderIdApproval.implicit operator Zhuwa.Moolre.Sms.SenderIdApproval(string! value) -> Zhuwa.Moolre.Sms.SenderIdApproval
+static Zhuwa.Moolre.Sms.SenderIdApproval.operator !=(Zhuwa.Moolre.Sms.SenderIdApproval left, Zhuwa.Moolre.Sms.SenderIdApproval right) -> bool
+static Zhuwa.Moolre.Sms.SenderIdApproval.operator ==(Zhuwa.Moolre.Sms.SenderIdApproval left, Zhuwa.Moolre.Sms.SenderIdApproval right) -> bool
+static Zhuwa.Moolre.WhatsApp.WhatsAppDeliveryStatus.Accepted.get -> Zhuwa.Moolre.WhatsApp.WhatsAppDeliveryStatus
+static Zhuwa.Moolre.WhatsApp.WhatsAppDeliveryStatus.FromString(string! value) -> Zhuwa.Moolre.WhatsApp.WhatsAppDeliveryStatus
+static Zhuwa.Moolre.WhatsApp.WhatsAppDeliveryStatus.Read.get -> Zhuwa.Moolre.WhatsApp.WhatsAppDeliveryStatus
+static Zhuwa.Moolre.WhatsApp.WhatsAppDeliveryStatus.implicit operator Zhuwa.Moolre.WhatsApp.WhatsAppDeliveryStatus(string! value) -> Zhuwa.Moolre.WhatsApp.WhatsAppDeliveryStatus
+static Zhuwa.Moolre.WhatsApp.WhatsAppDeliveryStatus.operator !=(Zhuwa.Moolre.WhatsApp.WhatsAppDeliveryStatus left, Zhuwa.Moolre.WhatsApp.WhatsAppDeliveryStatus right) -> bool
+static Zhuwa.Moolre.WhatsApp.WhatsAppDeliveryStatus.operator ==(Zhuwa.Moolre.WhatsApp.WhatsAppDeliveryStatus left, Zhuwa.Moolre.WhatsApp.WhatsAppDeliveryStatus right) -> bool
+static Zhuwa.Moolre.WhatsApp.WhatsAppTemplateStatus.Approved.get -> Zhuwa.Moolre.WhatsApp.WhatsAppTemplateStatus
+static Zhuwa.Moolre.WhatsApp.WhatsAppTemplateStatus.FromString(string! value) -> Zhuwa.Moolre.WhatsApp.WhatsAppTemplateStatus
+static Zhuwa.Moolre.WhatsApp.WhatsAppTemplateStatus.Pending.get -> Zhuwa.Moolre.WhatsApp.WhatsAppTemplateStatus
+static Zhuwa.Moolre.WhatsApp.WhatsAppTemplateStatus.Rejected.get -> Zhuwa.Moolre.WhatsApp.WhatsAppTemplateStatus
+static Zhuwa.Moolre.WhatsApp.WhatsAppTemplateStatus.implicit operator Zhuwa.Moolre.WhatsApp.WhatsAppTemplateStatus(string! value) -> Zhuwa.Moolre.WhatsApp.WhatsAppTemplateStatus
+static Zhuwa.Moolre.WhatsApp.WhatsAppTemplateStatus.operator !=(Zhuwa.Moolre.WhatsApp.WhatsAppTemplateStatus left, Zhuwa.Moolre.WhatsApp.WhatsAppTemplateStatus right) -> bool
+static Zhuwa.Moolre.WhatsApp.WhatsAppTemplateStatus.operator ==(Zhuwa.Moolre.WhatsApp.WhatsAppTemplateStatus left, Zhuwa.Moolre.WhatsApp.WhatsAppTemplateStatus right) -> bool

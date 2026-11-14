@@ -1,2 +1,8 @@
-// MoolreWebhookOptions  (public, namespace Zhuwa.Moolre.Webhooks)
-// Not implemented yet. Specification: _planning/sdk-types.md section 9.
+namespace Zhuwa.Moolre.Webhooks;
+
+/// <summary>Settings for receiving Moolre webhooks.</summary>
+public class MoolreWebhookOptions
+{
+    /// <summary>Secret. the expected callback secret for the wallet.</summary>
+    public string? Secret { get; set; }
+}

@@ -430,3 +430,7 @@ dotnet_diagnostic.IDE0161.severity = error  # file-scoped namespaces
 # Namespaces follow the API area (Zhuwa.Moolre.Payments), not the Requests/Results/Models/Errors sub-folders.
 dotnet_style_namespace_match_folder = false
 dotnet_diagnostic.IDE0130.severity = none
+
+# Rider: the endpoint table and its nested classes are internal on purpose (tests and clients read them).
+resharper_member_can_be_private_global_highlighting = none
+resharper_member_can_be_private_local_highlighting = none

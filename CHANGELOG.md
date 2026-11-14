@@ -12,4 +12,7 @@ All notable changes to this project are documented here. The format follows [Kee
 - Moolre's documented example responses as test fixtures (`tests/Zhuwa.Moolre.Sdk.Tests/Fixtures/`).
 - Each API area is organised into `Requests/`, `Results/` and `Models/`.
 
-No Moolre endpoints are implemented yet.
+- The public data types: 25 request types, 25 result types, 18 shared models, the enums, `MoolreOptions`, the extensible code structs (`MoolreResponseCode` with every documented Moolre code, `SenderIdApproval`, `WhatsAppTemplateStatus`, `WhatsAppDeliveryStatus`) and the webhook payload types. Results are immutable; their constructors are internal.
+- The endpoint table (`MoolreEndpoints`): every Moolre path, HTTP method, `type` selector, credential kind and whether the call is safe to repeat, in one place.
+
+The client methods that call Moolre, the JSON parsing, the exceptions and `AddMoolre` are not implemented yet.
