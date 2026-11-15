@@ -4,9 +4,9 @@ An **unofficial, community-built** .NET client for the [Moolre](https://docs.moo
 
 > This project is independent. It is not affiliated with, endorsed by, or supported by Moolre.
 
-## Status: preview, most calls not implemented yet
+## Status: preview, not yet verified against the sandbox
 
-The request and response types exist, but **28 of the 31 Moolre calls work so far**: Accounts, Transfers, Payments, Sales, SMS and `ReferenceData.GetBanksAsync`, plus the payment webhook parser and verifier. WhatsApp is not implemented yet. Do not use it in production. The usage below is the design, not what ships today.
+All 31 documented Moolre calls are implemented, plus the payment webhook parser and verifier, and covered by unit tests against Moolre's documented responses. They have **not yet been verified against the real sandbox**, so do not use it in production yet.
 
 ## What it will cover
 

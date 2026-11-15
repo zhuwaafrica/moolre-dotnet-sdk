@@ -6,7 +6,7 @@ An **unofficial, community-built** .NET client for the [Moolre](https://docs.moo
 > This project is independent. It is not affiliated with, endorsed by, or supported by Moolre.
 
 > [!WARNING]
-> **Status: preview.** The request, result and model types and the endpoint table exist and are tested, but **28 of the 31 Moolre calls work so far**: Accounts, Transfers, Payments, Sales, SMS and `ReferenceData.GetBanksAsync`, plus the payment webhook parser and verifier. WhatsApp is not implemented yet. The diagrams below show how the SDK is designed to work. The NuGet page text is in [`package-readme.md`](package-readme.md).
+> **Status: preview.** All 31 documented Moolre calls are implemented (Accounts, Transfers, Payments, Sales, SMS, WhatsApp and reference data), plus the payment webhook parser and verifier, and covered by unit tests against Moolre's documented responses. They have **not yet been verified against the real sandbox**, and named wallets are not built yet, so do not use it in production. The NuGet page text is in [`package-readme.md`](package-readme.md).
 
 **On this page:** [How it fits together](#how-it-fits-together) · [Collecting a payment](#collecting-a-payment) · [Receiving a webhook](#receiving-a-webhook) · [When something goes wrong](#when-something-goes-wrong) · [Repository layout](#repository-layout) · [Build and test](#build-and-test)
 

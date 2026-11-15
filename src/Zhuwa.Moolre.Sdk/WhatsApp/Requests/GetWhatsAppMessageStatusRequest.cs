@@ -1,4 +1,5 @@
 using System.Collections.ObjectModel;
+using System.Text.Json.Serialization;
 
 namespace Zhuwa.Moolre.WhatsApp;
 
@@ -6,5 +7,6 @@ namespace Zhuwa.Moolre.WhatsApp;
 public class GetWhatsAppMessageStatusRequest
 {
     /// <summary>References. Moolre field <c>ref</c> (array).</summary>
+    [JsonPropertyName("ref")]
     public Collection<string> References { get; } = [];
 }

@@ -4,6 +4,7 @@ using Zhuwa.Moolre.Reference;
 using Zhuwa.Moolre.Sales;
 using Zhuwa.Moolre.Sms;
 using Zhuwa.Moolre.Transfers;
+using Zhuwa.Moolre.WhatsApp;
 
 namespace Zhuwa.Moolre;
 
@@ -29,6 +30,9 @@ public abstract class MoolreClient
 
     /// <summary>Transfers to mobile money, banks and other Moolre wallets, name checks and transfer status.</summary>
     public virtual MoolreTransfers Transfers => throw new NotImplementedException();
+
+    /// <summary>WhatsApp template messages, templates and delivery status (uses the WhatsApp key).</summary>
+    public virtual MoolreWhatsApp WhatsApp => throw new NotImplementedException();
 
     /// <summary>Banks and other reference data (no credentials needed).</summary>
     public virtual MoolreReferenceData ReferenceData => throw new NotImplementedException();

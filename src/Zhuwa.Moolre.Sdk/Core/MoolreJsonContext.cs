@@ -6,6 +6,7 @@ using Zhuwa.Moolre.Reference;
 using Zhuwa.Moolre.Sales;
 using Zhuwa.Moolre.Sms;
 using Zhuwa.Moolre.Transfers;
+using Zhuwa.Moolre.WhatsApp;
 
 namespace Zhuwa.Moolre.Core;
 
@@ -63,6 +64,9 @@ namespace Zhuwa.Moolre.Core;
 [JsonSerializable(typeof(CreateSenderIdsRequest))]
 [JsonSerializable(typeof(GetSenderIdStatusRequest))]
 [JsonSerializable(typeof(ApproveSenderIdsRequest))]
+[JsonSerializable(typeof(GetWhatsAppTemplatesRequest))]
+[JsonSerializable(typeof(SendWhatsAppMessagesRequest))]
+[JsonSerializable(typeof(GetWhatsAppMessageStatusRequest))]
 
 // Responses
 [JsonSerializable(typeof(ResponseEnvelopeWire))]
@@ -91,5 +95,8 @@ namespace Zhuwa.Moolre.Core;
 [JsonSerializable(typeof(SmsStatusWire))]
 [JsonSerializable(typeof(SenderIdWire))]
 [JsonSerializable(typeof(SmsBalanceWire))]
+[JsonSerializable(typeof(WhatsAppTemplateWire))]
+[JsonSerializable(typeof(WhatsAppRejectedWire))]
+[JsonSerializable(typeof(WhatsAppStatusWire))]
 [JsonSerializable(typeof(JsonElement))]
 internal sealed partial class MoolreJsonContext : JsonSerializerContext;

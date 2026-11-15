@@ -7,6 +7,7 @@ using Zhuwa.Moolre.Reference;
 using Zhuwa.Moolre.Sales;
 using Zhuwa.Moolre.Sms;
 using Zhuwa.Moolre.Transfers;
+using Zhuwa.Moolre.WhatsApp;
 
 namespace Zhuwa.Moolre;
 
@@ -32,6 +33,8 @@ internal sealed class TestTransport
     public MoolreSms Sms => new DefaultMoolreSms(Transport);
 
     public MoolreTransfers Transfers => new DefaultMoolreTransfers(Transport);
+
+    public MoolreWhatsApp WhatsApp => new DefaultMoolreWhatsApp(Transport);
 
     public MoolreReferenceData ReferenceData => new DefaultMoolreReferenceData(Transport);
 

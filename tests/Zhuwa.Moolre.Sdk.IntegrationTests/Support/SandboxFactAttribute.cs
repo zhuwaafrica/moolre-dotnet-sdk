@@ -56,6 +56,11 @@ internal sealed class SandboxFactAttribute : FactAttribute
             missing.Add("MOOLRE_SANDBOX_SMS_SENDERID");
         }
 
+        if (needs.HasFlag(SandboxNeeds.WhatsAppKey) && SandboxSettings.WhatsAppVasKey is null)
+        {
+            missing.Add("MOOLRE_SANDBOX_WHATSAPP_VASKEY");
+        }
+
         if (missing.Count > 0)
         {
             Skip = "Sandbox test. Set " + string.Join(", ", missing) + " (see tests/Zhuwa.Moolre.Sdk.IntegrationTests/README.md).";
@@ -87,4 +92,7 @@ internal enum SandboxNeeds
 
     /// <summary><c>MOOLRE_SANDBOX_SMS_SENDERID</c>.</summary>
     SmsSenderId = 32,
+
+    /// <summary><c>MOOLRE_SANDBOX_WHATSAPP_VASKEY</c>.</summary>
+    WhatsAppKey = 64,
 }

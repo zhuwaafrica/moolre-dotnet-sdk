@@ -27,6 +27,9 @@ internal static class SandboxSettings
     /// <summary>An approved SMS sender ID on the sandbox SMS service.</summary>
     internal static string? SmsSenderId => Read("MOOLRE_SANDBOX_SMS_SENDERID");
 
+    /// <summary>The sandbox WhatsApp service key (<c>X-API-VASKEY</c>; a different key from SMS).</summary>
+    internal static string? WhatsAppVasKey => Read("MOOLRE_SANDBOX_WHATSAPP_VASKEY");
+
     /// <summary>A mobile money number in local format (for example <c>0241234567</c>) used as payer and transfer receiver.</summary>
     internal static string? PhoneNumber => Read("MOOLRE_SANDBOX_PHONE");
 

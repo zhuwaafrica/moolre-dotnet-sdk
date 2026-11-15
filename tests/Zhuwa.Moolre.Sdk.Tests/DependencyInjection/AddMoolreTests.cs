@@ -22,6 +22,7 @@ public sealed class AddMoolreTests
         Assert.NotNull(client.Payments);
         Assert.NotNull(client.Sales);
         Assert.NotNull(client.Sms);
+        Assert.NotNull(client.WhatsApp);
         Assert.NotNull(client.ReferenceData);
         Assert.Same(client, provider.GetRequiredService<MoolreClient>());
     }

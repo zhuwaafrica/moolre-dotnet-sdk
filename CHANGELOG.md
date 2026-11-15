@@ -25,4 +25,6 @@ All notable changes to this project are documented here. The format follows [Kee
 - SMS: `SendAsync` (bulk), `SendSingleAsync` (GET form, 160 characters, type in the query string), `GetStatusAsync`, `CreateSenderIdsAsync`, `GetSenderIdStatusAsync`, `ListSenderIdsAsync`, `ApproveSenderIdsAsync` and `GetBalanceAsync`, all with the SMS key only. Sender IDs are checked against Moolre's 11-character limit; sends are never retried.
 - GET calls with a `type` selector now carry it in the query string.
 
-The other 3 operations (WhatsApp), `MoolreClientFactory`, and `MoolreModelFactory` are not implemented yet.
+- WhatsApp: `GetTemplatePageAsync`, `GetAllTemplatesAsync` (walks every page by cursor, one page at a time, and stops on a repeated cursor instead of looping), `SendAsync` (reports messages skipped for duplicate references; never retried) and `GetStatusAsync`, all with the WhatsApp key only.
+
+All 31 documented operations are implemented. Not yet done: verification against the real sandbox, named wallets (`MoolreClientFactory`), `MoolreModelFactory`, configuration binding, samples.

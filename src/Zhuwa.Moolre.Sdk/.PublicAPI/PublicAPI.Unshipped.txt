@@ -606,6 +606,8 @@ Zhuwa.Moolre.WhatsApp.GetWhatsAppTemplatesRequest
 Zhuwa.Moolre.WhatsApp.GetWhatsAppTemplatesRequest.Cursor.get -> string?
 Zhuwa.Moolre.WhatsApp.GetWhatsAppTemplatesRequest.Cursor.init -> void
 Zhuwa.Moolre.WhatsApp.GetWhatsAppTemplatesRequest.GetWhatsAppTemplatesRequest() -> void
+Zhuwa.Moolre.WhatsApp.MoolreWhatsApp
+Zhuwa.Moolre.WhatsApp.MoolreWhatsApp.MoolreWhatsApp() -> void
 Zhuwa.Moolre.WhatsApp.SendWhatsAppMessagesRequest
 Zhuwa.Moolre.WhatsApp.SendWhatsAppMessagesRequest.Language.get -> string!
 Zhuwa.Moolre.WhatsApp.SendWhatsAppMessagesRequest.Language.init -> void
@@ -790,6 +792,7 @@ virtual Zhuwa.Moolre.MoolreClient.ReferenceData.get -> Zhuwa.Moolre.Reference.Mo
 virtual Zhuwa.Moolre.MoolreClient.Sales.get -> Zhuwa.Moolre.Sales.MoolreSales!
 virtual Zhuwa.Moolre.MoolreClient.Sms.get -> Zhuwa.Moolre.Sms.MoolreSms!
 virtual Zhuwa.Moolre.MoolreClient.Transfers.get -> Zhuwa.Moolre.Transfers.MoolreTransfers!
+virtual Zhuwa.Moolre.MoolreClient.WhatsApp.get -> Zhuwa.Moolre.WhatsApp.MoolreWhatsApp!
 virtual Zhuwa.Moolre.Payments.MoolrePayments.CreateBankAccountAsync(Zhuwa.Moolre.Payments.CreateBankAccountRequest! request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task<Zhuwa.Moolre.BankAccountResult!>!
 virtual Zhuwa.Moolre.Payments.MoolrePayments.CreatePaymentIdAsync(Zhuwa.Moolre.Payments.CreatePaymentIdRequest! request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task<Zhuwa.Moolre.PaymentIdResult!>!
 virtual Zhuwa.Moolre.Payments.MoolrePayments.CreatePaymentLinkAsync(Zhuwa.Moolre.Payments.CreatePaymentLinkRequest! request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task<Zhuwa.Moolre.PaymentLinkResult!>!
@@ -820,3 +823,9 @@ virtual Zhuwa.Moolre.Transfers.MoolreTransfers.GetStatusAsync(Zhuwa.Moolre.Trans
 virtual Zhuwa.Moolre.Transfers.MoolreTransfers.SendAsync(Zhuwa.Moolre.Transfers.SendTransferRequest! request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task<Zhuwa.Moolre.TransferResult!>!
 virtual Zhuwa.Moolre.Transfers.MoolreTransfers.SendInternalAsync(Zhuwa.Moolre.Transfers.SendInternalTransferRequest! request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task<Zhuwa.Moolre.InternalTransferResult!>!
 virtual Zhuwa.Moolre.Transfers.MoolreTransfers.ValidateNameAsync(Zhuwa.Moolre.Transfers.ValidateNameRequest! request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task<Zhuwa.Moolre.NameValidationResult!>!
+virtual Zhuwa.Moolre.WhatsApp.MoolreWhatsApp.GetAllTemplatesAsync(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Collections.Generic.IAsyncEnumerable<Zhuwa.Moolre.WhatsAppTemplate!>!
+virtual Zhuwa.Moolre.WhatsApp.MoolreWhatsApp.GetStatusAsync(Zhuwa.Moolre.WhatsApp.GetWhatsAppMessageStatusRequest! request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task<Zhuwa.Moolre.WhatsAppStatusResult!>!
+virtual Zhuwa.Moolre.WhatsApp.MoolreWhatsApp.GetTemplatePageAsync() -> System.Threading.Tasks.Task<Zhuwa.Moolre.WhatsAppTemplatesPage!>!
+virtual Zhuwa.Moolre.WhatsApp.MoolreWhatsApp.GetTemplatePageAsync(System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Zhuwa.Moolre.WhatsAppTemplatesPage!>!
+virtual Zhuwa.Moolre.WhatsApp.MoolreWhatsApp.GetTemplatePageAsync(Zhuwa.Moolre.WhatsApp.GetWhatsAppTemplatesRequest! request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task<Zhuwa.Moolre.WhatsAppTemplatesPage!>!
+virtual Zhuwa.Moolre.WhatsApp.MoolreWhatsApp.SendAsync(Zhuwa.Moolre.WhatsApp.SendWhatsAppMessagesRequest! request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task<Zhuwa.Moolre.WhatsAppSendResult!>!

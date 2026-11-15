@@ -25,6 +25,20 @@ internal sealed class StubHttpHandler : HttpMessageHandler
     public static StubHttpHandler ReturningFixture(string fixture, HttpStatusCode statusCode = HttpStatusCode.OK) =>
         Returning(File.ReadAllText(Path.Combine(AppContext.BaseDirectory, "Fixtures", fixture)), statusCode);
 
+    /// <summary>Answers each request with the next body in order (the last one repeats), and remembers every request URL.</summary>
+    public static StubHttpHandler ReturningInOrder(params string[] bodies)
+    {
+        var next = 0;
+        return new((_, _) =>
+        {
+            var body = bodies[Math.Min(next, bodies.Length - 1)];
+            next++;
+            return Task.FromResult(new HttpResponseMessage(HttpStatusCode.OK) { Content = new StringContent(body, Encoding.UTF8, "application/json") });
+        });
+    }
+
+    public List<Uri> RequestUris { get; } = [];
+
     public static StubHttpHandler Throwing(Exception exception) => new((_, _) => Task.FromException<HttpResponseMessage>(exception));
 
     public static StubHttpHandler NeverAnswering() =>
@@ -38,6 +52,7 @@ internal sealed class StubHttpHandler : HttpMessageHandler
     {
         CallCount++;
         Request = request;
+        RequestUris.Add(request.RequestUri!);
         RequestBody = request.Content is null ? null : await request.Content.ReadAsStringAsync(cancellationToken);
         return await _respond(request, cancellationToken);
     }

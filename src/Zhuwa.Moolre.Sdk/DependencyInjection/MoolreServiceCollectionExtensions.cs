@@ -9,6 +9,7 @@ using Zhuwa.Moolre.Sales;
 using Zhuwa.Moolre.Sms;
 using Zhuwa.Moolre.Transfers;
 using Zhuwa.Moolre.Webhooks;
+using Zhuwa.Moolre.WhatsApp;
 
 namespace Zhuwa.Moolre.DependencyInjection;
 
@@ -50,6 +51,7 @@ public static class MoolreServiceCollectionExtensions
         services.TryAddSingleton<MoolreSales, DefaultMoolreSales>();
         services.TryAddSingleton<MoolreSms, DefaultMoolreSms>();
         services.TryAddSingleton<MoolreTransfers, DefaultMoolreTransfers>();
+        services.TryAddSingleton<MoolreWhatsApp, DefaultMoolreWhatsApp>();
         services.TryAddSingleton<MoolreReferenceData, DefaultMoolreReferenceData>();
         services.TryAddSingleton<MoolreClient, DefaultMoolreClient>();
 

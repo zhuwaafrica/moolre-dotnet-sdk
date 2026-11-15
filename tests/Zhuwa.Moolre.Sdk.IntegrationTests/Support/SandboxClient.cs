@@ -23,6 +23,7 @@ internal sealed class SandboxClient : IDisposable
                 options.PrivateKey = SandboxSettings.PrivateKey;
                 options.PublicKey = SandboxSettings.PublicKey;
                 options.SmsVasKey = SandboxSettings.SmsVasKey;
+                options.WhatsAppVasKey = SandboxSettings.WhatsAppVasKey;
             })
             .BuildServiceProvider(new ServiceProviderOptions { ValidateOnBuild = true, ValidateScopes = true });
 

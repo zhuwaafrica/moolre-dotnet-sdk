@@ -15,8 +15,12 @@ internal sealed class ResponseEnvelope
         MoolreResponseCode code,
         IReadOnlyList<string> messages,
         JsonElement data,
+        string? next,
+        JsonElement error,
         HttpStatusCode httpStatusCode)
     {
+        Next = string.IsNullOrWhiteSpace(next) ? null : next;
+        Error = error;
         IsSuccess = isSuccess;
         Code = code;
         Message = messages.Count == 0 ? null : string.Join(' ', messages);
@@ -41,6 +45,12 @@ internal sealed class ResponseEnvelope
     internal JsonElement Data { get; }
 
     internal HttpStatusCode HttpStatusCode { get; }
+
+    /// <summary>WhatsApp only: the cursor for the next page of templates, or <see langword="null"/> on the last page.</summary>
+    internal string? Next { get; }
+
+    /// <summary>WhatsApp only: a send warning as text, or an empty array (or nothing) when there is none.</summary>
+    internal JsonElement Error { get; }
 
     /// <summary><c>data</c> when it is text (for example <c>"senderid"</c>), otherwise <see langword="null"/>.</summary>
     internal string? Detail => MoolreJson.ReadDataText(Data);
@@ -77,6 +87,6 @@ internal sealed class ResponseEnvelope
         // The code is the stable value to branch on. A missing code becomes the default (empty) value, not an error.
         var code = string.IsNullOrWhiteSpace(wire.Code) ? default : new MoolreResponseCode(wire.Code);
 
-        return new ResponseEnvelope(isSuccess, code, wire.Messages, wire.Data, httpStatusCode);
+        return new ResponseEnvelope(isSuccess, code, wire.Messages, wire.Data, wire.Next, wire.Error, httpStatusCode);
     }
 }
