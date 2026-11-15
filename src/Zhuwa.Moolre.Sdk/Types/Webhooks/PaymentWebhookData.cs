@@ -81,7 +81,10 @@ public class PaymentWebhookData
     /// <summary>Reason. Moolre field <c>reason</c> (failed callbacks).</summary>
     public string? Reason { get; }
 
-    /// <summary>Secret. Moolre field <c>secret</c> — compare in constant time; sensitive, never logged.</summary>
+    /// <summary>
+    /// The callback secret Moolre sent. Moolre field <c>secret</c>. Sensitive: never log it, and do not compare it yourself; use
+    /// <see cref="Webhooks.MoolreWebhookVerifier.IsSecretValid"/>, which compares in constant time. Empty when the callback had none.
+    /// </summary>
     public string Secret { get; }
 
     /// <summary>Timestamp. Moolre field <c>ts</c> (GMT).</summary>

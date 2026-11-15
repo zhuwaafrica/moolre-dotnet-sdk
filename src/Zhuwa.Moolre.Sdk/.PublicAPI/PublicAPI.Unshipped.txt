@@ -593,6 +593,8 @@ Zhuwa.Moolre.Webhooks.MoolreWebhookOptions
 Zhuwa.Moolre.Webhooks.MoolreWebhookOptions.MoolreWebhookOptions() -> void
 Zhuwa.Moolre.Webhooks.MoolreWebhookOptions.Secret.get -> string?
 Zhuwa.Moolre.Webhooks.MoolreWebhookOptions.Secret.set -> void
+Zhuwa.Moolre.Webhooks.MoolreWebhookVerifier
+Zhuwa.Moolre.Webhooks.MoolreWebhookVerifier.MoolreWebhookVerifier() -> void
 Zhuwa.Moolre.WhatsApp.GetWhatsAppMessageStatusRequest
 Zhuwa.Moolre.WhatsApp.GetWhatsAppMessageStatusRequest.GetWhatsAppMessageStatusRequest() -> void
 Zhuwa.Moolre.WhatsApp.GetWhatsAppMessageStatusRequest.References.get -> System.Collections.ObjectModel.Collection<string!>!
@@ -646,6 +648,7 @@ Zhuwa.Moolre.WhatsAppTemplateStatus.WhatsAppTemplateStatus(string! value) -> voi
 Zhuwa.Moolre.WhatsAppTemplatesPage
 Zhuwa.Moolre.WhatsAppTemplatesPage.NextCursor.get -> string?
 Zhuwa.Moolre.WhatsAppTemplatesPage.Templates.get -> System.Collections.Generic.IReadOnlyList<Zhuwa.Moolre.WhatsAppTemplate!>!
+abstract Zhuwa.Moolre.Webhooks.MoolreWebhookVerifier.IsSecretValid(Zhuwa.Moolre.PaymentWebhook! webhook) -> bool
 override Zhuwa.Moolre.MoolreResponseCode.Equals(object? obj) -> bool
 override Zhuwa.Moolre.MoolreResponseCode.GetHashCode() -> int
 override Zhuwa.Moolre.MoolreResponseCode.ToString() -> string!
@@ -659,6 +662,7 @@ override Zhuwa.Moolre.WhatsAppTemplateStatus.Equals(object? obj) -> bool
 override Zhuwa.Moolre.WhatsAppTemplateStatus.GetHashCode() -> int
 override Zhuwa.Moolre.WhatsAppTemplateStatus.ToString() -> string!
 static Zhuwa.Moolre.DependencyInjection.MoolreServiceCollectionExtensions.AddMoolre(this Microsoft.Extensions.DependencyInjection.IServiceCollection! services, System.Action<Zhuwa.Moolre.MoolreOptions!>! configure) -> Microsoft.Extensions.DependencyInjection.IServiceCollection!
+static Zhuwa.Moolre.DependencyInjection.MoolreServiceCollectionExtensions.AddMoolreWebhooks(this Microsoft.Extensions.DependencyInjection.IServiceCollection! services, System.Action<Zhuwa.Moolre.Webhooks.MoolreWebhookOptions!>! configure) -> Microsoft.Extensions.DependencyInjection.IServiceCollection!
 static Zhuwa.Moolre.MoolreResponseCode.AccountUpdated.get -> Zhuwa.Moolre.MoolreResponseCode
 static Zhuwa.Moolre.MoolreResponseCode.ApiAccessNotActivated.get -> Zhuwa.Moolre.MoolreResponseCode
 static Zhuwa.Moolre.MoolreResponseCode.AuthenticationError.get -> Zhuwa.Moolre.MoolreResponseCode
@@ -744,6 +748,10 @@ static Zhuwa.Moolre.MoolreResponseCode.WhatsAppSuccess.get -> Zhuwa.Moolre.Moolr
 static Zhuwa.Moolre.MoolreResponseCode.implicit operator Zhuwa.Moolre.MoolreResponseCode(string! value) -> Zhuwa.Moolre.MoolreResponseCode
 static Zhuwa.Moolre.MoolreResponseCode.operator !=(Zhuwa.Moolre.MoolreResponseCode left, Zhuwa.Moolre.MoolreResponseCode right) -> bool
 static Zhuwa.Moolre.MoolreResponseCode.operator ==(Zhuwa.Moolre.MoolreResponseCode left, Zhuwa.Moolre.MoolreResponseCode right) -> bool
+static Zhuwa.Moolre.PaymentWebhook.Parse(System.ReadOnlySpan<byte> utf8Json) -> Zhuwa.Moolre.PaymentWebhook!
+static Zhuwa.Moolre.PaymentWebhook.Parse(string! json) -> Zhuwa.Moolre.PaymentWebhook!
+static Zhuwa.Moolre.PaymentWebhook.TryParse(System.ReadOnlySpan<byte> utf8Json, out Zhuwa.Moolre.PaymentWebhook? webhook) -> bool
+static Zhuwa.Moolre.PaymentWebhook.TryParse(string? json, out Zhuwa.Moolre.PaymentWebhook? webhook) -> bool
 static Zhuwa.Moolre.SenderIdApproval.Approved.get -> Zhuwa.Moolre.SenderIdApproval
 static Zhuwa.Moolre.SenderIdApproval.FromString(string! value) -> Zhuwa.Moolre.SenderIdApproval
 static Zhuwa.Moolre.SenderIdApproval.Pending.get -> Zhuwa.Moolre.SenderIdApproval

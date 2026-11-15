@@ -6,7 +6,7 @@ An **unofficial, community-built** .NET client for the [Moolre](https://docs.moo
 > This project is independent. It is not affiliated with, endorsed by, or supported by Moolre.
 
 > [!WARNING]
-> **Status: preview.** The request, result and model types and the endpoint table exist and are tested, but **only 13 of the 31 Moolre calls work so far**: `Accounts.GetStatusAsync`, the four `Transfers` calls, the seven `Payments` calls and `ReferenceData.GetBanksAsync`. The diagrams below show how the SDK is designed to work. The NuGet page text is in [`package-readme.md`](package-readme.md).
+> **Status: preview.** The request, result and model types and the endpoint table exist and are tested, but **only 13 of the 31 Moolre calls work so far**: `Accounts.GetStatusAsync`, the four `Transfers` calls, the seven `Payments` calls and `ReferenceData.GetBanksAsync`, plus the payment webhook parser and verifier. The diagrams below show how the SDK is designed to work. The NuGet page text is in [`package-readme.md`](package-readme.md).
 
 **On this page:** [How it fits together](#how-it-fits-together) · [Collecting a payment](#collecting-a-payment) · [Receiving a webhook](#receiving-a-webhook) · [When something goes wrong](#when-something-goes-wrong) · [Repository layout](#repository-layout) · [Build and test](#build-and-test)
 
@@ -135,6 +135,16 @@ sequenceDiagram
 ## Receiving a webhook
 
 Moolre calls your endpoint when a payment succeeds or fails. The SDK gives you a parser and a secret check; deciding what to do stays in your code.
+
+Moolre documents no signature, so `MoolreWebhookVerifier.IsSecretValid` (the callback secret, compared in constant time) is the verification. Moolre also publishes the addresses it sends callbacks from. Filter them in your firewall, load balancer or reverse proxy, not in application code; Moolre can change them, so check its documentation:
+
+| IPv4 | IPv6 |
+| --- | --- |
+| `174.138.44.22` | `2604:a880:400:d1:0:3:4cf0:c001` |
+| `174.138.40.67` | `2604:a880:400:d0::1a77:4001` |
+| `192.241.135.134` | `2604:a880:400:d0::4234:2001` |
+
+(As listed on Moolre's payment webhook page, read 14 November 2026.)
 
 ```mermaid
 flowchart LR

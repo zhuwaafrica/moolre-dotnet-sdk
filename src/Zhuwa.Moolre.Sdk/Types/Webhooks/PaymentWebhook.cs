@@ -1,3 +1,7 @@
+using System.Diagnostics.CodeAnalysis;
+using System.Text;
+using Zhuwa.Moolre.Webhooks;
+
 namespace Zhuwa.Moolre;
 
 /// <summary>A payment notification that Moolre sends to your callback URL.</summary>
@@ -34,4 +38,58 @@ public class PaymentWebhook
         _wireStatusIsSuccess
         && Code == MoolreResponseCode.PaymentSucceeded
         && Data.Status == TransactionStatus.Successful;
+
+    /// <summary>
+    /// Reads the body Moolre posted to your callback URL. Parsing does not verify it: check the secret with
+    /// <see cref="MoolreWebhookVerifier.IsSecretValid"/> before changing any records.
+    /// </summary>
+    /// <param name="utf8Json">The raw request body.</param>
+    /// <returns>The callback.</returns>
+    /// <exception cref="MoolreResponseException">The body is not a Moolre payment callback.</exception>
+    public static PaymentWebhook Parse(ReadOnlySpan<byte> utf8Json) => WebhooksMapper.ToPaymentWebhook(utf8Json);
+
+    /// <summary>Reads the body Moolre posted to your callback URL, given as text. See <see cref="Parse(ReadOnlySpan{byte})"/>.</summary>
+    /// <param name="json">The raw request body.</param>
+    /// <returns>The callback.</returns>
+    /// <exception cref="ArgumentNullException"><paramref name="json"/> is null.</exception>
+    /// <exception cref="MoolreResponseException">The body is not a Moolre payment callback.</exception>
+    public static PaymentWebhook Parse(string json)
+    {
+        ArgumentNullException.ThrowIfNull(json);
+        return Parse(Encoding.UTF8.GetBytes(json));
+    }
+
+    /// <summary>Tries to read a callback body; returns <see langword="false"/> instead of throwing when it is not a Moolre callback.</summary>
+    /// <param name="utf8Json">The raw request body.</param>
+    /// <param name="webhook">The callback, when the body could be read.</param>
+    /// <returns>Whether the body could be read.</returns>
+    public static bool TryParse(ReadOnlySpan<byte> utf8Json, [NotNullWhen(true)] out PaymentWebhook? webhook)
+    {
+        try
+        {
+            webhook = Parse(utf8Json);
+            return true;
+        }
+        catch (MoolreResponseException)
+        {
+            // Only "not a Moolre callback" is turned into false; any other exception is a real bug and must surface.
+            webhook = null;
+            return false;
+        }
+    }
+
+    /// <summary>Tries to read a callback body given as text. See <see cref="TryParse(ReadOnlySpan{byte}, out PaymentWebhook)"/>.</summary>
+    /// <param name="json">The raw request body; <see langword="null"/> gives <see langword="false"/>.</param>
+    /// <param name="webhook">The callback, when the body could be read.</param>
+    /// <returns>Whether the body could be read.</returns>
+    public static bool TryParse(string? json, [NotNullWhen(true)] out PaymentWebhook? webhook)
+    {
+        if (json is null)
+        {
+            webhook = null;
+            return false;
+        }
+
+        return TryParse(Encoding.UTF8.GetBytes(json), out webhook);
+    }
 }

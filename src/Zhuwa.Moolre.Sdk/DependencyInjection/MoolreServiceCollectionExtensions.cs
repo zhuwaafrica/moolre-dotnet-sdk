@@ -6,6 +6,7 @@ using Zhuwa.Moolre.Payments;
 using Zhuwa.Moolre.Core;
 using Zhuwa.Moolre.Reference;
 using Zhuwa.Moolre.Transfers;
+using Zhuwa.Moolre.Webhooks;
 
 namespace Zhuwa.Moolre.DependencyInjection;
 
@@ -47,6 +48,28 @@ public static class MoolreServiceCollectionExtensions
         services.TryAddSingleton<MoolreTransfers, DefaultMoolreTransfers>();
         services.TryAddSingleton<MoolreReferenceData, DefaultMoolreReferenceData>();
         services.TryAddSingleton<MoolreClient, DefaultMoolreClient>();
+
+        return services;
+    }
+
+    /// <summary>
+    /// Registers <see cref="MoolreWebhookVerifier"/> for your payment callback endpoint. The secret is checked when the application starts.
+    /// </summary>
+    /// <param name="services">The service collection.</param>
+    /// <param name="configure">Sets the callback secret. Read it from configuration or a secret store.</param>
+    /// <returns>The same service collection.</returns>
+    public static IServiceCollection AddMoolreWebhooks(this IServiceCollection services, Action<MoolreWebhookOptions> configure)
+    {
+        ArgumentNullException.ThrowIfNull(services);
+        ArgumentNullException.ThrowIfNull(configure);
+
+        // Fail at startup, not on the first callback: an endpoint that cannot verify callbacks must not run.
+        services.AddOptions<MoolreWebhookOptions>()
+            .Configure(configure)
+            .Validate(options => !string.IsNullOrEmpty(options.Secret), "MoolreWebhookOptions.Secret is required to verify callbacks.")
+            .ValidateOnStart();
+
+        services.TryAddSingleton<MoolreWebhookVerifier, DefaultMoolreWebhookVerifier>();
 
         return services;
     }
