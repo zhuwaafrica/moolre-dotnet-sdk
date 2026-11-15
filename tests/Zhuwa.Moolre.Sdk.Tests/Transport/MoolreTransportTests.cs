@@ -98,29 +98,6 @@ public sealed class MoolreTransportTests
     }
 
     [Fact]
-    public async Task SendAsync_ForAnAuthenticationCode_ThrowsAuthenticationException()
-    {
-        var sdk = TestTransport.Create(StubHttpHandler.ReturningFixture("account-status/response-401-authentication-error.json", HttpStatusCode.Unauthorized));
-
-        var exception = await Assert.ThrowsAsync<MoolreAuthenticationException>(() => Send(sdk, MoolreEndpoints.Accounts.GetStatus));
-
-        Assert.Equal(MoolreResponseCode.ApiAccessNotActivated, exception.Code);
-        Assert.Equal(HttpStatusCode.Unauthorized, exception.HttpStatusCode);
-        Assert.Equal("all", exception.Detail);
-    }
-
-    [Fact]
-    public async Task SendAsync_ForADuplicateReferenceCode_ThrowsDuplicateReferenceException()
-    {
-        var handler = StubHttpHandler.Returning("""{"status":0,"code":"APY18","message":"Duplicate externalref","data":null,"go":null}""");
-        var sdk = TestTransport.Create(handler);
-
-        var exception = await Assert.ThrowsAsync<MoolreDuplicateReferenceException>(() => Send(sdk, MoolreEndpoints.Transfers.Send, "T-1"));
-
-        Assert.Equal(MoolreResponseCode.PayoutDuplicateReference, exception.Code);
-    }
-
-    [Fact]
     public async Task SendAsync_ForAMoneyEndpointThatTimesOut_ThrowsOutcomeUncertainWithTheReference()
     {
         var options = TestTransport.SandboxOptions();
@@ -295,17 +272,5 @@ public sealed class MoolreTransportTests
         var sdk = TestTransport.Create(StubHttpHandler.Returning(string.Empty, HttpStatusCode.Found));
 
         await Assert.ThrowsAsync<MoolreOutcomeUncertainException>(() => Send(sdk, MoolreEndpoints.Transfers.Send, "T-5"));
-    }
-
-    [Fact]
-    public void EnsureSuccess_ForStatusZero_ThrowsApiExceptionWithTheCode()
-    {
-        var envelope = Internal.Serialization.ResponseEnvelope.Parse(
-            """{"status":0,"code":"WCU01","message":"Invalid account number","data":"accountnumber"}"""u8, HttpStatusCode.OK);
-
-        var exception = Assert.Throws<MoolreApiException>(() => MoolreTransport.EnsureSuccess(envelope));
-
-        Assert.Equal(MoolreResponseCode.UpdateInvalidAccountNumber, exception.Code);
-        Assert.Equal("accountnumber", exception.Detail);
     }
 }

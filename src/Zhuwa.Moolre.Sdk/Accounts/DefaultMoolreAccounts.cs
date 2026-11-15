@@ -1,8 +1,6 @@
-using Zhuwa.Moolre.Accounts;
-using Zhuwa.Moolre.Internal.Serialization;
 using Zhuwa.Moolre.Internal.Transport;
 
-namespace Zhuwa.Moolre.Internal.Clients;
+namespace Zhuwa.Moolre.Accounts;
 
 internal sealed class DefaultMoolreAccounts(MoolreTransport transport) : MoolreAccounts
 {
@@ -28,17 +26,7 @@ internal sealed class DefaultMoolreAccounts(MoolreTransport transport) : MoolreA
         // Authentication failures were already thrown by the transport; any other status 0 is a real failure here.
         MoolreTransport.EnsureSuccess(envelope);
 
-        // Each read tolerates a missing or oddly typed field (balance as a number or a string, activated as 1 or "1") and
-        // returns a default instead of throwing, because Moolre's shapes vary.
-        var data = envelope.Data;
-        return new AccountStatusResult(
-            envelope.Code,
-            envelope.Message,
-            envelope.Messages,
-            envelope.HttpStatusCode,
-            data.ReadDecimal("balance"),
-            data.ReadString("accountname") ?? string.Empty,
-            data.ReadFlag("activated"),
-            data.ReadUri("callback"));
+        // The mapper reads the answer; this method only decides what to send and when a failure is a failure.
+        return envelope.ToAccountStatusResult();
     }
 }

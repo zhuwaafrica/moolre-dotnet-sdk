@@ -1,7 +1,7 @@
 using Zhuwa.Moolre.Accounts;
 using Zhuwa.Moolre.Reference;
 
-namespace Zhuwa.Moolre.Internal.Clients;
+namespace Zhuwa.Moolre;
 
 // Joins the area clients behind the one MoolreClient that applications inject. Each area is created once by dependency
 // injection and shared, because the areas hold no per-call state.

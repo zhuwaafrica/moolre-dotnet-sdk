@@ -203,7 +203,7 @@ sequenceDiagram
 
 | Path | Contents |
 | --- | --- |
-| `src/Zhuwa.Moolre.Sdk/` | The library (`net10.0`). One folder per API area (`Accounts`, `Transfers`, `Payments`, `Sales`, `Sms`, `WhatsApp`, `Reference`); inside each, `Requests/`, `Results/` and `Models/`, with the client and enums at the folder root. Shared core types live in `Clients/`, `Configuration/`, `Enums/`, `Requests/`, `Results/` and `Models/`. Also `Errors/`, `Webhooks/`, `DependencyInjection/`, and `Internal/` (never public API) |
+| `src/Zhuwa.Moolre.Sdk/` | The library (`net10.0`). One folder per API area (`Accounts`, `Transfers`, `Payments`, `Sales`, `Sms`, `WhatsApp`, `Reference`). Each area keeps everything for that feature together: the public client, its internal implementation (`DefaultMoolre<Area>`) and response mapper (`<Area>Mapper`) at the folder root, plus `Enums/` (C# enums only), `Models/` (data types and text-based value types), `Requests/` and `Results/` as needed. Shared core types use the same folder names at the project root, plus `Clients/` and `Configuration/`; the response codes are in `Models/ResponseCodes/`. Also `Errors/`, `Webhooks/`, `DependencyInjection/`, and `Internal/` (shared plumbing: transport, serialization, options validation; never public API) |
 | `src/Zhuwa.Moolre.Sdk/.PublicAPI/` | The reviewed public API surface (`Shipped` and `Unshipped`); an unlisted public change fails the build |
 | `tests/Zhuwa.Moolre.Sdk.Tests/` | xunit v3 tests mirroring the source layout; `Fixtures/` holds Moolre's documented example responses; no network, no credentials |
 | `samples/` | Sample applications (added with the code they exercise) |

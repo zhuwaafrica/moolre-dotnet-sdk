@@ -1,9 +1,6 @@
-using System.Text.Json;
-using Zhuwa.Moolre.Internal.Serialization;
 using Zhuwa.Moolre.Internal.Transport;
-using Zhuwa.Moolre.Reference;
 
-namespace Zhuwa.Moolre.Internal.Clients;
+namespace Zhuwa.Moolre.Reference;
 
 internal sealed class DefaultMoolreReferenceData(MoolreTransport transport) : MoolreReferenceData
 {
@@ -21,16 +18,7 @@ internal sealed class DefaultMoolreReferenceData(MoolreTransport transport) : Mo
             cancellationToken).ConfigureAwait(false);
         MoolreTransport.EnsureSuccess(envelope);
 
-        // data is an array of { name, code }. Anything else gives an empty list, not an error.
-        var banks = new List<MoolreBank>();
-        if (envelope.Data.ValueKind == JsonValueKind.Array)
-        {
-            foreach (var item in envelope.Data.EnumerateArray())
-            {
-                banks.Add(new MoolreBank(item.ReadString("name") ?? string.Empty, item.ReadString("code") ?? string.Empty));
-            }
-        }
-
-        return new BankListResult(envelope.Code, envelope.Message, envelope.Messages, envelope.HttpStatusCode, banks);
+        // The mapper reads the answer; this method only decides what to send and when a failure is a failure.
+        return envelope.ToBankListResult();
     }
 }
