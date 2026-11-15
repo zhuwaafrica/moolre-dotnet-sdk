@@ -40,6 +40,9 @@ internal sealed partial class MoolreTransport
         _logger = logger;
     }
 
+    /// <summary>Whether calls go to the sandbox. Some request fields (for example <c>skipotp</c>) only exist there.</summary>
+    internal bool IsSandbox => _options.CurrentValue.Environment == MoolreEnvironment.Sandbox;
+
     /// <summary>
     /// The wallet a call acts on: the request's account number, or the default from <see cref="MoolreOptions.AccountNumber"/>.
     /// </summary>

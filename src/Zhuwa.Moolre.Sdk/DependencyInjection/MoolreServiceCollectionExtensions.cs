@@ -2,6 +2,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Options;
 using Zhuwa.Moolre.Accounts;
+using Zhuwa.Moolre.Payments;
 using Zhuwa.Moolre.Core;
 using Zhuwa.Moolre.Reference;
 using Zhuwa.Moolre.Transfers;
@@ -42,6 +43,7 @@ public static class MoolreServiceCollectionExtensions
         // TryAdd lets an application replace any of them (for example with a test double) by registering its own first.
         services.TryAddSingleton<MoolreTransport>();
         services.TryAddSingleton<MoolreAccounts, DefaultMoolreAccounts>();
+        services.TryAddSingleton<MoolrePayments, DefaultMoolrePayments>();
         services.TryAddSingleton<MoolreTransfers, DefaultMoolreTransfers>();
         services.TryAddSingleton<MoolreReferenceData, DefaultMoolreReferenceData>();
         services.TryAddSingleton<MoolreClient, DefaultMoolreClient>();

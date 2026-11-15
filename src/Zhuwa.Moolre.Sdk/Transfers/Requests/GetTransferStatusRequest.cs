@@ -1,6 +1,6 @@
 namespace Zhuwa.Moolre.Transfers;
 
-/// <summary>Parameters for looking up the status of a payment or a transfer (Moolre uses the same request for both).</summary>
+/// <summary>Parameters for looking up the status of a transfer, by your external reference or by Moolre's ID.</summary>
 public class GetTransferStatusRequest
 {
     /// <summary>ID kind. Moolre field <c>idtype</c>.</summary>

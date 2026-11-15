@@ -1,4 +1,5 @@
 using Zhuwa.Moolre.Accounts;
+using Zhuwa.Moolre.Payments;
 using Zhuwa.Moolre.Reference;
 using Zhuwa.Moolre.Transfers;
 
@@ -14,6 +15,9 @@ public abstract class MoolreClient
 
     /// <summary>Wallet details and account transactions.</summary>
     public virtual MoolreAccounts Accounts => throw new NotImplementedException();
+
+    /// <summary>Payments: mobile money prompts, payment links, Payment IDs, bank collections and payment status.</summary>
+    public virtual MoolrePayments Payments => throw new NotImplementedException();
 
     /// <summary>Transfers to mobile money, banks and other Moolre wallets, name checks and transfer status.</summary>
     public virtual MoolreTransfers Transfers => throw new NotImplementedException();

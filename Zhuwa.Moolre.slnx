@@ -5,6 +5,8 @@
   <Folder Name="/tests/">
     <File Path="tests/.editorconfig" />
     <Project Path="tests/Zhuwa.Moolre.Sdk.Tests/Zhuwa.Moolre.Sdk.Tests.csproj" />
+    <Project Path="tests/Zhuwa.Moolre.Sdk.IntegrationTests/Zhuwa.Moolre.Sdk.IntegrationTests.csproj" />
+    <File Path="tests/Zhuwa.Moolre.Sdk.IntegrationTests/README.md" />
   </Folder>
   <Folder Name="/samples/">
     <File Path="samples/README.md" />

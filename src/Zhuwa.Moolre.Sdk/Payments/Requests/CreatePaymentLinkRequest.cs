@@ -30,6 +30,9 @@ public class CreatePaymentLinkRequest
     /// <summary>Account number. Moolre field <c>accountnumber</c>.</summary>
     public string? AccountNumber { get; init; }
 
-    /// <summary>Metadata. Moolre field <c>metadata</c> (returned in callbacks)   OPEN: value types are only documented as "object".</summary>
+    /// <summary>
+    /// Extra values Moolre stores with the payment and returns in the callback, for example an order ID. Moolre field
+    /// <c>metadata</c>. Moolre documents it only as an object, so the SDK sends text values.
+    /// </summary>
     public IDictionary<string, string> Metadata { get; } = new Dictionary<string, string>();
 }

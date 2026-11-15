@@ -294,10 +294,20 @@ Zhuwa.Moolre.Payments.GetPaymentAccountRequest.AccountNumber.init -> void
 Zhuwa.Moolre.Payments.GetPaymentAccountRequest.ExternalReference.get -> string!
 Zhuwa.Moolre.Payments.GetPaymentAccountRequest.ExternalReference.init -> void
 Zhuwa.Moolre.Payments.GetPaymentAccountRequest.GetPaymentAccountRequest() -> void
+Zhuwa.Moolre.Payments.GetPaymentStatusRequest
+Zhuwa.Moolre.Payments.GetPaymentStatusRequest.AccountNumber.get -> string?
+Zhuwa.Moolre.Payments.GetPaymentStatusRequest.AccountNumber.init -> void
+Zhuwa.Moolre.Payments.GetPaymentStatusRequest.GetPaymentStatusRequest() -> void
+Zhuwa.Moolre.Payments.GetPaymentStatusRequest.Id.get -> string!
+Zhuwa.Moolre.Payments.GetPaymentStatusRequest.Id.init -> void
+Zhuwa.Moolre.Payments.GetPaymentStatusRequest.IdKind.get -> Zhuwa.Moolre.TransactionIdKind
+Zhuwa.Moolre.Payments.GetPaymentStatusRequest.IdKind.init -> void
 Zhuwa.Moolre.Payments.ListBankAccountsRequest
 Zhuwa.Moolre.Payments.ListBankAccountsRequest.AccountNumber.get -> string?
 Zhuwa.Moolre.Payments.ListBankAccountsRequest.AccountNumber.init -> void
 Zhuwa.Moolre.Payments.ListBankAccountsRequest.ListBankAccountsRequest() -> void
+Zhuwa.Moolre.Payments.MoolrePayments
+Zhuwa.Moolre.Payments.MoolrePayments.MoolrePayments() -> void
 Zhuwa.Moolre.Payments.RequestMobileMoneyRequest
 Zhuwa.Moolre.Payments.RequestMobileMoneyRequest.AccountNumber.get -> string?
 Zhuwa.Moolre.Payments.RequestMobileMoneyRequest.AccountNumber.init -> void
@@ -758,8 +768,18 @@ virtual Zhuwa.Moolre.Accounts.MoolreAccounts.GetStatusAsync() -> System.Threadin
 virtual Zhuwa.Moolre.Accounts.MoolreAccounts.GetStatusAsync(System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Zhuwa.Moolre.AccountStatusResult!>!
 virtual Zhuwa.Moolre.Accounts.MoolreAccounts.GetStatusAsync(Zhuwa.Moolre.Accounts.GetAccountStatusRequest! request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task<Zhuwa.Moolre.AccountStatusResult!>!
 virtual Zhuwa.Moolre.MoolreClient.Accounts.get -> Zhuwa.Moolre.Accounts.MoolreAccounts!
+virtual Zhuwa.Moolre.MoolreClient.Payments.get -> Zhuwa.Moolre.Payments.MoolrePayments!
 virtual Zhuwa.Moolre.MoolreClient.ReferenceData.get -> Zhuwa.Moolre.Reference.MoolreReferenceData!
 virtual Zhuwa.Moolre.MoolreClient.Transfers.get -> Zhuwa.Moolre.Transfers.MoolreTransfers!
+virtual Zhuwa.Moolre.Payments.MoolrePayments.CreateBankAccountAsync(Zhuwa.Moolre.Payments.CreateBankAccountRequest! request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task<Zhuwa.Moolre.BankAccountResult!>!
+virtual Zhuwa.Moolre.Payments.MoolrePayments.CreatePaymentIdAsync(Zhuwa.Moolre.Payments.CreatePaymentIdRequest! request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task<Zhuwa.Moolre.PaymentIdResult!>!
+virtual Zhuwa.Moolre.Payments.MoolrePayments.CreatePaymentLinkAsync(Zhuwa.Moolre.Payments.CreatePaymentLinkRequest! request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task<Zhuwa.Moolre.PaymentLinkResult!>!
+virtual Zhuwa.Moolre.Payments.MoolrePayments.GetPaymentAccountAsync(Zhuwa.Moolre.Payments.GetPaymentAccountRequest! request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task<Zhuwa.Moolre.PaymentAccountLookupResult!>!
+virtual Zhuwa.Moolre.Payments.MoolrePayments.GetStatusAsync(Zhuwa.Moolre.Payments.GetPaymentStatusRequest! request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task<Zhuwa.Moolre.TransactionResult!>!
+virtual Zhuwa.Moolre.Payments.MoolrePayments.ListBankAccountsAsync() -> System.Threading.Tasks.Task<Zhuwa.Moolre.BankAccountListResult!>!
+virtual Zhuwa.Moolre.Payments.MoolrePayments.ListBankAccountsAsync(System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Zhuwa.Moolre.BankAccountListResult!>!
+virtual Zhuwa.Moolre.Payments.MoolrePayments.ListBankAccountsAsync(Zhuwa.Moolre.Payments.ListBankAccountsRequest! request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task<Zhuwa.Moolre.BankAccountListResult!>!
+virtual Zhuwa.Moolre.Payments.MoolrePayments.RequestMobileMoneyAsync(Zhuwa.Moolre.Payments.RequestMobileMoneyRequest! request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task<Zhuwa.Moolre.MobileMoneyResult!>!
 virtual Zhuwa.Moolre.Reference.MoolreReferenceData.GetBanksAsync(string! countryCode, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task<Zhuwa.Moolre.BankListResult!>!
 virtual Zhuwa.Moolre.Transfers.MoolreTransfers.GetStatusAsync(Zhuwa.Moolre.Transfers.GetTransferStatusRequest! request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task<Zhuwa.Moolre.TransactionResult!>!
 virtual Zhuwa.Moolre.Transfers.MoolreTransfers.SendAsync(Zhuwa.Moolre.Transfers.SendTransferRequest! request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task<Zhuwa.Moolre.TransferResult!>!

@@ -34,6 +34,10 @@ The library copies the folder layout of the official Square .NET SDK. Every file
 
 One type per file, named after the type. Tests mirror the same folders under `tests/Zhuwa.Moolre.Sdk.Tests/`. `FolderConventionTests` checks these rules on every build, so a file in the wrong place fails the tests.
 
+## Sandbox (integration) tests
+
+`tests/Zhuwa.Moolre.Sdk.IntegrationTests/` calls Moolre's real sandbox. Its tests are skipped unless `MOOLRE_SANDBOX_TESTS=1` and the credentials they need are set as environment variables; see that folder's README. Never write credentials in a file. Every new operation gets a sandbox test there alongside its unit tests.
+
 ## Public API changes
 
 Every public member must be listed in `src/Zhuwa.Moolre.Sdk/.PublicAPI/PublicAPI.Unshipped.txt`, otherwise the build fails (analyzer RS0016). Your IDE offers a quick fix that adds the line. At release time the maintainers move the lines into `PublicAPI.Shipped.txt`.

@@ -1,6 +1,7 @@
 using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.Extensions.Options;
 using Zhuwa.Moolre.Accounts;
+using Zhuwa.Moolre.Payments;
 using Zhuwa.Moolre.Core;
 using Zhuwa.Moolre.Reference;
 using Zhuwa.Moolre.Transfers;
@@ -21,6 +22,8 @@ internal sealed class TestTransport
     public MoolreTransport Transport { get; }
 
     public MoolreAccounts Accounts => new DefaultMoolreAccounts(Transport);
+
+    public MoolrePayments Payments => new DefaultMoolrePayments(Transport);
 
     public MoolreTransfers Transfers => new DefaultMoolreTransfers(Transport);
 
