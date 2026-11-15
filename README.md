@@ -203,7 +203,7 @@ sequenceDiagram
 
 | Path | Contents |
 | --- | --- |
-| `src/Zhuwa.Moolre.Sdk/` | The library (`net10.0`), laid out exactly like the official Square .NET SDK. Root: `MoolreClient` and `MoolreClientFactory` only. One folder per API area (`Accounts`, `Transfers`, `Payments`, `Sales`, `Sms`, `WhatsApp`, `Reference`, `Webhooks`) with the area client, its internal implementation and mapper, and a `Requests/` folder. `Types/`: every result, model, enum and response code. `Core/`: internal plumbing (transport, serialization, validation); `Core/Public/`: options, environment and exceptions. `DependencyInjection/`: `AddMoolre` |
+| `src/Zhuwa.Moolre.Sdk/` | The library (`net10.0`), laid out exactly like the official Square .NET SDK. Root: `MoolreClient` and `MoolreClientFactory` only. One folder per API area (`Accounts`, `Transfers`, `Payments`, `Sales`, `Sms`, `WhatsApp`, `Reference`, `Webhooks`) with the area client, its internal implementation and mapper, and a `Requests/` folder. `Types/`: every result, model, enum and response code, grouped into one subfolder per area plus `_common/` for shared types (Stripe groups its `Entities/` the same way). `Core/`: internal plumbing (transport, serialization, validation); `Core/Public/`: options, environment and exceptions. `DependencyInjection/`: `AddMoolre` |
 | `src/Zhuwa.Moolre.Sdk/.PublicAPI/` | The reviewed public API surface (`Shipped` and `Unshipped`); an unlisted public change fails the build |
 | `tests/Zhuwa.Moolre.Sdk.Tests/` | xunit v3 tests mirroring the source layout; `Fixtures/` holds Moolre's documented example responses; no network, no credentials |
 | `samples/` | Sample applications (added with the code they exercise) |

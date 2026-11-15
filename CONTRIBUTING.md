@@ -26,7 +26,8 @@ The library copies the folder layout of the official Square .NET SDK. Every file
 | project root | `MoolreClient` and `MoolreClientFactory` only | `Zhuwa.Moolre` |
 | `<Area>/` (`Accounts`, `Transfers`, `Payments`, ...) | the area client `Moolre<Area>`, its internal `DefaultMoolre<Area>` and `<Area>Mapper` | `Zhuwa.Moolre.<Area>` |
 | `<Area>/Requests/` | the `...Request` types for that area's calls | `Zhuwa.Moolre.<Area>` |
-| `Types/` | every result, model, enum and response code | `Zhuwa.Moolre` |
+| `Types/<Area>/` | that area's results, models and enums (grouped per area, as Stripe groups `Entities/`) | `Zhuwa.Moolre` |
+| `Types/_common/` | types every area shares: `MoolreResult`, response codes, `MoolreTransaction`, `Currency`, ... | `Zhuwa.Moolre` |
 | `Core/` | internal plumbing: transport, JSON reading, validation | `Zhuwa.Moolre.Core` |
 | `Core/Public/` | options, environment, exceptions | `Zhuwa.Moolre` |
 | `DependencyInjection/` | `AddMoolre` | `Zhuwa.Moolre.DependencyInjection` |

@@ -56,13 +56,23 @@ public sealed partial class FolderConventionTests
     {
         var misplaced = SourceFiles()
             .Where(f => Path.GetFileName(f).EndsWith("Result.cs", StringComparison.Ordinal))
-            .Where(f => Folder(f) != "Types");
+            .Where(f => !Folder(f).StartsWith("Types/", StringComparison.Ordinal));
 
         Assert.Empty(misplaced);
     }
 
+    [Fact]
+    public void Types_IsGroupedIntoCommonAndOneFolderPerAreaAllInTheRootNamespace()
+    {
+        var types = Path.Combine(SourceRoot, "Types");
+        string[] allowed = ["_common", .. Areas];
+
+        Assert.Empty(Directory.GetFiles(types, "*.cs"));
+        Assert.All(Directory.GetDirectories(types).Select(Path.GetFileName), g => Assert.Contains(g, allowed));
+        Assert.All(Directory.GetFiles(types, "*.cs", SearchOption.AllDirectories), f => AssertNamespace("Zhuwa.Moolre", f));
+    }
+
     [Theory]
-    [InlineData("Types", "Zhuwa.Moolre")]
     [InlineData("Core/Public", "Zhuwa.Moolre")]
     [InlineData("Core", "Zhuwa.Moolre.Core")]
     [InlineData("DependencyInjection", "Zhuwa.Moolre.DependencyInjection")]
