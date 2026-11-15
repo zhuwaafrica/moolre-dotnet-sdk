@@ -30,7 +30,7 @@
     <RepositoryType>git</RepositoryType>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageReadmeFile>package-readme.md</PackageReadmeFile>
-    <PackageReleaseNotes>Preview: project setup only; no Moolre endpoints implemented yet. See CHANGELOG.md.</PackageReleaseNotes>
+    <PackageReleaseNotes>See the changelog for what changed in each version: https://github.com/zhuwaafrica/moolre-dotnet-sdk/blob/main/CHANGELOG.md</PackageReleaseNotes>
 
     <!-- Source Link is built into the .NET SDK for GitHub; write the repository URL into the package. -->
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
@@ -54,7 +54,6 @@
     <PackageReference Include="Microsoft.Extensions.Http" />
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" />
     <PackageReference Include="Microsoft.Extensions.Options" />
-    <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" />
   </ItemGroup>
 
   <!-- Public API tracking: every public member must be listed in .PublicAPI/PublicAPI.Unshipped.txt (moved to

@@ -114,9 +114,11 @@ internal sealed partial class MoolreTransport
         {
             // The HttpClient is not disposed: clients from IHttpClientFactory are cheap and must not be disposed per call.
             var client = _httpClientFactory.CreateClient(MoolreHttpClientConfiguration.ClientNameFor(_walletName));
-            // Headers first, then the body inside the same try: a failure while reading the body must be handled the same way
-            // as a failure to connect, because the request has already been sent by then.
-            using var response = await client.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, timeout.Token).ConfigureAwait(false);
+            // ResponseContentRead makes the HttpClient buffer the whole body itself, which is the only path where it enforces
+            // MaxResponseContentBufferSize (16 MB, see MoolreHttpClientConfiguration); a larger body fails here instead of filling
+            // memory. Reading inside the same try means a failure while reading is handled like a failure to connect, because the
+            // request has already been sent by then.
+            using var response = await client.SendAsync(request, HttpCompletionOption.ResponseContentRead, timeout.Token).ConfigureAwait(false);
             statusCode = response.StatusCode;
             body = await response.Content.ReadAsByteArrayAsync(timeout.Token).ConfigureAwait(false);
         }

@@ -135,4 +135,15 @@ public sealed class NamedWalletTests
 
         Assert.Equal(new Uri("https://api.moolre.com"), client.BaseAddress);
     }
+
+    [Fact]
+    public async Task Create_CalledFromManyThreadsAtOnce_ReturnsOneClientPerWallet()
+    {
+        using var provider = Build(new RecordingHandler(), TwoWallets);
+        var factory = provider.GetRequiredService<MoolreClientFactory>();
+
+        var clients = await Task.WhenAll(Enumerable.Range(0, 64).Select(i => Task.Run(() => factory.Create(i % 2 == 0 ? "collections" : "payouts"))));
+
+        Assert.Equal(2, clients.Distinct().Count());
+    }
 }

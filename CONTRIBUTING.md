@@ -36,6 +36,25 @@ One type per file, named after the type.
 
 **JSON field names** are declared once, as `[JsonPropertyName("...")]` on the property they belong to (the pattern Square, Stripe, Adyen and others use); never type a field name inside a method. Requests carry them directly. Responses are read into internal `...Wire` models in `Types/<Area>/`, which the area's mapper turns into the public result. Moolre's loose value shapes (amounts as text, channel codes, `"1"`/`"0"` flags, numbers sent as text) are handled by the converters in `Core/`. Every request and `...Wire` type must be listed in `Core/MoolreJsonContext.cs`, the source-generated contract that keeps the SDK free of reflection (trimming and Native AOT safe). Tests mirror the same folders under `tests/Zhuwa.Moolre.Sdk.Tests/`. `FolderConventionTests` checks these rules on every build, so a file in the wrong place fails the tests.
 
+## API reference
+
+`docs/reference.md` is generated from the XML documentation comments and the public API list, so it always matches the code. After changing a public member or its comments, regenerate it:
+
+```bash
+dotnet build src/Zhuwa.Moolre.Sdk -c Release
+python3 eng/generate-reference.py .
+```
+
+## Test coverage
+
+Unit tests run offline against Moolre's documented responses. To see which lines they reach:
+
+```bash
+dotnet test tests/Zhuwa.Moolre.Sdk.Tests -c Release -- --coverage --coverage-output-format cobertura
+```
+
+Every new operation needs tests for: the exact request body and headers, each documented response (fixtures), each documented failure code, checks that refuse a bad request before sending, and, for calls that move money or send messages, a timeout and a dropped connection (sent once, outcome uncertain with the reference).
+
 ## Sandbox (integration) tests
 
 `tests/Zhuwa.Moolre.Sdk.IntegrationTests/` calls Moolre's real sandbox. Its tests are skipped unless `MOOLRE_SANDBOX_TESTS=1` and the credentials they need are set as environment variables; see that folder's README. Never write credentials in a file. Every new operation gets a sandbox test there alongside its unit tests.

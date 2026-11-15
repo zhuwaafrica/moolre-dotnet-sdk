@@ -6,7 +6,7 @@ using Zhuwa.Moolre.Accounts;
 namespace Zhuwa.Moolre;
 
 /// <summary>Tests creating, updating and listing a wallet through the stub handler.</summary>
-public sealed class AccountsWalletTests
+public sealed class  AccountsWalletTests
 {
     private static CreateSandboxAccountRequest NewWallet(SettlementSettings? settlement = null) => new()
     {
@@ -184,6 +184,21 @@ public sealed class AccountsWalletTests
 
         await Assert.ThrowsAsync<ArgumentException>(() => sdk.Accounts.ListTransactionsAsync(reversed));
         await Assert.ThrowsAsync<ArgumentOutOfRangeException>(() => sdk.Accounts.ListTransactionsAsync(zeroLimit));
+
+        Assert.Equal(0, sdk.Handler.CallCount);
+    }
+
+    [Theory]
+    [InlineData("/moolre/callback")]
+    [InlineData("file:///etc/passwd")]
+    public async Task CreateAndUpdate_WithACallbackThatIsNotAWebAddress_ThrowAndSendNothing(string address)
+    {
+        var sdk = TestTransport.Create(StubHttpHandler.ReturningFixture("update-account/response-200-success.json"));
+        var callback = new Uri(address, UriKind.RelativeOrAbsolute);
+
+        await Assert.ThrowsAsync<ArgumentException>(() => sdk.Accounts.CreateSandboxAccountAsync(
+            new CreateSandboxAccountRequest { AccountName = "X", CallbackUrl = callback, Settlement = new SettlementSettings() }));
+        await Assert.ThrowsAsync<ArgumentException>(() => sdk.Accounts.UpdateAsync(new UpdateAccountRequest { CallbackUrl = callback }));
 
         Assert.Equal(0, sdk.Handler.CallCount);
     }

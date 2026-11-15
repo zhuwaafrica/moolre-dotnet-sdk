@@ -1,265 +1,185 @@
 # Moolre .NET SDK
 
-An **unofficial, community-built** .NET client for the [Moolre](https://docs.moolre.com/) API, maintained by [Zhuwa Africa](https://github.com/zhuwaafrica). NuGet package: `Zhuwa.Moolre.Sdk`.
+An **unofficial, community-built** .NET client for the [Moolre](https://docs.moolre.com/) API, maintained by [Zhuwa Africa](https://github.com/zhuwaafrica). One NuGet package, `Zhuwa.Moolre.Sdk`, covers all 31 documented Moolre operations: mobile money collections, payment links, Payment IDs and bank collections, transfers, wallets, airtime and data, SMS and WhatsApp, plus payment webhooks.
 
 > [!NOTE]
 > This project is independent. It is not affiliated with, endorsed by, or supported by Moolre.
 
 > [!WARNING]
-> **Status: preview.** All 31 documented Moolre calls are implemented (Accounts, Transfers, Payments, Sales, SMS, WhatsApp and reference data), plus the payment webhook parser and verifier, and covered by unit tests against Moolre's documented responses. They have **not yet been verified against the real sandbox**, and named wallets are not built yet, so do not use it in production. The NuGet page text is in [`package-readme.md`](package-readme.md).
+> **Status: preview.** Every call is covered by unit tests against Moolre's documented responses; they have not yet been verified against the real Moolre sandbox.
 
-**On this page:** [How it fits together](#how-it-fits-together) · [Collecting a payment](#collecting-a-payment) · [Receiving a webhook](#receiving-a-webhook) · [When something goes wrong](#when-something-goes-wrong) · [Repository layout](#repository-layout) · [Build and test](#build-and-test)
+**Contents:** [Requirements](#requirements) · [Installation](#installation) · [Usage](#usage) · [Several wallets](#several-wallets) · [Exception handling](#exception-handling) · [Retries and timeouts](#retries-and-timeouts) · [Webhooks](#webhooks) · [Documentation](#documentation) · [Contributing](#contributing)
 
-## Planned usage
+## Requirements
 
-Dependency injection first: register once, then inject `MoolreClient` wherever you need it.
+- .NET 10 or later. The package works with trimming and Native AOT.
+- Moolre API credentials. Moolre gives each **wallet** its own credentials, created in the Moolre app. Which ones you need depends on the calls you make:
+
+| Credential | Setting | Used by |
+| --- | --- | --- |
+| API user | `ApiUser` | Accounts, Transfers, Payments, Sales |
+| Private key | `PrivateKey` | Transfers, Sales, Accounts |
+| Public key | `PublicKey` | Payments |
+| SMS VAS key | `SmsVasKey` | SMS |
+| WhatsApp VAS key | `WhatsAppVasKey` | WhatsApp |
+
+## Installation
+
+```bash
+dotnet add package Zhuwa.Moolre.Sdk --prerelease
+```
+
+## Usage
+
+Register the SDK once in `Program.cs`. Read credentials from configuration or a secret store, never source code; the settings are checked when the app starts.
 
 ```csharp
+using Zhuwa.Moolre;
+using Zhuwa.Moolre.DependencyInjection;
+
 builder.Services.AddMoolre(options =>
 {
-    options.Environment = MoolreEnvironment.Sandbox;   // sandbox is the default; live is an explicit choice
-    options.ApiUser = "...";                           // from configuration or a secret store, never source code
-    options.PublicKey = "...";
-    options.PrivateKey = "...";
-    options.AccountNumber = "...";
+    options.Environment = MoolreEnvironment.Sandbox;   // the default; Live is an explicit choice
+    options.ApiUser = builder.Configuration["Moolre:ApiUser"];
+    options.PublicKey = builder.Configuration["Moolre:PublicKey"];
+    options.PrivateKey = builder.Configuration["Moolre:PrivateKey"];
+    options.AccountNumber = builder.Configuration["Moolre:AccountNumber"];
 });
+```
+
+Then inject `MoolreClient`. Each API area is a property:
+
+| Property | What it does |
+| --- | --- |
+| `Payments` | Mobile money collection, payment status, payment links, Payment IDs, bank collections |
+| `Transfers` | Name check, transfers to mobile money and banks, wallet-to-wallet transfers, transfer status |
+| `Accounts` | Wallet balance and settings, transaction history, sandbox wallets |
+| `Sales` | Airtime and data bundles, the bundle list, sale status |
+| `Sms` | Sending SMS, delivery status, sender IDs, SMS balance |
+| `WhatsApp` | Templates, template messages, delivery status |
+| `ReferenceData` | The bank list |
+
+```csharp
+using Zhuwa.Moolre.Payments;
 
 public class CheckoutService(MoolreClient moolre)
 {
-    // await moolre.Payments.RequestMobileMoneyAsync(...);
-    // await moolre.Payments.GetStatusAsync(...);
+    public async Task StartPaymentAsync(Order order, CancellationToken cancellationToken)
+    {
+        var result = await moolre.Payments.RequestMobileMoneyAsync(new RequestMobileMoneyRequest
+        {
+            Channel = PaymentChannel.Mtn,
+            Currency = Currency.Ghs,
+            PayerPhoneNumber = order.Phone,     // local format, for example 0241234567
+            Amount = order.Total,               // above zero, at most two decimals
+            ExternalReference = order.Id,       // unique per payment; save it first
+        }, cancellationToken);
+
+        // result.Outcome is PromptSent (wait for the webhook) or OtpRequired (send again with the customer's code).
+    }
+
+    public async Task<bool> IsPaidAsync(Order order, CancellationToken cancellationToken)
+    {
+        var status = await moolre.Payments.GetStatusAsync(new GetPaymentStatusRequest
+        {
+            IdKind = TransactionIdKind.ExternalReference,
+            Id = order.Id,
+        }, cancellationToken);
+
+        return status.Transaction.Status == TransactionStatus.Successful;
+    }
 }
 ```
 
-### Several wallets
+## Several wallets
 
-Moolre issues API credentials per wallet: a key for one wallet cannot act on another. Register each wallet by name with its own settings, then ask the factory for it:
+Moolre's credentials belong to one wallet each: a key for one wallet cannot act on another. Register each wallet by name and ask the factory for it:
 
 ```csharp
 builder.Services.AddMoolre("collections", o => { o.ApiUser = "..."; o.PublicKey = "..."; o.AccountNumber = "..."; });
 builder.Services.AddMoolre("payouts", o => { o.ApiUser = "..."; o.PrivateKey = "..."; o.AccountNumber = "..."; });
 
-public class Payouts(MoolreClientFactory moolre)
+public class PayoutService(MoolreClientFactory moolre)
 {
-    // await moolre.Create("payouts").Transfers.SendAsync(...);
+    public Task SendAsync(SendTransferRequest request, CancellationToken cancellationToken) =>
+        moolre.Create("payouts").Transfers.SendAsync(request, cancellationToken);
 }
 ```
 
-Each wallet also has its own callback secret. To receive callbacks for several wallets at one endpoint, give the verifier one secret per wallet, keyed by the wallet's account number; each callback is checked against its own wallet's secret:
+See [Configuration](docs/configuration.md) for every setting.
+
+## Exception handling
+
+| Exception | Meaning | What to do |
+| --- | --- | --- |
+| `MoolreOutcomeUncertainException` | A call that moves money or sends a message timed out, lost its connection or got an unreadable answer. It **may or may not** have happened. | Check its status with the same `ExternalReference`. Never resend blindly. |
+| `MoolreDuplicateReferenceException` | The external reference was already used. | Look up the original; do not resend with a new reference. |
+| `MoolreAuthenticationException` | Credentials or wallet rejected, or API access not activated. | Fix the configuration. |
+| `MoolreApiException` | Moolre refused the call (read `Code`, `Message`, `Detail`). For money calls, nothing moved. | Show the user or fix the request. |
+| `MoolreResponseException` | Moolre's answer could not be read. | Try a read-only call again later. |
 
 ```csharp
-builder.Services.AddMoolreWebhooks(o =>
+try
 {
-    o.WalletSecrets["111"] = builder.Configuration["Moolre:Collections:CallbackSecret"]!;
-    o.WalletSecrets["222"] = builder.Configuration["Moolre:Payouts:CallbackSecret"]!;
+    await moolre.Transfers.SendAsync(request, cancellationToken);
+}
+catch (MoolreOutcomeUncertainException ex)
+{
+    // ex.ExternalReference: look the transfer up with Transfers.GetStatusAsync before doing anything else.
+}
+catch (MoolreApiException ex) when (ex.Code == MoolreResponseCode.InsufficientWalletBalance)
+{
+    // Top up the wallet.
+}
+```
+
+A bad request (a missing value, an invalid amount) throws an `ArgumentException` **before anything is sent**. Answers that look like failures but are normal results, such as "name not found" or "one-time code required", come back as results. See [Errors and money safety](docs/errors.md).
+
+## Retries and timeouts
+
+- **No automatic retries.** Every Moolre call is a `POST`, including payments and transfers, so a blind retry could charge a customer or send money twice. Do not add a retry policy to the SDK's `HttpClient`.
+- **Read-only calls** (status lookups, lists, balances, the name check) are safe to repeat after a `TimeoutException` or `HttpRequestException`.
+- **Timeout:** `MoolreOptions.Timeout`, 30 seconds by default. A money call that times out throws `MoolreOutcomeUncertainException` carrying your reference.
+
+## Webhooks
+
+```csharp
+builder.Services.AddMoolreWebhooks(o => o.Secret = builder.Configuration["Moolre:CallbackSecret"]);
+
+app.MapPost("/moolre/callback", async (HttpRequest http, MoolreWebhookVerifier verifier) =>
+{
+    using var body = new MemoryStream();
+    await http.Body.CopyToAsync(body);
+
+    if (!PaymentWebhook.TryParse(body.ToArray(), out var webhook)) return Results.BadRequest();
+    if (!verifier.IsSecretValid(webhook)) return Results.Unauthorized();
+
+    if (webhook.IsSuccessfulPayment)
+    {
+        // Confirm with Payments.GetStatusAsync, then fulfil the order exactly once.
+    }
+
+    return Results.Ok();
 });
 ```
 
-## How it fits together
+The secret is compared in constant time. For several wallets, set one secret per wallet in `WalletSecrets`. See [Payment webhooks](docs/webhooks.md), including Moolre's callback addresses for your firewall.
 
-Your code only ever touches the public part of the SDK. Everything below the area clients is internal, so it can change without breaking you.
+## Documentation
 
-```mermaid
-flowchart LR
-    app["<b>Your application</b><br/>ASP.NET Core, worker, console"]
+- [User guides](docs/README.md): getting started, configuration, payments, transfers, accounts, sales, SMS, WhatsApp, webhooks, errors and money safety, testing your code
+- [API reference](docs/reference.md): every method, with its signature and what it does
+- [Architecture](docs/architecture.md): how the SDK works inside, with diagrams
+- [Changelog](CHANGELOG.md) · [Troubleshooting](TROUBLESHOOTING.md) · [Security policy](SECURITY.md)
 
-    subgraph sdk["Zhuwa.Moolre.Sdk"]
-        di["<b>AddMoolre(...)</b><br/>options, validation at startup,<br/>HttpClient setup"]
-        client["<b>MoolreClient</b><br/>the one object you inject"]
-
-        subgraph areas["API areas (public)"]
-            acc["Accounts"]
-            tr["Transfers"]
-            pay["Payments"]
-            sales["Sales"]
-            sms["Sms"]
-            wa["WhatsApp"]
-            ref["ReferenceData"]
-        end
-
-        subgraph internal["Internal (never public)"]
-            transport["<b>Transport</b><br/>picks the right credentials<br/>for each call and sends it"]
-            json["<b>Serialization</b><br/>tolerant JSON converters<br/>and response envelope"]
-            guard["<b>Validation and logging</b><br/>no secrets in logs"]
-        end
-
-        di --> client
-        client --> areas
-        areas --> transport
-        transport --> json
-        transport --> guard
-    end
-
-    factory["IHttpClientFactory<br/>pooled HttpClient"]
-    moolre[("<b>Moolre API</b><br/>sandbox or live")]
-
-    app -->|"inject"| client
-    transport --> factory
-    factory --> moolre
-```
-
-Which credentials each area uses (Moolre issues separate keys per wallet and per service):
-
-```mermaid
-flowchart LR
-    subgraph priv["Private key: X-API-USER + X-API-KEY"]
-        a1["Accounts"]
-        a2["Transfers: send, internal"]
-        a3["Sales"]
-    end
-    subgraph pub["Public key: X-API-USER + X-API-PUBKEY"]
-        b1["Payments: collections,<br/>links, Payment IDs, bank accounts"]
-    end
-    subgraph either["Either key"]
-        c1["Transfers: validate name,<br/>transfer status"]
-    end
-    subgraph vas["VAS key: X-API-VASKEY (separate for each)"]
-        d1["Sms"]
-        d2["WhatsApp"]
-    end
-    subgraph none["No credentials"]
-        e1["ReferenceData: bank list"]
-    end
-```
-
-## Collecting a payment
-
-A mobile money collection is asynchronous: the SDK asks Moolre to prompt the customer, and the final result arrives later by webhook. Always confirm with a status lookup before fulfilling an order.
-
-```mermaid
-sequenceDiagram
-    autonumber
-    actor Customer
-    participant App as Your app
-    participant SDK as MoolreClient.Payments
-    participant API as Moolre API
-    participant Hook as Your webhook endpoint
-
-    App->>App: Save the order with a unique externalref
-    App->>SDK: RequestMobileMoneyAsync(request)
-    SDK->>API: POST /open/transact/payment
-    opt Moolre asks for a one-time code (TP14, status 1)
-        API-->>SDK: OTP required
-        SDK-->>App: MobileMoneyResult (OtpRequired)
-        App->>SDK: RequestMobileMoneyAsync(request with OtpCode)
-        SDK->>API: POST /open/transact/payment
-    end
-    API-->>SDK: Prompt triggered (TR099)
-    SDK-->>App: MobileMoneyResult (PromptSent)
-    API->>Customer: Prompt on the customer's phone
-    Customer->>API: Approves the payment
-    API->>Hook: POST callback (P01 success or P02 failed)
-    Hook->>SDK: Payments.GetStatusAsync(externalref)
-    SDK->>API: POST /open/transact/status
-    API-->>SDK: Transaction (SS01)
-    SDK-->>Hook: TransactionResult
-    Hook->>App: Fulfil the order exactly once
-```
-
-## Receiving a webhook
-
-Moolre calls your endpoint when a payment succeeds or fails. The SDK gives you a parser and a secret check; deciding what to do stays in your code.
-
-Moolre documents no signature, so `MoolreWebhookVerifier.IsSecretValid` (the callback secret, compared in constant time) is the verification. Moolre also publishes the addresses it sends callbacks from. Filter them in your firewall, load balancer or reverse proxy, not in application code; Moolre can change them, so check its documentation:
-
-| IPv4 | IPv6 |
-| --- | --- |
-| `174.138.44.22` | `2604:a880:400:d1:0:3:4cf0:c001` |
-| `174.138.40.67` | `2604:a880:400:d0::1a77:4001` |
-| `192.241.135.134` | `2604:a880:400:d0::4234:2001` |
-
-(As listed on Moolre's payment webhook page, read 14 November 2026.)
-
-```mermaid
-flowchart LR
-    moolre["Moolre"] -->|"POST callback from<br/>6 documented IP addresses"| endpoint["Your webhook endpoint"]
-    endpoint --> parse["PaymentWebhook.TryParse"]
-    parse --> verify{"Secret matches and<br/>externalref is yours?"}
-    verify -- no --> reject["Reject and log<br/>(never log the secret)"]
-    verify -- yes --> seen{"Already processed?"}
-    seen -- yes --> ack["Acknowledge, do nothing"]
-    seen -- no --> ok{"P01 and txstatus 1?"}
-    ok -- no --> fail["Record the failure and its reason<br/>never fulfil from P02"]
-    ok -- yes --> confirm["Confirm with GetStatusAsync<br/>(especially high-value orders)"]
-    confirm --> fulfil["Mark paid and fulfil once"]
-```
-
-## When something goes wrong
-
-Moolre can answer with an error, or not answer at all. The SDK treats the two very differently, because a timeout on a payment does not mean the payment failed.
-
-```mermaid
-flowchart TD
-    send["Send the request"] --> got{"Response received?"}
-
-    got -- "no: timeout or network error" --> money{"Does it move money<br/>or send a message?"}
-    money -- yes --> uncertain["Throw MoolreOutcomeUncertainException<br/>carrying your externalref<br/>(never retried automatically)"]
-    money -- "no: read-only call" --> neterr["Network error reaches your code"]
-
-    got -- yes --> parse{"Body understood?"}
-    parse -- no --> bad["Throw MoolreResponseException"]
-    parse -- yes --> code{"Which application code?"}
-
-    code -- "AIN01, AIN03, AIN04, IN01,<br/>ASL00, ASS00" --> auth["Throw MoolreAuthenticationException"]
-    code -- "TP13, TR013, APY18,<br/>ASL08, INP02" --> dup["Throw MoolreDuplicateReferenceException"]
-    code -- "other business failure<br/>(status 0)" --> api["Throw MoolreApiException"]
-    code -- "success, or a valid outcome:<br/>pending, OTP required, not found" --> result["Return a typed result<br/>(not an exception)"]
-```
-
-What to do after an uncertain outcome:
-
-```mermaid
-sequenceDiagram
-    participant App as Your app
-    participant SDK as MoolreClient.Transfers
-    participant API as Moolre API
-
-    App->>SDK: SendAsync(externalref = T-1001)
-    SDK->>API: POST /open/transact/transfer
-    Note over SDK,API: Timeout. The transfer may or may not have happened.
-    SDK--xApp: MoolreOutcomeUncertainException (T-1001)
-    Note over App: Do not resend. Do not make a new reference.
-    App->>SDK: GetStatusAsync(externalref = T-1001)
-    SDK->>API: POST /open/transact/status
-    API-->>SDK: Transaction found, or not found
-    SDK-->>App: TransactionResult
-    Note over App: Decide only once the status is final.
-```
-
-## Money safety
-
-- Payment, transfer, sales and messaging calls are **never retried automatically**.
-- You supply the external reference. After a timeout the SDK throws an exception that carries it, so you can check the status instead of paying twice.
-- A callback or a browser redirect is not proof of payment. Confirm the status before fulfilling an order.
-- If you add a resilience handler to the `HttpClient`, do not retry `POST` requests blindly: every Moolre call is a `POST`, including read-only status lookups.
-
-## Repository layout
-
-| Path | Contents |
-| --- | --- |
-| `src/Zhuwa.Moolre.Sdk/` | The library (`net10.0`), laid out exactly like the official Square .NET SDK. Root: `MoolreClient` and `MoolreClientFactory` only. One folder per API area (`Accounts`, `Transfers`, `Payments`, `Sales`, `Sms`, `WhatsApp`, `Reference`, `Webhooks`) with the area client, its internal implementation and mapper, and a `Requests/` folder. `Types/`: every result, model, enum and response code, grouped into one subfolder per area plus `_common/` for shared types (Stripe groups its `Entities/` the same way). `Core/`: internal plumbing (transport, serialization, validation); `Core/Public/`: options, environment and exceptions. `DependencyInjection/`: `AddMoolre` |
-| `src/Zhuwa.Moolre.Sdk/.PublicAPI/` | The reviewed public API surface (`Shipped` and `Unshipped`); an unlisted public change fails the build |
-| `tests/Zhuwa.Moolre.Sdk.Tests/` | xunit v3 unit tests mirroring the source layout; `Fixtures/` holds Moolre's documented example responses; no network, no credentials |
-| `tests/Zhuwa.Moolre.Sdk.IntegrationTests/` | Tests against Moolre's real sandbox, skipped unless you opt in with environment variables (see its README) |
-| `samples/` | Sample applications (added with the code they exercise) |
-| `Directory.Build.props`, `Directory.Packages.props`, `BannedSymbols.txt`, `.editorconfig`, `global.json` | Shared build settings, central package versions, banned APIs, analyzer rules, pinned SDK |
-
-## Build and test
+## Contributing
 
 ```bash
-dotnet restore
 dotnet build -c Release
 dotnet test -c Release
-dotnet pack src/Zhuwa.Moolre.Sdk -c Release
 ```
 
-The .NET SDK is pinned in `global.json`. Build output goes to `artifacts/`. Warnings are errors; see [CONTRIBUTING.md](CONTRIBUTING.md).
-
-## More
-
-- [Troubleshooting](TROUBLESHOOTING.md)
-- [Changelog](CHANGELOG.md)
-- [Contributing](CONTRIBUTING.md), [Security policy](SECURITY.md) and [Code of Conduct](CODE_OF_CONDUCT.md)
+The .NET SDK is pinned in `global.json`; warnings are errors. Read [CONTRIBUTING.md](CONTRIBUTING.md) for where code goes, the tests each change needs, and the sandbox tests. Please follow the [Code of Conduct](CODE_OF_CONDUCT.md).
 
 ## License
 

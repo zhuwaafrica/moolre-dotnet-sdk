@@ -92,4 +92,20 @@ public sealed class PaymentLinkTests
 
         Assert.Equal(MoolreResponseCode.ChannelNotSupported, exception.Code);
     }
+
+    [Theory]
+    [InlineData("/thanks")]
+    [InlineData("file:///etc/passwd")]
+    [InlineData("ftp://example.com/x")]
+    public async Task CreatePaymentLinkAsync_WithACallbackOrRedirectThatIsNotAWebAddress_ThrowsAndSendsNothing(string address)
+    {
+        var sdk = TestTransport.Create(StubHttpHandler.ReturningFixture("generate-payment-link/response-200-success.json"));
+        var badCallback = new CreatePaymentLinkRequest { Amount = 1m, Email = "a@b.c", ExternalReference = "L", Currency = Currency.Ghs, CallbackUrl = new Uri(address, UriKind.RelativeOrAbsolute) };
+        var badRedirect = new CreatePaymentLinkRequest { Amount = 1m, Email = "a@b.c", ExternalReference = "L", Currency = Currency.Ghs, RedirectUrl = new Uri(address, UriKind.RelativeOrAbsolute) };
+
+        await Assert.ThrowsAsync<ArgumentException>(() => sdk.Payments.CreatePaymentLinkAsync(badCallback));
+        await Assert.ThrowsAsync<ArgumentException>(() => sdk.Payments.CreatePaymentLinkAsync(badRedirect));
+
+        Assert.Equal(0, sdk.Handler.CallCount);
+    }
 }

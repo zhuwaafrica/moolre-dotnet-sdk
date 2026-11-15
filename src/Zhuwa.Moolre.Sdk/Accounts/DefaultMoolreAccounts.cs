@@ -83,7 +83,7 @@ internal sealed class DefaultMoolreAccounts(MoolreTransport transport) : MoolreA
         return envelope.ToAccountTransactionsResult();
     }
 
-    // Checks a sandbox wallet request: name, callback URL, settlement, GHS, and that the SDK is set to the sandbox. Runs before anything is sent, so a bad request never reaches Moolre.
+    // Checks a sandbox wallet request: name, an http or https callback URL, settlement, GHS, and that the SDK is set to the sandbox. Runs before anything is sent, so a bad request never reaches Moolre.
     private static void Validate(CreateSandboxAccountRequest request, MoolreTransport transport)
     {
         ArgumentNullException.ThrowIfNull(request);
@@ -103,20 +103,14 @@ internal sealed class DefaultMoolreAccounts(MoolreTransport transport) : MoolreA
             throw new ArgumentOutOfRangeException(nameof(request), request.Currency, "Sandbox wallets support only Currency.Ghs.");
         }
 
-        if (!request.CallbackUrl.IsAbsoluteUri)
-        {
-            throw new ArgumentException("The callback URL must be absolute, for example https://example.com/moolre/callback.", nameof(request));
-        }
+        RequestGuard.ThrowIfNotWebUrl(request.CallbackUrl);
     }
 
-    // Checks a wallet update: an absolute callback URL when one is set. Runs before anything is sent, so a bad request never reaches Moolre.
+    // Checks a wallet update: an http or https callback URL when one is set. Runs before anything is sent, so a bad request never reaches Moolre.
     private static void Validate(UpdateAccountRequest request)
     {
         ArgumentNullException.ThrowIfNull(request);
-        if (request.CallbackUrl is { IsAbsoluteUri: false })
-        {
-            throw new ArgumentException("The callback URL must be absolute, for example https://example.com/moolre/callback.", nameof(request));
-        }
+        RequestGuard.ThrowIfNotWebUrl(request.CallbackUrl);
     }
 
     // Checks a transaction list request: date range order, a positive limit and a known status. Runs before anything is sent, so a bad request never reaches Moolre.

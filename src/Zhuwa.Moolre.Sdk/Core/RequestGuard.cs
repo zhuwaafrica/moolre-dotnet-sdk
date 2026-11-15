@@ -37,6 +37,23 @@ internal static class RequestGuard
         }
     }
 
+    /// <summary>Whether a URL is an absolute <c>http</c> or <c>https</c> address (Moolre calls it, or sends a customer to it).</summary>
+    internal static bool IsWebUrl(Uri uri) =>
+        uri.IsAbsoluteUri && (uri.Scheme == Uri.UriSchemeHttps || uri.Scheme == Uri.UriSchemeHttp);
+
+    /// <summary>
+    /// Throws unless a URL is an absolute <c>http</c> or <c>https</c> address. On Linux and macOS, .NET treats <c>"/path"</c> as an absolute
+    /// <c>file://</c> URL, so checking <see cref="Uri.IsAbsoluteUri"/> alone would let it through.
+    /// </summary>
+    /// <exception cref="ArgumentException">The URL is relative or not a web address.</exception>
+    internal static void ThrowIfNotWebUrl(Uri? url, [CallerArgumentExpression(nameof(url))] string? paramName = null)
+    {
+        if (url is not null && !IsWebUrl(url))
+        {
+            throw new ArgumentException("Use an absolute http or https address, for example https://example.com/moolre/callback.", paramName);
+        }
+    }
+
     /// <summary>
     /// Throws unless a duration is a whole number of minutes, at least one (Moolre takes payment link expiry in whole minutes). A part
     /// minute is refused, not rounded, so the link never lives longer or shorter than the caller asked.

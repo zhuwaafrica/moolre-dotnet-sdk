@@ -146,7 +146,7 @@ internal sealed class DefaultMoolrePayments(MoolreTransport transport) : MoolreP
         _ = request.IdKind.ToWire(nameof(request.IdKind));
     }
 
-    // Checks a payment link request: email, reference, amount, expiry in whole minutes and currency. Runs before anything is sent, so a bad request never reaches Moolre.
+    // Checks a payment link request: email, reference, amount, expiry in whole minutes, http or https callback and redirect URLs, and currency. Runs before anything is sent, so a bad request never reaches Moolre.
     private static void Validate(CreatePaymentLinkRequest request)
     {
         ArgumentNullException.ThrowIfNull(request);
@@ -154,6 +154,8 @@ internal sealed class DefaultMoolrePayments(MoolreTransport transport) : MoolreP
         ArgumentException.ThrowIfNullOrWhiteSpace(request.ExternalReference);
         RequestGuard.ThrowIfInvalidAmount(request.Amount);
         RequestGuard.ThrowIfNotWholeMinutes(request.ExpiresAfter);
+        RequestGuard.ThrowIfNotWebUrl(request.CallbackUrl);
+        RequestGuard.ThrowIfNotWebUrl(request.RedirectUrl);
         _ = request.Currency.ToWire(nameof(request.Currency));
     }
 
