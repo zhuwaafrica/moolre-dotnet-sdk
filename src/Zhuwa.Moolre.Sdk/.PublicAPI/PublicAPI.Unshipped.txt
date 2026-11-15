@@ -121,6 +121,8 @@ Zhuwa.Moolre.MoolreBank.Code.get -> string!
 Zhuwa.Moolre.MoolreBank.Name.get -> string!
 Zhuwa.Moolre.MoolreClient
 Zhuwa.Moolre.MoolreClient.MoolreClient() -> void
+Zhuwa.Moolre.MoolreClientFactory
+Zhuwa.Moolre.MoolreClientFactory.MoolreClientFactory() -> void
 Zhuwa.Moolre.MoolreDuplicateReferenceException
 Zhuwa.Moolre.MoolreDuplicateReferenceException.MoolreDuplicateReferenceException() -> void
 Zhuwa.Moolre.MoolreDuplicateReferenceException.MoolreDuplicateReferenceException(string! message) -> void
@@ -597,6 +599,7 @@ Zhuwa.Moolre.Webhooks.MoolreWebhookOptions
 Zhuwa.Moolre.Webhooks.MoolreWebhookOptions.MoolreWebhookOptions() -> void
 Zhuwa.Moolre.Webhooks.MoolreWebhookOptions.Secret.get -> string?
 Zhuwa.Moolre.Webhooks.MoolreWebhookOptions.Secret.set -> void
+Zhuwa.Moolre.Webhooks.MoolreWebhookOptions.WalletSecrets.get -> System.Collections.Generic.IDictionary<string!, string!>!
 Zhuwa.Moolre.Webhooks.MoolreWebhookVerifier
 Zhuwa.Moolre.Webhooks.MoolreWebhookVerifier.MoolreWebhookVerifier() -> void
 Zhuwa.Moolre.WhatsApp.GetWhatsAppMessageStatusRequest
@@ -668,6 +671,7 @@ override Zhuwa.Moolre.WhatsAppTemplateStatus.Equals(object? obj) -> bool
 override Zhuwa.Moolre.WhatsAppTemplateStatus.GetHashCode() -> int
 override Zhuwa.Moolre.WhatsAppTemplateStatus.ToString() -> string!
 static Zhuwa.Moolre.DependencyInjection.MoolreServiceCollectionExtensions.AddMoolre(this Microsoft.Extensions.DependencyInjection.IServiceCollection! services, System.Action<Zhuwa.Moolre.MoolreOptions!>! configure) -> Microsoft.Extensions.DependencyInjection.IServiceCollection!
+static Zhuwa.Moolre.DependencyInjection.MoolreServiceCollectionExtensions.AddMoolre(this Microsoft.Extensions.DependencyInjection.IServiceCollection! services, string! name, System.Action<Zhuwa.Moolre.MoolreOptions!>! configure) -> Microsoft.Extensions.DependencyInjection.IServiceCollection!
 static Zhuwa.Moolre.DependencyInjection.MoolreServiceCollectionExtensions.AddMoolreWebhooks(this Microsoft.Extensions.DependencyInjection.IServiceCollection! services, System.Action<Zhuwa.Moolre.Webhooks.MoolreWebhookOptions!>! configure) -> Microsoft.Extensions.DependencyInjection.IServiceCollection!
 static Zhuwa.Moolre.MoolreResponseCode.AccountUpdated.get -> Zhuwa.Moolre.MoolreResponseCode
 static Zhuwa.Moolre.MoolreResponseCode.ApiAccessNotActivated.get -> Zhuwa.Moolre.MoolreResponseCode
@@ -793,6 +797,7 @@ virtual Zhuwa.Moolre.MoolreClient.Sales.get -> Zhuwa.Moolre.Sales.MoolreSales!
 virtual Zhuwa.Moolre.MoolreClient.Sms.get -> Zhuwa.Moolre.Sms.MoolreSms!
 virtual Zhuwa.Moolre.MoolreClient.Transfers.get -> Zhuwa.Moolre.Transfers.MoolreTransfers!
 virtual Zhuwa.Moolre.MoolreClient.WhatsApp.get -> Zhuwa.Moolre.WhatsApp.MoolreWhatsApp!
+virtual Zhuwa.Moolre.MoolreClientFactory.Create(string! name) -> Zhuwa.Moolre.MoolreClient!
 virtual Zhuwa.Moolre.Payments.MoolrePayments.CreateBankAccountAsync(Zhuwa.Moolre.Payments.CreateBankAccountRequest! request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task<Zhuwa.Moolre.BankAccountResult!>!
 virtual Zhuwa.Moolre.Payments.MoolrePayments.CreatePaymentIdAsync(Zhuwa.Moolre.Payments.CreatePaymentIdRequest! request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task<Zhuwa.Moolre.PaymentIdResult!>!
 virtual Zhuwa.Moolre.Payments.MoolrePayments.CreatePaymentLinkAsync(Zhuwa.Moolre.Payments.CreatePaymentLinkRequest! request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task<Zhuwa.Moolre.PaymentLinkResult!>!

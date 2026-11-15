@@ -13,12 +13,14 @@ public abstract class MoolreWebhookVerifier
     }
 
     /// <summary>
-    /// Whether the callback carries the secret you configured in <see cref="MoolreWebhookOptions.Secret"/>. The comparison takes the
-    /// same time whatever the input, so timing cannot reveal the secret. Reject the callback when this is <see langword="false"/>.
+    /// Whether the callback carries the right secret for its wallet: the one in <see cref="MoolreWebhookOptions.WalletSecrets"/> for the
+    /// callback's account number, or <see cref="MoolreWebhookOptions.Secret"/> otherwise. A callback for a wallet with no secret configured is
+    /// rejected. The comparison takes the same time whatever the input, so timing cannot reveal a secret. Reject the callback when this is
+    /// <see langword="false"/>.
     /// </summary>
     /// <param name="webhook">The parsed callback.</param>
     /// <returns><see langword="true"/> only when the secrets match exactly.</returns>
     /// <exception cref="ArgumentNullException"><paramref name="webhook"/> is null.</exception>
-    /// <exception cref="InvalidOperationException">No secret is configured; a missing setting never counts as a match.</exception>
+    /// <exception cref="InvalidOperationException">No secret is configured at all; a missing setting never counts as a match.</exception>
     public abstract bool IsSecretValid(PaymentWebhook webhook);
 }

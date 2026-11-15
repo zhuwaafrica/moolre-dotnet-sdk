@@ -71,4 +71,66 @@ public sealed class WebhookVerifierTests
 
         Assert.Throws<InvalidOperationException>(() => provider.GetRequiredService<MoolreWebhookVerifier>().IsSecretValid(CallbackWithSecret("x")));
     }
+
+    // ---- One secret per wallet
+
+    private static MoolreWebhookVerifier WalletVerifier(string? fallback = null)
+    {
+        var provider = new ServiceCollection().AddMoolreWebhooks(options =>
+        {
+            options.Secret = fallback;
+            options.WalletSecrets["111"] = "SECRET-A";
+            options.WalletSecrets["222"] = "SECRET-B";
+        }).BuildServiceProvider();
+        return provider.GetRequiredService<MoolreWebhookVerifier>();
+    }
+
+    private static PaymentWebhook Callback(string accountNumber, string secret) =>
+        PaymentWebhook.Parse("""{"status":1,"code":"P01","data":{"txstatus":1,"accountnumber":""" + "\"" + accountNumber + "\",\"secret\":\"" + secret + "\"}}");
+
+    [Fact]
+    public void IsSecretValid_WithWalletSecrets_ChecksEachCallbackAgainstItsOwnWallet()
+    {
+        var verifier = WalletVerifier();
+
+        Assert.True(verifier.IsSecretValid(Callback("111", "SECRET-A")));
+        Assert.True(verifier.IsSecretValid(Callback("222", "SECRET-B")));
+    }
+
+    [Fact]
+    public void IsSecretValid_WithAnotherWalletsSecret_IsFalse()
+    {
+        Assert.False(WalletVerifier().IsSecretValid(Callback("111", "SECRET-B")));
+    }
+
+    [Fact]
+    public void IsSecretValid_ForAWalletWithNoSecretAndNoFallback_IsFalse()
+    {
+        Assert.False(WalletVerifier().IsSecretValid(Callback("999", "SECRET-A")));
+    }
+
+    [Fact]
+    public void IsSecretValid_ForAWalletWithNoSecretOfItsOwn_UsesTheFallbackSecret()
+    {
+        var verifier = WalletVerifier(fallback: "FALLBACK");
+
+        Assert.True(verifier.IsSecretValid(Callback("999", "FALLBACK")));
+        Assert.False(verifier.IsSecretValid(Callback("111", "FALLBACK")));
+    }
+
+    [Fact]
+    public void AddMoolreWebhooks_WithOnlyWalletSecrets_PassesValidation()
+    {
+        using var provider = new ServiceCollection().AddMoolreWebhooks(o => o.WalletSecrets["111"] = "SECRET-A").BuildServiceProvider();
+
+        Assert.Equal("SECRET-A", provider.GetRequiredService<IOptions<MoolreWebhookOptions>>().Value.WalletSecrets["111"]);
+    }
+
+    [Fact]
+    public void AddMoolreWebhooks_WithABlankWalletSecret_FailsValidation()
+    {
+        using var provider = new ServiceCollection().AddMoolreWebhooks(o => o.WalletSecrets["111"] = string.Empty).BuildServiceProvider();
+
+        Assert.Throws<OptionsValidationException>(() => provider.GetRequiredService<IOptions<MoolreWebhookOptions>>().Value);
+    }
 }

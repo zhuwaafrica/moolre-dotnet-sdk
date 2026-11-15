@@ -35,17 +35,26 @@ internal sealed partial class MoolreTransport
     // A monitor, not a snapshot: every call reads the current values, so a changed key or timeout applies without a restart.
     private readonly IOptionsMonitor<MoolreOptions> _options;
 
+    // Which wallet this transport sends for. Moolre keys belong to one wallet each, so every registered wallet gets its own transport,
+    // reading its own named settings ("" is the wallet registered without a name).
+    private readonly string _walletName;
+
     private readonly ILogger<MoolreTransport> _logger;
 
-    public MoolreTransport(IHttpClientFactory httpClientFactory, IOptionsMonitor<MoolreOptions> options, ILogger<MoolreTransport> logger)
+    public MoolreTransport(
+        IHttpClientFactory httpClientFactory,
+        IOptionsMonitor<MoolreOptions> options,
+        ILogger<MoolreTransport> logger,
+        string walletName = "")
     {
         _httpClientFactory = httpClientFactory;
         _options = options;
+        _walletName = walletName;
         _logger = logger;
     }
 
     /// <summary>Whether calls go to the sandbox. Some request fields (for example <c>skipotp</c>) only exist there.</summary>
-    internal bool IsSandbox => _options.CurrentValue.Environment == MoolreEnvironment.Sandbox;
+    internal bool IsSandbox => _options.Get(_walletName).Environment == MoolreEnvironment.Sandbox;
 
     /// <summary>
     /// The wallet a call acts on: the request's account number, or the default from <see cref="MoolreOptions.AccountNumber"/>.
@@ -56,7 +65,7 @@ internal sealed partial class MoolreTransport
     internal string ResolveAccountNumber(string? requested, string requestTypeName)
     {
         // A blank value on the request counts as "not set", so the default still applies.
-        var accountNumber = string.IsNullOrWhiteSpace(requested) ? _options.CurrentValue.AccountNumber : requested;
+        var accountNumber = string.IsNullOrWhiteSpace(requested) ? _options.Get(_walletName).AccountNumber : requested;
 
         if (string.IsNullOrWhiteSpace(accountNumber))
         {
@@ -87,7 +96,7 @@ internal sealed partial class MoolreTransport
         cancellationToken.ThrowIfCancellationRequested();
 
         // Read once so the credentials, the timeout and the error text in this call all come from the same snapshot.
-        var options = _options.CurrentValue;
+        var options = _options.Get(_walletName);
 
         // Build the request and add the credentials before any network use: a missing or invalid credential throws
         // InvalidOperationException here, so nothing has been sent when it does.
@@ -104,7 +113,7 @@ internal sealed partial class MoolreTransport
         try
         {
             // The HttpClient is not disposed: clients from IHttpClientFactory are cheap and must not be disposed per call.
-            var client = _httpClientFactory.CreateClient(MoolreHttpClientConfiguration.ClientName);
+            var client = _httpClientFactory.CreateClient(MoolreHttpClientConfiguration.ClientNameFor(_walletName));
             // Headers first, then the body inside the same try: a failure while reading the body must be handled the same way
             // as a failure to connect, because the request has already been sent by then.
             using var response = await client.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, timeout.Token).ConfigureAwait(false);

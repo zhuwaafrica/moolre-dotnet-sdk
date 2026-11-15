@@ -31,6 +31,30 @@ public class CheckoutService(MoolreClient moolre)
 }
 ```
 
+### Several wallets
+
+Moolre issues API credentials per wallet: a key for one wallet cannot act on another. Register each wallet by name with its own settings, then ask the factory for it:
+
+```csharp
+builder.Services.AddMoolre("collections", o => { o.ApiUser = "..."; o.PublicKey = "..."; o.AccountNumber = "..."; });
+builder.Services.AddMoolre("payouts", o => { o.ApiUser = "..."; o.PrivateKey = "..."; o.AccountNumber = "..."; });
+
+public class Payouts(MoolreClientFactory moolre)
+{
+    // await moolre.Create("payouts").Transfers.SendAsync(...);
+}
+```
+
+Each wallet also has its own callback secret. To receive callbacks for several wallets at one endpoint, give the verifier one secret per wallet, keyed by the wallet's account number; each callback is checked against its own wallet's secret:
+
+```csharp
+builder.Services.AddMoolreWebhooks(o =>
+{
+    o.WalletSecrets["111"] = builder.Configuration["Moolre:Collections:CallbackSecret"]!;
+    o.WalletSecrets["222"] = builder.Configuration["Moolre:Payouts:CallbackSecret"]!;
+});
+```
+
 ## How it fits together
 
 Your code only ever touches the public part of the SDK. Everything below the area clients is internal, so it can change without breaking you.

@@ -26,5 +26,7 @@ All notable changes to this project are documented here. The format follows [Kee
 - GET calls with a `type` selector now carry it in the query string.
 
 - WhatsApp: `GetTemplatePageAsync`, `GetAllTemplatesAsync` (walks every page by cursor, one page at a time, and stops on a repeated cursor instead of looping), `SendAsync` (reports messages skipped for duplicate references; never retried) and `GetStatusAsync`, all with the WhatsApp key only.
+- Several wallets: `AddMoolre(name, options => ...)` registers a wallet by name with its own credentials (Moolre issues keys per wallet), and `MoolreClientFactory.Create(name)` returns its client. Each wallet has its own settings, startup validation and `HttpClient` (`Zhuwa.Moolre:<name>`); an unknown name throws a clear error. The single-wallet `AddMoolre(options => ...)` is unchanged.
+- Per-wallet callback secrets: `MoolreWebhookOptions.WalletSecrets` (keyed by wallet account number) lets one endpoint verify callbacks for several wallets; each callback is checked against its own wallet's secret, with `Secret` as an optional fallback, and a callback for a wallet with no secret is rejected.
 
-All 31 documented operations are implemented. Not yet done: verification against the real sandbox, named wallets (`MoolreClientFactory`), `MoolreModelFactory`, configuration binding, samples.
+All 31 documented operations are implemented. Not yet done: verification against the real sandbox, `MoolreModelFactory`, configuration binding, samples.

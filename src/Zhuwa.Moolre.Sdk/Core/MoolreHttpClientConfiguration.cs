@@ -6,6 +6,12 @@ internal static class MoolreHttpClientConfiguration
     /// <summary>The name of the <see cref="HttpClient"/> in <see cref="IHttpClientFactory"/>.</summary>
     internal const string ClientName = "Zhuwa.Moolre";
 
+    /// <summary>
+    /// The <see cref="HttpClient"/> name for one wallet: <c>Zhuwa.Moolre</c> for the wallet registered without a name, and
+    /// <c>Zhuwa.Moolre:&lt;name&gt;</c> for a named wallet, so each wallet's client uses that wallet's environment.
+    /// </summary>
+    internal static string ClientNameFor(string walletName) => walletName.Length == 0 ? ClientName : $"{ClientName}:{walletName}";
+
     /// <summary>The largest response body the SDK reads (16 MB).</summary>
     internal const long MaxResponseBytes = 16 * 1024 * 1024;
 
