@@ -4,7 +4,7 @@ using Zhuwa.Moolre.Core;
 
 namespace Zhuwa.Moolre.Webhooks;
 
-/// <summary>Turns the body Moolre posts to your callback URL into a <see cref="PaymentWebhook"/> (static, hand-written, no reflection).</summary>
+/// <summary>Turns the body Moolre posts to your callback URL into a <see cref="PaymentWebhook"/>. Field names live on <see cref="PaymentWebhookWire"/>.</summary>
 internal static class WebhooksMapper
 {
     /// <summary>Reads a payment callback body.</summary>
@@ -13,34 +13,35 @@ internal static class WebhooksMapper
     {
         // The same envelope reader as API responses; there is no HTTP status for a body we received, so it is reported as 0.
         var envelope = ResponseEnvelope.Parse(utf8Json, default(HttpStatusCode));
-        var data = envelope.Data;
 
         // Without data there is no reference, amount or secret, so the callback cannot be matched or verified.
-        if (data.ValueKind != JsonValueKind.Object)
+        if (envelope.Data.ValueKind != JsonValueKind.Object)
         {
             throw new MoolreResponseException("The Moolre callback has no data object.");
         }
 
+        var wire = MoolreJson.ReadData(envelope.Data, MoolreJsonContext.Default.PaymentWebhookWire, envelope.HttpStatusCode);
+
         var details = new PaymentWebhookData(
-            data.ReadTransactionStatus("txstatus"),
-            data.ReadString("payer") ?? string.Empty,
+            wire.Status,
+            wire.Payer ?? string.Empty,
             // Added by Moolre on 11 Nov 2026 and absent from failed callbacks: an empty value reads as null, not as a name.
-            Blank(data.ReadString("payername")),
-            Blank(data.ReadString("payernetwork")),
-            Blank(data.ReadString("payerinstitution")),
-            data.ReadString("terminalid") ?? string.Empty,
-            data.ReadString("accountnumber") ?? string.Empty,
-            data.ReadString("name") ?? string.Empty,
-            data.ReadDecimal("amount"),
-            data.ReadDecimal("value"),
+            Blank(wire.PayerName),
+            Blank(wire.PayerNetwork),
+            Blank(wire.PayerInstitution),
+            wire.TerminalId ?? string.Empty,
+            wire.AccountNumber ?? string.Empty,
+            wire.Name ?? string.Empty,
+            wire.Amount,
+            wire.Value,
             // Null on failed attempts.
-            Blank(data.ReadString("transactionid")),
-            data.ReadString("externalref") ?? string.Empty,
-            data.ReadString("thirdpartyref") ?? string.Empty,
-            Blank(data.ReadString("reason")),
+            Blank(wire.TransactionId),
+            wire.ExternalReference ?? string.Empty,
+            wire.ThirdPartyReference ?? string.Empty,
+            Blank(wire.Reason),
             // A missing secret becomes empty, which never matches a configured secret.
-            data.ReadString("secret") ?? string.Empty,
-            data.ReadTimestamp("ts"));
+            wire.Secret ?? string.Empty,
+            wire.Timestamp);
 
         return new PaymentWebhook(envelope.Code, envelope.Message, details, envelope.IsSuccess);
     }

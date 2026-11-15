@@ -36,4 +36,18 @@ internal static class RequestGuard
             throw new ArgumentException(reason, paramName);
         }
     }
+
+    /// <summary>
+    /// Throws unless a duration is a whole number of minutes, at least one (Moolre takes payment link expiry in whole minutes). A part
+    /// minute is refused, not rounded, so the link never lives longer or shorter than the caller asked.
+    /// </summary>
+    /// <exception cref="ArgumentOutOfRangeException">The duration is under one minute or not whole minutes.</exception>
+    internal static void ThrowIfNotWholeMinutes(TimeSpan? duration, [CallerArgumentExpression(nameof(duration))] string? paramName = null)
+    {
+        if (duration is TimeSpan value
+            && (value < TimeSpan.FromMinutes(1) || value.Ticks % TimeSpan.TicksPerMinute != 0 || value.TotalMinutes > int.MaxValue))
+        {
+            throw new ArgumentOutOfRangeException(paramName, value, "The expiry must be a whole number of minutes, at least one.");
+        }
+    }
 }

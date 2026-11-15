@@ -2,6 +2,7 @@ using System.Buffers;
 using System.Net;
 using System.Net.Http.Headers;
 using System.Text.Json;
+using System.Text.Json.Nodes;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
@@ -13,6 +14,9 @@ namespace Zhuwa.Moolre.Core;
 /// </summary>
 internal sealed partial class MoolreTransport
 {
+    // The selector field Moolre uses to tell operations on a shared URL apart. Its value comes from the endpoint table.
+    private const string TypeField = "type";
+
     // Codes that mean the credentials or the wallet were not accepted.
     private static readonly HashSet<string> AuthenticationCodes = new(StringComparer.Ordinal)
     {
@@ -64,8 +68,10 @@ internal sealed partial class MoolreTransport
 
     /// <summary>Sends one call and returns Moolre's answer, or throws for authentication, duplicate reference and unreadable answers.</summary>
     /// <param name="endpoint">The operation, from <see cref="MoolreEndpoints"/>.</param>
-    /// <param name="writeFields">Writes the request fields into the JSON body (the <c>type</c> field is added for you), or <see langword="null"/>.</param>
-    /// <param name="query">The query string for a GET call, without the leading <c>?</c>.</param>
+    /// <param name="fields">
+    /// The request fields, from <see cref="MoolreJson.ToBody"/>: the JSON body of a POST (the <c>type</c> field is added for you), or the
+    /// query string of a GET. <see langword="null"/> when there are none.
+    /// </param>
     /// <param name="externalReference">The caller's reference, carried by <see cref="MoolreOutcomeUncertainException"/>.</param>
     /// <param name="cancellationToken">
     /// Cancels the call. Cancelling before anything is sent throws <see cref="OperationCanceledException"/>. Cancelling a call that
@@ -73,8 +79,7 @@ internal sealed partial class MoolreTransport
     /// </param>
     internal async Task<ResponseEnvelope> SendAsync(
         MoolreEndpoint endpoint,
-        Action<Utf8JsonWriter>? writeFields,
-        string? query,
+        JsonObject? fields,
         string? externalReference,
         CancellationToken cancellationToken)
     {
@@ -86,7 +91,7 @@ internal sealed partial class MoolreTransport
 
         // Build the request and add the credentials before any network use: a missing or invalid credential throws
         // InvalidOperationException here, so nothing has been sent when it does.
-        using var request = CreateRequest(endpoint, writeFields, query);
+        using var request = CreateRequest(endpoint, fields);
         MoolreRequestPolicy.ApplyCredentials(request.Headers, endpoint, options);
 
         // One token for both the caller's cancellation and our own timeout. The HttpClient timeout is switched off
@@ -168,28 +173,30 @@ internal sealed partial class MoolreTransport
         }
     }
 
-    private static HttpRequestMessage CreateRequest(MoolreEndpoint endpoint, Action<Utf8JsonWriter>? writeFields, string? query)
+    private static HttpRequestMessage CreateRequest(MoolreEndpoint endpoint, JsonObject? fields)
     {
-        // The path is relative: the base address (live or sandbox) is set once on the HttpClient.
-        var path = string.IsNullOrEmpty(query) ? endpoint.Path : $"{endpoint.Path}?{query}";
+        // GET calls carry their values in the query string and have no body. The path is relative: the base address (live or
+        // sandbox) is set once on the HttpClient.
+        var isGet = endpoint.Method == HttpMethod.Get;
+        var path = isGet && fields is { Count: > 0 } ? $"{endpoint.Path}?{MoolreJson.ToQuery(fields)}" : endpoint.Path;
         var request = new HttpRequestMessage(endpoint.Method, new Uri(path, UriKind.Relative));
 
-        // GET calls carry their values in the query string and have no body.
-        if (endpoint.Method != HttpMethod.Get)
+        if (!isGet)
         {
-            // Written straight to UTF-8 with Utf8JsonWriter: no reflection (trimming and AOT safe) and correct escaping of every value.
+            var body = fields ?? [];
+
+            // Many Moolre operations share one URL and differ only by this field, so it comes from the endpoint table. It goes first,
+            // as in Moolre's examples.
+            if (endpoint.Type is int type)
+            {
+                body.Insert(0, TypeField, type);
+            }
+
+            // Written with Utf8JsonWriter from the JSON object: no reflection (trimming and AOT safe) and correct escaping of every value.
             var buffer = new ArrayBufferWriter<byte>();
             using (var writer = new Utf8JsonWriter(buffer))
             {
-                writer.WriteStartObject();
-                // Many Moolre operations share one URL and differ only by this field, so it comes from the endpoint table.
-                if (endpoint.Type is int type)
-                {
-                    writer.WriteNumber("type", type);
-                }
-
-                writeFields?.Invoke(writer);
-                writer.WriteEndObject();
+                body.WriteTo(writer);
             }
 
             // A byte array, not a stream: it can be sent again by the HttpClient if it ever needs to (for example a handler the

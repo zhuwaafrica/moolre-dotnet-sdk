@@ -1,4 +1,5 @@
 using System.Net;
+using System.Text.Json.Nodes;
 using Xunit;
 using Zhuwa.Moolre.Payments;
 
@@ -49,9 +50,8 @@ public sealed class PaymentLinkTests
 
         await sdk.Payments.CreatePaymentLinkAsync(request);
 
-        Assert.Equal(
-            """{"type":1,"amount":"100","email":"shop@example.com","externalref":"LINK-2","callback":"https://shop.example.com/moolre/callback","redirect":"https://shop.example.com/thanks","reusable":"1","expiration_time":30,"currency":"GHS","accountnumber":"10772306069982","metadata":{"orderId":"1001"}}""",
-            sdk.Handler.RequestBody);
+        // Compared by value: the order of fields in a JSON object does not matter to Moolre.
+        Assert.True(JsonNode.DeepEquals(JsonNode.Parse("""{"type":1,"amount":"100","email":"shop@example.com","externalref":"LINK-2","callback":"https://shop.example.com/moolre/callback","redirect":"https://shop.example.com/thanks","reusable":"1","expiration_time":30,"currency":"GHS","accountnumber":"10772306069982","metadata":{"orderId":"1001"}}"""), JsonNode.Parse(sdk.Handler.RequestBody!)));
     }
 
     [Theory]

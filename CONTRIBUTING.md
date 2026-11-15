@@ -32,7 +32,9 @@ The library copies the folder layout of the official Square .NET SDK. Every file
 | `Core/Public/` | options, environment, exceptions | `Zhuwa.Moolre` |
 | `DependencyInjection/` | `AddMoolre` | `Zhuwa.Moolre.DependencyInjection` |
 
-One type per file, named after the type. Tests mirror the same folders under `tests/Zhuwa.Moolre.Sdk.Tests/`. `FolderConventionTests` checks these rules on every build, so a file in the wrong place fails the tests.
+One type per file, named after the type.
+
+**JSON field names** are declared once, as `[JsonPropertyName("...")]` on the property they belong to (the pattern Square, Stripe, Adyen and others use); never type a field name inside a method. Requests carry them directly. Responses are read into internal `...Wire` models in `Types/<Area>/`, which the area's mapper turns into the public result. Moolre's loose value shapes (amounts as text, channel codes, `"1"`/`"0"` flags, numbers sent as text) are handled by the converters in `Core/`. Every request and `...Wire` type must be listed in `Core/MoolreJsonContext.cs`, the source-generated contract that keeps the SDK free of reflection (trimming and Native AOT safe). Tests mirror the same folders under `tests/Zhuwa.Moolre.Sdk.Tests/`. `FolderConventionTests` checks these rules on every build, so a file in the wrong place fails the tests.
 
 ## Sandbox (integration) tests
 

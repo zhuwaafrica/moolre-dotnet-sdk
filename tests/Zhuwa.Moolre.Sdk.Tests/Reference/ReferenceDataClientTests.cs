@@ -38,14 +38,14 @@ public sealed class ReferenceDataClientTests
     }
 
     [Fact]
-    public async Task GetBanksAsync_WhenAnEntryIsNotAnObject_KeepsTheListAndDoesNotThrow()
+    public async Task GetBanksAsync_WhenAnEntryIsNotAnObject_SkipsItAndKeepsTheOthers()
     {
         var sdk = TestTransport.Create(StubHttpHandler.Returning("""{"status":1,"code":"SD01","data":["oops",{"name":"A","code":"1"},null]}"""));
 
         var result = await sdk.ReferenceData.GetBanksAsync("gha");
 
-        Assert.Equal(3, result.Banks.Count);
-        Assert.Equal("A", result.Banks[1].Name);
+        var bank = Assert.Single(result.Banks);
+        Assert.Equal("A", bank.Name);
     }
 
     [Fact]

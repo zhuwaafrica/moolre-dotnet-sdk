@@ -1,4 +1,5 @@
 using System.Net;
+using System.Text.Json.Nodes;
 using Xunit;
 using Zhuwa.Moolre.Core;
 
@@ -8,7 +9,7 @@ namespace Zhuwa.Moolre;
 public sealed class ErrorMappingTests
 {
     private static Task<ResponseEnvelope> Send(TestTransport sdk, MoolreEndpoint endpoint, string? externalReference = null) =>
-        sdk.Transport.SendAsync(endpoint, writer => writer.WriteString("accountnumber", "1"), query: null, externalReference, CancellationToken.None);
+        sdk.Transport.SendAsync(endpoint, new JsonObject { ["accountnumber"] = "1" }, externalReference, CancellationToken.None);
 
     [Fact]
     public async Task SendAsync_ForAnAuthenticationCode_ThrowsAuthenticationException()

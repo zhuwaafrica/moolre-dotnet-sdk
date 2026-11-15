@@ -13,7 +13,7 @@ These tests call Moolre's real **sandbox** through `AddMoolre`, the same way an 
 | `MOOLRE_SANDBOX_RECEIVER_ACCOUNT_NUMBER` | internal transfer | a second sandbox wallet |
 | `MOOLRE_SANDBOX_PRIVATE_KEY`, `MOOLRE_SANDBOX_PUBLIC_KEY` | optional; the sandbox does not check them | |
 
-A test whose settings are missing is skipped, and the skip message names what to set.
+A test whose settings are missing is skipped, and the skip message names what to set. The wallet test creates its own sandbox wallet, so it needs only `MOOLRE_SANDBOX_API_USER`.
 
 ## Run
 

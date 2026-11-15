@@ -1,9 +1,11 @@
-using System.Text.Json;
 using Zhuwa.Moolre.Core;
 
 namespace Zhuwa.Moolre.Payments;
 
-/// <summary>Turns Moolre's payment responses into the public result types (static, hand-written, no reflection).</summary>
+/// <summary>
+/// Turns Moolre's payment responses into the public result types. Field names live on the response models (for example
+/// <see cref="PaymentLinkWire"/>).
+/// </summary>
 internal static class PaymentsMapper
 {
     /// <summary>
@@ -32,122 +34,89 @@ internal static class PaymentsMapper
         }
 
         // Only a sent prompt carries an ID; with TP14 data is the word "all", which must not look like an ID.
-        var requestId = outcome == MobileMoneyOutcome.PromptSent && envelope.Data.ValueKind == JsonValueKind.String
-            ? envelope.Data.GetString()
-            : null;
+        var requestId = outcome == MobileMoneyOutcome.PromptSent ? MoolreJson.ReadDataText(envelope.Data) : null;
 
         return new MobileMoneyResult(envelope.Code, envelope.Message, envelope.Messages, envelope.HttpStatusCode, outcome, requestId);
     }
 
-    /// <summary>Maps a payment link response, whose <c>data</c> holds <c>authorization_url</c> and <c>reference</c>.</summary>
+    /// <summary>Maps a payment link response.</summary>
     /// <exception cref="MoolreResponseException">Moolre reported success but sent no absolute link; a result without a link is useless.</exception>
     internal static PaymentLinkResult ToPaymentLinkResult(this ResponseEnvelope envelope)
     {
-        var data = envelope.Data;
-        var link = data.ReadUri("authorization_url")
-            ?? throw new MoolreResponseException("Moolre reported a payment link but sent no usable authorization_url.", envelope.HttpStatusCode);
+        var wire = MoolreJson.ReadData(envelope.Data, MoolreJsonContext.Default.PaymentLinkWire, envelope.HttpStatusCode);
+        var link = wire.AuthorizationUrl
+            ?? throw new MoolreResponseException("Moolre reported a payment link but sent no usable link.", envelope.HttpStatusCode);
 
-        return new PaymentLinkResult(
-            envelope.Code,
-            envelope.Message,
-            envelope.Messages,
-            envelope.HttpStatusCode,
-            link,
-            data.ReadString("reference") ?? string.Empty);
+        return new PaymentLinkResult(envelope.Code, envelope.Message, envelope.Messages, envelope.HttpStatusCode, link, wire.Reference ?? string.Empty);
     }
 
-    /// <summary>Maps a Payment ID response, whose <c>data</c> holds <c>paymentid</c>, <c>name</c> and <c>qrcode</c>.</summary>
+    /// <summary>Maps a Payment ID response.</summary>
     internal static PaymentIdResult ToPaymentIdResult(this ResponseEnvelope envelope)
     {
-        var data = envelope.Data;
+        var wire = MoolreJson.ReadData(envelope.Data, MoolreJsonContext.Default.PaymentIdWire, envelope.HttpStatusCode);
 
         return new PaymentIdResult(
             envelope.Code,
             envelope.Message,
             envelope.Messages,
             envelope.HttpStatusCode,
-            data.ReadString("paymentid") ?? string.Empty,
-            data.ReadString("name") ?? string.Empty,
-            data.ReadString("qrcode"));
+            wire.PaymentId ?? string.Empty,
+            wire.Name ?? string.Empty,
+            wire.QrCode);
     }
 
-    /// <summary>Maps a created bank account response, whose <c>data</c> holds the new account's number, name and bank.</summary>
+    /// <summary>Maps a created bank account response.</summary>
+    /// <param name="envelope">The parsed response.</param>
+    /// <param name="requestedReference">The request's reference, used when Moolre does not echo it back.</param>
     internal static BankAccountResult ToBankAccountResult(this ResponseEnvelope envelope, string requestedReference)
     {
-        var data = envelope.Data;
+        var wire = MoolreJson.ReadData(envelope.Data, MoolreJsonContext.Default.BankAccountWire, envelope.HttpStatusCode);
 
         return new BankAccountResult(
             envelope.Code,
             envelope.Message,
             envelope.Messages,
             envelope.HttpStatusCode,
-            data.ReadString("accountno") ?? string.Empty,
-            data.ReadString("accountname") ?? string.Empty,
-            data.ReadString("bankname") ?? string.Empty,
-            // Moolre echoes the reference; the request's value fills in if it does not.
-            data.ReadString("externalref") ?? requestedReference);
+            wire.BankAccountNumber ?? string.Empty,
+            wire.AccountName ?? string.Empty,
+            wire.BankName ?? string.Empty,
+            wire.ExternalReference ?? requestedReference);
     }
 
-    /// <summary>Maps a bank account list, whose <c>data</c> holds <c>txcount</c> and an <c>accounts</c> array.</summary>
+    /// <summary>Maps a bank account list.</summary>
     internal static BankAccountListResult ToBankAccountListResult(this ResponseEnvelope envelope)
     {
-        var accounts = new List<BankAccountSummary>();
-        if (envelope.Data.TryGetField("accounts", out var items) && items.ValueKind == JsonValueKind.Array)
-        {
-            foreach (var item in items.EnumerateArray())
-            {
-                accounts.Add(new BankAccountSummary(
-                    item.ReadString("accountno") ?? string.Empty,
-                    item.ReadString("accountname") ?? string.Empty,
-                    item.ReadString("bankname") ?? string.Empty,
-                    item.ReadString("extid") ?? string.Empty,
-                    item.ReadTimestamp("ts")));
-            }
-        }
+        var wire = MoolreJson.ReadData(envelope.Data, MoolreJsonContext.Default.BankAccountListWire, envelope.HttpStatusCode);
+        var accounts = wire.Accounts
+            .Select(a => new BankAccountSummary(
+                a.BankAccountNumber ?? string.Empty,
+                a.AccountName ?? string.Empty,
+                a.BankName ?? string.Empty,
+                a.ExternalReference ?? string.Empty,
+                a.CreatedAt))
+            .ToList();
 
-        // txcount is Moolre's total; fall back to the number of accounts received when it is missing.
-        var count = envelope.Data.ReadInt32("txcount", fallback: accounts.Count);
-
-        return new BankAccountListResult(envelope.Code, envelope.Message, envelope.Messages, envelope.HttpStatusCode, count, accounts);
+        // txcount is Moolre's total; the number of accounts received fills in when it is missing.
+        return new BankAccountListResult(envelope.Code, envelope.Message, envelope.Messages, envelope.HttpStatusCode, wire.Count ?? accounts.Count, accounts);
     }
 
     /// <summary>
-    /// Maps a Payment ID or bank account lookup. <c>data.account</c> is null when not found, and <c>data.transactions</c> is an array
-    /// (list pages), a single object (status page) or <c>{}</c> (not found); all three become a list.
+    /// Maps a Payment ID or bank account lookup. The account is null when not found, and the transactions arrive as an array, a single
+    /// object or <c>{}</c>; the response model turns all three into a list.
     /// </summary>
     internal static PaymentAccountLookupResult ToPaymentAccountLookupResult(this ResponseEnvelope envelope)
     {
-        var data = envelope.Data;
+        var wire = MoolreJson.ReadData(envelope.Data, MoolreJsonContext.Default.PaymentAccountLookupWire, envelope.HttpStatusCode);
+        var account = wire.Account is { } a
+            ? new PaymentAccountSummary(a.BankAccountNumber ?? string.Empty, a.TransactionCount, a.TransactionValue)
+            : null;
 
-        PaymentAccountSummary? account = null;
-        if (data.TryGetField("account", out var accountElement) && accountElement.ValueKind == JsonValueKind.Object)
-        {
-            account = new PaymentAccountSummary(
-                accountElement.ReadString("accountno") ?? string.Empty,
-                accountElement.ReadInt32("txcount"),
-                accountElement.ReadDecimal("txvalue"));
-        }
-
-        var transactions = new List<MoolreTransaction>();
-        if (data.TryGetField("transactions", out var transactionsElement))
-        {
-            if (transactionsElement.ValueKind == JsonValueKind.Array)
-            {
-                foreach (var item in transactionsElement.EnumerateArray())
-                {
-                    if (item.ValueKind == JsonValueKind.Object)
-                    {
-                        transactions.Add(item.ToTransaction());
-                    }
-                }
-            }
-            else if (transactionsElement.ValueKind == JsonValueKind.Object && transactionsElement.EnumerateObject().Any())
-            {
-                // A single transaction object; the empty object {} means "none".
-                transactions.Add(transactionsElement.ToTransaction());
-            }
-        }
-
-        return new PaymentAccountLookupResult(envelope.Code, envelope.Message, envelope.Messages, envelope.HttpStatusCode, account, transactions);
+        return new PaymentAccountLookupResult(
+            envelope.Code,
+            envelope.Message,
+            envelope.Messages,
+            envelope.HttpStatusCode,
+            account,
+            wire.Transactions.Select(t => t.ToTransaction()).ToList());
     }
 }

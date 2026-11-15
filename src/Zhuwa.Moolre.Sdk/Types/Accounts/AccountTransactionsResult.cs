@@ -16,7 +16,7 @@ public class AccountTransactionsResult : MoolreResult
         Transactions = transactions;
     }
 
-    /// <summary>Transaction count. Moolre field <c>data.txcount</c> (string).</summary>
+    /// <summary>Moolre's transaction count. Moolre field <c>data.txcount</c> (sent as text); the list length when Moolre sends none.</summary>
     public int TransactionCount { get; }
 
     /// <summary>Transactions. Moolre field <c>data.transactions</c> (empty for ST09).</summary>

@@ -1,5 +1,6 @@
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using System.Text.Json.Nodes;
 using Xunit;
 using Zhuwa.Moolre.Core;
 
@@ -63,7 +64,7 @@ public sealed class RedactionTests
     private static Task<ResponseEnvelope> Send(StubHttpHandler handler, MoolreOptions options, ILogger<MoolreTransport> logger, MoolreEndpoint endpoint)
     {
         var transport = new MoolreTransport(new SingleClientFactory(handler, options), new FixedMonitor(options), logger);
-        return transport.SendAsync(endpoint, writer => writer.WriteString("accountnumber", "1"), query: null, "REF-1", CancellationToken.None);
+        return transport.SendAsync(endpoint, new JsonObject { ["accountnumber"] = "1" }, "REF-1", CancellationToken.None);
     }
 
     private sealed class CapturingLogger : ILogger<MoolreTransport>

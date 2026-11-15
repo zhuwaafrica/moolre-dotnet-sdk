@@ -772,9 +772,14 @@ static Zhuwa.Moolre.WhatsAppTemplateStatus.Rejected.get -> Zhuwa.Moolre.WhatsApp
 static Zhuwa.Moolre.WhatsAppTemplateStatus.implicit operator Zhuwa.Moolre.WhatsAppTemplateStatus(string! value) -> Zhuwa.Moolre.WhatsAppTemplateStatus
 static Zhuwa.Moolre.WhatsAppTemplateStatus.operator !=(Zhuwa.Moolre.WhatsAppTemplateStatus left, Zhuwa.Moolre.WhatsAppTemplateStatus right) -> bool
 static Zhuwa.Moolre.WhatsAppTemplateStatus.operator ==(Zhuwa.Moolre.WhatsAppTemplateStatus left, Zhuwa.Moolre.WhatsAppTemplateStatus right) -> bool
+virtual Zhuwa.Moolre.Accounts.MoolreAccounts.CreateSandboxAccountAsync(Zhuwa.Moolre.Accounts.CreateSandboxAccountRequest! request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task<Zhuwa.Moolre.AccountResult!>!
 virtual Zhuwa.Moolre.Accounts.MoolreAccounts.GetStatusAsync() -> System.Threading.Tasks.Task<Zhuwa.Moolre.AccountStatusResult!>!
 virtual Zhuwa.Moolre.Accounts.MoolreAccounts.GetStatusAsync(System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Zhuwa.Moolre.AccountStatusResult!>!
 virtual Zhuwa.Moolre.Accounts.MoolreAccounts.GetStatusAsync(Zhuwa.Moolre.Accounts.GetAccountStatusRequest! request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task<Zhuwa.Moolre.AccountStatusResult!>!
+virtual Zhuwa.Moolre.Accounts.MoolreAccounts.ListTransactionsAsync() -> System.Threading.Tasks.Task<Zhuwa.Moolre.AccountTransactionsResult!>!
+virtual Zhuwa.Moolre.Accounts.MoolreAccounts.ListTransactionsAsync(System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Zhuwa.Moolre.AccountTransactionsResult!>!
+virtual Zhuwa.Moolre.Accounts.MoolreAccounts.ListTransactionsAsync(Zhuwa.Moolre.Accounts.ListAccountTransactionsRequest! request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task<Zhuwa.Moolre.AccountTransactionsResult!>!
+virtual Zhuwa.Moolre.Accounts.MoolreAccounts.UpdateAsync(Zhuwa.Moolre.Accounts.UpdateAccountRequest! request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task<Zhuwa.Moolre.AccountResult!>!
 virtual Zhuwa.Moolre.MoolreClient.Accounts.get -> Zhuwa.Moolre.Accounts.MoolreAccounts!
 virtual Zhuwa.Moolre.MoolreClient.Payments.get -> Zhuwa.Moolre.Payments.MoolrePayments!
 virtual Zhuwa.Moolre.MoolreClient.ReferenceData.get -> Zhuwa.Moolre.Reference.MoolreReferenceData!

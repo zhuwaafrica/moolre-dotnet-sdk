@@ -1,5 +1,3 @@
-using System.Text.Json;
-
 namespace Zhuwa.Moolre.Core;
 
 /// <summary>
@@ -9,24 +7,27 @@ namespace Zhuwa.Moolre.Core;
 internal static class TransactionMapper
 {
     /// <summary>Maps an <c>SS01</c> status response, whose <c>data</c> is one transaction.</summary>
-    internal static TransactionResult ToTransactionResult(this ResponseEnvelope envelope) =>
-        new(envelope.Code, envelope.Message, envelope.Messages, envelope.HttpStatusCode, envelope.Data.ToTransaction());
+    internal static TransactionResult ToTransactionResult(this ResponseEnvelope envelope)
+    {
+        var wire = MoolreJson.ReadData(envelope.Data, MoolreJsonContext.Default.TransactionWire, envelope.HttpStatusCode);
+        return new(envelope.Code, envelope.Message, envelope.Messages, envelope.HttpStatusCode, wire.ToTransaction());
+    }
 
-    /// <summary>Maps one transaction object. Missing fields read as defaults; a missing status reads as pending, never successful.</summary>
-    internal static MoolreTransaction ToTransaction(this JsonElement data) =>
+    /// <summary>Maps one transaction. A missing status reads as pending, never successful (see <see cref="TransactionStatusConverter"/>).</summary>
+    internal static MoolreTransaction ToTransaction(this TransactionWire wire) =>
         new(
-            data.ReadTransactionStatus("txstatus"),
-            data.ReadInt32("txtype"),
-            data.ReadString("accountnumber") ?? string.Empty,
-            data.ReadString("payer") ?? string.Empty,
-            data.ReadString("payee") ?? string.Empty,
-            data.ReadDecimal("amount"),
-            data.ReadDecimal("value"),
+            wire.Status,
+            wire.TransactionType,
+            wire.AccountNumber ?? string.Empty,
+            wire.Payer ?? string.Empty,
+            wire.Payee ?? string.Empty,
+            wire.Amount,
+            wire.Value,
             // Only Payment ID and bank account lookups send fees; null means "not reported", not zero.
-            data.ReadOptionalDecimal("fee"),
-            data.ReadOptionalDecimal("networkfee"),
-            data.ReadString("transactionid") ?? string.Empty,
-            data.ReadString("externalref") ?? string.Empty,
-            data.ReadString("thirdpartyref") ?? string.Empty,
-            data.ReadTimestamp("ts"));
+            wire.Fee,
+            wire.NetworkFee,
+            wire.TransactionId ?? string.Empty,
+            wire.ExternalReference ?? string.Empty,
+            wire.ThirdPartyReference ?? string.Empty,
+            wire.Timestamp);
 }

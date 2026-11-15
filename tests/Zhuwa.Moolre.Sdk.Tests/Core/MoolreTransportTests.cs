@@ -1,5 +1,6 @@
 using System.Net;
 using System.Text.Json;
+using System.Text.Json.Nodes;
 using Xunit;
 using Zhuwa.Moolre.Core;
 
@@ -12,7 +13,7 @@ public sealed class MoolreTransportTests
         MoolreEndpoint endpoint,
         string? externalReference = null,
         CancellationToken cancellationToken = default) =>
-        sdk.Transport.SendAsync(endpoint, writer => writer.WriteString("accountnumber", "1"), query: null, externalReference, cancellationToken);
+        sdk.Transport.SendAsync(endpoint, new JsonObject { ["accountnumber"] = "1" }, externalReference, cancellationToken);
 
     [Fact]
     public async Task SendAsync_ForAPostEndpoint_SendsTheTypeAndFieldsAsJson()
@@ -56,7 +57,7 @@ public sealed class MoolreTransportTests
     {
         var sdk = TestTransport.Create(StubHttpHandler.ReturningFixture("miscellaneous-data/response-200-success.json"));
 
-        await sdk.Transport.SendAsync(MoolreEndpoints.ReferenceData.GetBanks, null, "country=gha&data=banks", null, CancellationToken.None);
+        await sdk.Transport.SendAsync(MoolreEndpoints.ReferenceData.GetBanks, new JsonObject { ["country"] = "gha", ["data"] = "banks" }, null, CancellationToken.None);
 
         Assert.False(sdk.Handler.Request!.Headers.Contains("X-API-USER"));
         Assert.Equal(HttpMethod.Get, sdk.Handler.Request.Method);

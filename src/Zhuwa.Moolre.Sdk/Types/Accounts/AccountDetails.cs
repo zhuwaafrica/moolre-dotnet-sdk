@@ -44,6 +44,9 @@ public class AccountDetails
     /// <summary>Settlement. Moolre field <c>settlement</c> ({} becomes empty settings).</summary>
     public SettlementSettings Settlement { get; }
 
-    /// <summary>Secret. Moolre field <c>secret</c> — the callback verification secret; sensitive, never logged.</summary>
+    /// <summary>
+    /// The wallet's callback secret, which Moolre puts in every payment callback. Moolre field <c>secret</c>. Sensitive: store it
+    /// securely (it is the value for <c>MoolreWebhookOptions.Secret</c>) and never log it.
+    /// </summary>
     public string Secret { get; }
 }

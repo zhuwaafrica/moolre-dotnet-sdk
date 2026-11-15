@@ -20,5 +20,6 @@ All notable changes to this project are documented here. The format follows [Kee
 - Transfers: `ValidateNameAsync`, `SendAsync`, `GetStatusAsync` and `SendInternalAsync`. Amounts must be above zero with at most two decimals; a missing transfer status reads as pending, never successful; "pay out in progress" is a pending result; insufficient balance and payout failures throw `MoolreApiException`.
 - Payments: `RequestMobileMoneyAsync` (prompt sent, OTP required and unknown codes as distinct outcomes; `SkipOtp` refused outside the sandbox), `GetStatusAsync` (with its own `GetPaymentStatusRequest`), `CreatePaymentLinkAsync` (expiry in whole minutes, metadata), `CreatePaymentIdAsync` (international phone format), `CreateBankAccountAsync`, `ListBankAccountsAsync` and `GetPaymentAccountAsync` (not found is a result; one or many transactions).
 - Webhooks: `PaymentWebhook.Parse` / `TryParse` (bytes or text) for Moolre's payment callbacks, `MoolreWebhookVerifier` (constant-time secret check; Moolre's callback addresses are listed in the README for firewall rules, not hard-coded) and `AddMoolreWebhooks`, which fails at startup without a secret.
+- Accounts: `CreateSandboxAccountAsync` (sandbox only, refused in live), `UpdateAsync` (sends only the values set) and `ListTransactionsAsync` (GMT date filters, "no transactions" is an empty list).
 
-The other 18 operations, `MoolreClientFactory`, and `MoolreModelFactory` are not implemented yet.
+The other 15 operations, `MoolreClientFactory`, and `MoolreModelFactory` are not implemented yet.

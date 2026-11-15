@@ -1,40 +1,22 @@
-using System.Text.Json;
 using Zhuwa.Moolre.Core;
 
 namespace Zhuwa.Moolre.Transfers;
 
 /// <summary>
-/// Sends the transfer calls. Each method checks the request, writes the body, sends it through the transport and decides which
-/// answers are results and which are failures; the mapper turns the answer into the result.
+/// Sends the transfer calls. Each method checks the request, turns it into JSON from the field names on the request type, sends it
+/// through the transport and decides which answers are results and which are failures; the mapper turns the answer into the result.
 /// </summary>
 internal sealed class DefaultMoolreTransfers(MoolreTransport transport) : MoolreTransfers
 {
     public override async Task<NameValidationResult> ValidateNameAsync(ValidateNameRequest request, CancellationToken cancellationToken = default)
     {
-        ArgumentNullException.ThrowIfNull(request);
-        ArgumentException.ThrowIfNullOrWhiteSpace(request.Receiver);
-        var channel = ToWire(request.Channel, nameof(request.Channel));
-        if (request.Channel == TransferChannel.Bank)
-        {
-            RequestGuard.ThrowIfBlank(request.BankCode, "A bank account needs the bank code (from ReferenceData.GetBanksAsync).");
-        }
+        Validate(request);
 
-        var currency = request.Currency.ToWire(nameof(request.Currency));
         var accountNumber = transport.ResolveAccountNumber(request.AccountNumber, nameof(ValidateNameRequest));
+        var body = MoolreJson.ToBody(request, MoolreJsonContext.Default.ValidateNameRequest).SetAccountNumber(accountNumber);
 
-        var envelope = await transport.SendAsync(
-            MoolreEndpoints.Transfers.ValidateName,
-            writer =>
-            {
-                writer.WriteString("receiver", request.Receiver.Trim());
-                writer.WriteString("channel", channel);
-                WriteBankCode(writer, request.Channel, request.BankCode);
-                writer.WriteString("currency", currency);
-                writer.WriteString("accountnumber", accountNumber);
-            },
-            query: null,
-            externalReference: null,
-            cancellationToken).ConfigureAwait(false);
+        var envelope = await transport.SendAsync(MoolreEndpoints.Transfers.ValidateName, body, externalReference: null, cancellationToken)
+            .ConfigureAwait(false);
 
         // "Not found" is an answer to the question, not a failure of the call, so it comes back as a result.
         if (envelope.Code != MoolreResponseCode.NameNotFound)
@@ -47,38 +29,15 @@ internal sealed class DefaultMoolreTransfers(MoolreTransport transport) : Moolre
 
     public override async Task<TransferResult> SendAsync(SendTransferRequest request, CancellationToken cancellationToken = default)
     {
-        ArgumentNullException.ThrowIfNull(request);
-        ArgumentException.ThrowIfNullOrWhiteSpace(request.Receiver);
-        ArgumentException.ThrowIfNullOrWhiteSpace(request.ExternalReference);
-        RequestGuard.ThrowIfInvalidAmount(request.Amount);
-        var channel = ToWire(request.Channel, nameof(request.Channel));
-        if (request.Channel == TransferChannel.Bank)
-        {
-            RequestGuard.ThrowIfBlank(request.BankCode, "A bank transfer needs the bank code (from ReferenceData.GetBanksAsync).");
-        }
+        Validate(request);
 
-        var currency = request.Currency.ToWire(nameof(request.Currency));
         var accountNumber = transport.ResolveAccountNumber(request.AccountNumber, nameof(SendTransferRequest));
-        var externalReference = request.ExternalReference.Trim();
+        var body = MoolreJson.ToBody(request, MoolreJsonContext.Default.SendTransferRequest).SetAccountNumber(accountNumber);
 
         // The external reference goes to the transport too: if the outcome becomes unknown, the exception carries it so the caller
         // can look the transfer up instead of paying twice.
-        var envelope = await transport.SendAsync(
-            MoolreEndpoints.Transfers.Send,
-            writer =>
-            {
-                writer.WriteString("channel", channel);
-                writer.WriteString("currency", currency);
-                writer.WriteString("amount", request.Amount.ToWire());
-                writer.WriteString("receiver", request.Receiver.Trim());
-                WriteBankCode(writer, request.Channel, request.BankCode);
-                writer.WriteString("externalref", externalReference);
-                WriteNarration(writer, request.Narration);
-                writer.WriteString("accountnumber", accountNumber);
-            },
-            query: null,
-            externalReference,
-            cancellationToken).ConfigureAwait(false);
+        var envelope = await transport.SendAsync(MoolreEndpoints.Transfers.Send, body, request.ExternalReference.Trim(), cancellationToken)
+            .ConfigureAwait(false);
 
         // "In progress" is not a refusal: the money may still move, so it is returned as a pending result. Any other status 0
         // (payout failed, insufficient balance) means Moolre refused it and no money moved.
@@ -92,23 +51,14 @@ internal sealed class DefaultMoolreTransfers(MoolreTransport transport) : Moolre
 
     public override async Task<TransactionResult> GetStatusAsync(GetTransferStatusRequest request, CancellationToken cancellationToken = default)
     {
-        ArgumentNullException.ThrowIfNull(request);
-        ArgumentException.ThrowIfNullOrWhiteSpace(request.Id);
-        var idType = request.IdKind.ToWire(nameof(request.IdKind));
+        Validate(request);
+
         var accountNumber = transport.ResolveAccountNumber(request.AccountNumber, nameof(GetTransferStatusRequest));
+        var body = MoolreJson.ToBody(request, MoolreJsonContext.Default.GetTransferStatusRequest).SetAccountNumber(accountNumber);
 
         // The same request as payment status; the endpoint entry picks the transfer credential (either key).
-        var envelope = await transport.SendAsync(
-            MoolreEndpoints.Transfers.GetStatus,
-            writer =>
-            {
-                writer.WriteNumber("idtype", idType);
-                writer.WriteString("id", request.Id.Trim());
-                writer.WriteString("accountnumber", accountNumber);
-            },
-            query: null,
-            externalReference: null,
-            cancellationToken).ConfigureAwait(false);
+        var envelope = await transport.SendAsync(MoolreEndpoints.Transfers.GetStatus, body, externalReference: null, cancellationToken)
+            .ConfigureAwait(false);
         MoolreTransport.EnsureSuccess(envelope);
 
         return envelope.ToTransactionResult();
@@ -116,28 +66,13 @@ internal sealed class DefaultMoolreTransfers(MoolreTransport transport) : Moolre
 
     public override async Task<InternalTransferResult> SendInternalAsync(SendInternalTransferRequest request, CancellationToken cancellationToken = default)
     {
-        ArgumentNullException.ThrowIfNull(request);
-        ArgumentException.ThrowIfNullOrWhiteSpace(request.ReceiverAccountNumber);
-        ArgumentException.ThrowIfNullOrWhiteSpace(request.ExternalReference);
-        RequestGuard.ThrowIfInvalidAmount(request.Amount);
-        var currency = request.Currency.ToWire(nameof(request.Currency));
-        var accountNumber = transport.ResolveAccountNumber(request.AccountNumber, nameof(SendInternalTransferRequest));
-        var externalReference = request.ExternalReference.Trim();
+        Validate(request);
 
-        var envelope = await transport.SendAsync(
-            MoolreEndpoints.Transfers.SendInternal,
-            writer =>
-            {
-                writer.WriteString("currency", currency);
-                writer.WriteString("amount", request.Amount.ToWire());
-                writer.WriteString("receiver", request.ReceiverAccountNumber.Trim());
-                writer.WriteString("externalref", externalReference);
-                WriteNarration(writer, request.Narration);
-                writer.WriteString("accountnumber", accountNumber);
-            },
-            query: null,
-            externalReference,
-            cancellationToken).ConfigureAwait(false);
+        var accountNumber = transport.ResolveAccountNumber(request.AccountNumber, nameof(SendInternalTransferRequest));
+        var body = MoolreJson.ToBody(request, MoolreJsonContext.Default.SendInternalTransferRequest).SetAccountNumber(accountNumber);
+
+        var envelope = await transport.SendAsync(MoolreEndpoints.Transfers.SendInternal, body, request.ExternalReference.Trim(), cancellationToken)
+            .ConfigureAwait(false);
 
         // Insufficient balance (TR09) and other status 0 answers are refusals; the duplicate reference (TR013) was already thrown by
         // the transport.
@@ -146,31 +81,51 @@ internal sealed class DefaultMoolreTransfers(MoolreTransport transport) : Moolre
         return envelope.ToInternalTransferResult();
     }
 
-    // Moolre's transfer channel codes. They are numbers sent as text; the named values used by sales are not accepted here.
-    private static string ToWire(TransferChannel channel, string paramName) => channel switch
+    // Checks a name lookup: receiver, channel (with the bank code for a bank account) and currency. Runs before anything is sent, so a bad request never reaches Moolre.
+    private static void Validate(ValidateNameRequest request)
     {
-        TransferChannel.Mtn => "1",
-        TransferChannel.Bank => "2",
-        TransferChannel.Telecel => "6",
-        TransferChannel.At => "7",
-        _ => throw new ArgumentOutOfRangeException(paramName, channel, "Choose a transfer channel: Mtn, Telecel, At or Bank."),
-    };
-
-    // The bank code is only meaningful for bank transfers; it is left out otherwise so Moolre never sees a stray value.
-    private static void WriteBankCode(Utf8JsonWriter writer, TransferChannel channel, string? bankCode)
-    {
-        if (channel == TransferChannel.Bank)
+        ArgumentNullException.ThrowIfNull(request);
+        ArgumentException.ThrowIfNullOrWhiteSpace(request.Receiver);
+        _ = request.Channel.ToWire(nameof(request.Channel));
+        if (request.Channel == TransferChannel.Bank)
         {
-            writer.WriteString("sublistid", bankCode!.Trim());
+            RequestGuard.ThrowIfBlank(request.BankCode, "A bank account needs the bank code (from ReferenceData.GetBanksAsync).");
         }
+
+        _ = request.Currency.ToWire(nameof(request.Currency));
     }
 
-    // Moolre calls the narration "reference". It is optional, so a blank value is left out rather than sent empty.
-    private static void WriteNarration(Utf8JsonWriter writer, string? narration)
+    // Checks a transfer: receiver, reference, amount, channel (with the bank code for a bank transfer) and currency. Runs before anything is sent, so a bad request never reaches Moolre.
+    private static void Validate(SendTransferRequest request)
     {
-        if (!string.IsNullOrWhiteSpace(narration))
+        ArgumentNullException.ThrowIfNull(request);
+        ArgumentException.ThrowIfNullOrWhiteSpace(request.Receiver);
+        ArgumentException.ThrowIfNullOrWhiteSpace(request.ExternalReference);
+        RequestGuard.ThrowIfInvalidAmount(request.Amount);
+        _ = request.Channel.ToWire(nameof(request.Channel));
+        if (request.Channel == TransferChannel.Bank)
         {
-            writer.WriteString("reference", narration.Trim());
+            RequestGuard.ThrowIfBlank(request.BankCode, "A bank transfer needs the bank code (from ReferenceData.GetBanksAsync).");
         }
+
+        _ = request.Currency.ToWire(nameof(request.Currency));
+    }
+
+    // Checks a transfer status request: an ID and its kind. Runs before anything is sent, so a bad request never reaches Moolre.
+    private static void Validate(GetTransferStatusRequest request)
+    {
+        ArgumentNullException.ThrowIfNull(request);
+        ArgumentException.ThrowIfNullOrWhiteSpace(request.Id);
+        _ = request.IdKind.ToWire(nameof(request.IdKind));
+    }
+
+    // Checks an internal transfer: receiving wallet, reference, amount and currency. Runs before anything is sent, so a bad request never reaches Moolre.
+    private static void Validate(SendInternalTransferRequest request)
+    {
+        ArgumentNullException.ThrowIfNull(request);
+        ArgumentException.ThrowIfNullOrWhiteSpace(request.ReceiverAccountNumber);
+        ArgumentException.ThrowIfNullOrWhiteSpace(request.ExternalReference);
+        RequestGuard.ThrowIfInvalidAmount(request.Amount);
+        _ = request.Currency.ToWire(nameof(request.Currency));
     }
 }
