@@ -380,6 +380,8 @@ Zhuwa.Moolre.Sales.ListBundlesRequest.AccountNumber.init -> void
 Zhuwa.Moolre.Sales.ListBundlesRequest.ListBundlesRequest() -> void
 Zhuwa.Moolre.Sales.ListBundlesRequest.Network.get -> Zhuwa.Moolre.SalesNetwork?
 Zhuwa.Moolre.Sales.ListBundlesRequest.Network.init -> void
+Zhuwa.Moolre.Sales.MoolreSales
+Zhuwa.Moolre.Sales.MoolreSales.MoolreSales() -> void
 Zhuwa.Moolre.Sales.SendAirtimeRequest
 Zhuwa.Moolre.Sales.SendAirtimeRequest.AccountNumber.get -> string?
 Zhuwa.Moolre.Sales.SendAirtimeRequest.AccountNumber.init -> void
@@ -471,6 +473,8 @@ Zhuwa.Moolre.Sms.GetSenderIdStatusRequest.SenderId.init -> void
 Zhuwa.Moolre.Sms.GetSmsStatusRequest
 Zhuwa.Moolre.Sms.GetSmsStatusRequest.GetSmsStatusRequest() -> void
 Zhuwa.Moolre.Sms.GetSmsStatusRequest.References.get -> System.Collections.ObjectModel.Collection<string!>!
+Zhuwa.Moolre.Sms.MoolreSms
+Zhuwa.Moolre.Sms.MoolreSms.MoolreSms() -> void
 Zhuwa.Moolre.Sms.SendSingleSmsRequest
 Zhuwa.Moolre.Sms.SendSingleSmsRequest.Network.get -> Zhuwa.Moolre.SmsDeliveryNetwork
 Zhuwa.Moolre.Sms.SendSingleSmsRequest.Network.init -> void
@@ -783,6 +787,8 @@ virtual Zhuwa.Moolre.Accounts.MoolreAccounts.UpdateAsync(Zhuwa.Moolre.Accounts.U
 virtual Zhuwa.Moolre.MoolreClient.Accounts.get -> Zhuwa.Moolre.Accounts.MoolreAccounts!
 virtual Zhuwa.Moolre.MoolreClient.Payments.get -> Zhuwa.Moolre.Payments.MoolrePayments!
 virtual Zhuwa.Moolre.MoolreClient.ReferenceData.get -> Zhuwa.Moolre.Reference.MoolreReferenceData!
+virtual Zhuwa.Moolre.MoolreClient.Sales.get -> Zhuwa.Moolre.Sales.MoolreSales!
+virtual Zhuwa.Moolre.MoolreClient.Sms.get -> Zhuwa.Moolre.Sms.MoolreSms!
 virtual Zhuwa.Moolre.MoolreClient.Transfers.get -> Zhuwa.Moolre.Transfers.MoolreTransfers!
 virtual Zhuwa.Moolre.Payments.MoolrePayments.CreateBankAccountAsync(Zhuwa.Moolre.Payments.CreateBankAccountRequest! request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task<Zhuwa.Moolre.BankAccountResult!>!
 virtual Zhuwa.Moolre.Payments.MoolrePayments.CreatePaymentIdAsync(Zhuwa.Moolre.Payments.CreatePaymentIdRequest! request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task<Zhuwa.Moolre.PaymentIdResult!>!
@@ -794,6 +800,22 @@ virtual Zhuwa.Moolre.Payments.MoolrePayments.ListBankAccountsAsync(System.Thread
 virtual Zhuwa.Moolre.Payments.MoolrePayments.ListBankAccountsAsync(Zhuwa.Moolre.Payments.ListBankAccountsRequest! request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task<Zhuwa.Moolre.BankAccountListResult!>!
 virtual Zhuwa.Moolre.Payments.MoolrePayments.RequestMobileMoneyAsync(Zhuwa.Moolre.Payments.RequestMobileMoneyRequest! request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task<Zhuwa.Moolre.MobileMoneyResult!>!
 virtual Zhuwa.Moolre.Reference.MoolreReferenceData.GetBanksAsync(string! countryCode, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task<Zhuwa.Moolre.BankListResult!>!
+virtual Zhuwa.Moolre.Sales.MoolreSales.GetStatusAsync(Zhuwa.Moolre.Sales.GetSaleStatusRequest! request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task<Zhuwa.Moolre.SaleStatusResult!>!
+virtual Zhuwa.Moolre.Sales.MoolreSales.ListBundlesAsync() -> System.Threading.Tasks.Task<Zhuwa.Moolre.BundleCatalogResult!>!
+virtual Zhuwa.Moolre.Sales.MoolreSales.ListBundlesAsync(System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Zhuwa.Moolre.BundleCatalogResult!>!
+virtual Zhuwa.Moolre.Sales.MoolreSales.ListBundlesAsync(Zhuwa.Moolre.Sales.ListBundlesRequest! request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task<Zhuwa.Moolre.BundleCatalogResult!>!
+virtual Zhuwa.Moolre.Sales.MoolreSales.SendAirtimeAsync(Zhuwa.Moolre.Sales.SendAirtimeRequest! request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task<Zhuwa.Moolre.SaleResult!>!
+virtual Zhuwa.Moolre.Sales.MoolreSales.SendDataAsync(Zhuwa.Moolre.Sales.SendDataRequest! request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task<Zhuwa.Moolre.SaleResult!>!
+virtual Zhuwa.Moolre.Sms.MoolreSms.ApproveSenderIdsAsync(Zhuwa.Moolre.Sms.ApproveSenderIdsRequest! request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task<Zhuwa.Moolre.SenderIdListResult!>!
+virtual Zhuwa.Moolre.Sms.MoolreSms.CreateSenderIdsAsync(Zhuwa.Moolre.Sms.CreateSenderIdsRequest! request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task<Zhuwa.Moolre.SenderIdsCreatedResult!>!
+virtual Zhuwa.Moolre.Sms.MoolreSms.GetBalanceAsync() -> System.Threading.Tasks.Task<Zhuwa.Moolre.SmsBalanceResult!>!
+virtual Zhuwa.Moolre.Sms.MoolreSms.GetBalanceAsync(System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Zhuwa.Moolre.SmsBalanceResult!>!
+virtual Zhuwa.Moolre.Sms.MoolreSms.GetSenderIdStatusAsync(Zhuwa.Moolre.Sms.GetSenderIdStatusRequest! request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task<Zhuwa.Moolre.SenderIdStatusResult!>!
+virtual Zhuwa.Moolre.Sms.MoolreSms.GetStatusAsync(Zhuwa.Moolre.Sms.GetSmsStatusRequest! request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task<Zhuwa.Moolre.SmsStatusResult!>!
+virtual Zhuwa.Moolre.Sms.MoolreSms.ListSenderIdsAsync() -> System.Threading.Tasks.Task<Zhuwa.Moolre.SenderIdListResult!>!
+virtual Zhuwa.Moolre.Sms.MoolreSms.ListSenderIdsAsync(System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<Zhuwa.Moolre.SenderIdListResult!>!
+virtual Zhuwa.Moolre.Sms.MoolreSms.SendAsync(Zhuwa.Moolre.Sms.SendSmsRequest! request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task<Zhuwa.Moolre.SmsSendResult!>!
+virtual Zhuwa.Moolre.Sms.MoolreSms.SendSingleAsync(Zhuwa.Moolre.Sms.SendSingleSmsRequest! request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task<Zhuwa.Moolre.SmsSendResult!>!
 virtual Zhuwa.Moolre.Transfers.MoolreTransfers.GetStatusAsync(Zhuwa.Moolre.Transfers.GetTransferStatusRequest! request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task<Zhuwa.Moolre.TransactionResult!>!
 virtual Zhuwa.Moolre.Transfers.MoolreTransfers.SendAsync(Zhuwa.Moolre.Transfers.SendTransferRequest! request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task<Zhuwa.Moolre.TransferResult!>!
 virtual Zhuwa.Moolre.Transfers.MoolreTransfers.SendInternalAsync(Zhuwa.Moolre.Transfers.SendInternalTransferRequest! request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task<Zhuwa.Moolre.InternalTransferResult!>!

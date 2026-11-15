@@ -53,7 +53,7 @@ public class SaleStatusResult : MoolreResult
     /// <summary>Network. Moolre field <c>data.network</c> ("mtn").</summary>
     public string? Network { get; }
 
-    /// <summary>Bundle ID. Moolre field <c>data.bundle</c> (data sales)    OPEN: airtime variant not documented.</summary>
+    /// <summary>The bundle sold, for data sales. Moolre field <c>data.bundle</c>. Moolre does not document this field for airtime sales.</summary>
     public string? BundleId { get; }
 
     /// <summary>Receiver. Moolre field <c>data.receiver</c>.</summary>

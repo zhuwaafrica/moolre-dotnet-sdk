@@ -5,6 +5,8 @@ using Zhuwa.Moolre.Accounts;
 using Zhuwa.Moolre.Payments;
 using Zhuwa.Moolre.Core;
 using Zhuwa.Moolre.Reference;
+using Zhuwa.Moolre.Sales;
+using Zhuwa.Moolre.Sms;
 using Zhuwa.Moolre.Transfers;
 using Zhuwa.Moolre.Webhooks;
 
@@ -45,6 +47,8 @@ public static class MoolreServiceCollectionExtensions
         services.TryAddSingleton<MoolreTransport>();
         services.TryAddSingleton<MoolreAccounts, DefaultMoolreAccounts>();
         services.TryAddSingleton<MoolrePayments, DefaultMoolrePayments>();
+        services.TryAddSingleton<MoolreSales, DefaultMoolreSales>();
+        services.TryAddSingleton<MoolreSms, DefaultMoolreSms>();
         services.TryAddSingleton<MoolreTransfers, DefaultMoolreTransfers>();
         services.TryAddSingleton<MoolreReferenceData, DefaultMoolreReferenceData>();
         services.TryAddSingleton<MoolreClient, DefaultMoolreClient>();

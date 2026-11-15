@@ -4,6 +4,8 @@ using Zhuwa.Moolre.Accounts;
 using Zhuwa.Moolre.Payments;
 using Zhuwa.Moolre.Core;
 using Zhuwa.Moolre.Reference;
+using Zhuwa.Moolre.Sales;
+using Zhuwa.Moolre.Sms;
 using Zhuwa.Moolre.Transfers;
 
 namespace Zhuwa.Moolre;
@@ -25,6 +27,10 @@ internal sealed class TestTransport
 
     public MoolrePayments Payments => new DefaultMoolrePayments(Transport);
 
+    public MoolreSales Sales => new DefaultMoolreSales(Transport);
+
+    public MoolreSms Sms => new DefaultMoolreSms(Transport);
+
     public MoolreTransfers Transfers => new DefaultMoolreTransfers(Transport);
 
     public MoolreReferenceData ReferenceData => new DefaultMoolreReferenceData(Transport);
@@ -36,6 +42,8 @@ internal sealed class TestTransport
         PrivateKey = "private-key",
         PublicKey = "public-key",
         AccountNumber = "10772306069982",
+        SmsVasKey = "sms-vas-key",
+        WhatsAppVasKey = "whatsapp-vas-key",
     };
 
     public static TestTransport Create(StubHttpHandler handler, MoolreOptions? options = null) => new(handler, options ?? SandboxOptions());

@@ -46,6 +46,16 @@ internal sealed class SandboxFactAttribute : FactAttribute
             missing.Add("MOOLRE_SANDBOX_RECEIVER_ACCOUNT_NUMBER");
         }
 
+        if (needs.HasFlag(SandboxNeeds.SmsKey) && SandboxSettings.SmsVasKey is null)
+        {
+            missing.Add("MOOLRE_SANDBOX_SMS_VASKEY");
+        }
+
+        if (needs.HasFlag(SandboxNeeds.SmsSenderId) && SandboxSettings.SmsSenderId is null)
+        {
+            missing.Add("MOOLRE_SANDBOX_SMS_SENDERID");
+        }
+
         if (missing.Count > 0)
         {
             Skip = "Sandbox test. Set " + string.Join(", ", missing) + " (see tests/Zhuwa.Moolre.Sdk.IntegrationTests/README.md).";
@@ -71,4 +81,10 @@ internal enum SandboxNeeds
 
     /// <summary><c>MOOLRE_SANDBOX_RECEIVER_ACCOUNT_NUMBER</c>.</summary>
     ReceiverAccountNumber = 8,
+
+    /// <summary><c>MOOLRE_SANDBOX_SMS_VASKEY</c>.</summary>
+    SmsKey = 16,
+
+    /// <summary><c>MOOLRE_SANDBOX_SMS_SENDERID</c>.</summary>
+    SmsSenderId = 32,
 }

@@ -3,6 +3,8 @@ using System.Text.Json.Serialization;
 using Zhuwa.Moolre.Accounts;
 using Zhuwa.Moolre.Payments;
 using Zhuwa.Moolre.Reference;
+using Zhuwa.Moolre.Sales;
+using Zhuwa.Moolre.Sms;
 using Zhuwa.Moolre.Transfers;
 
 namespace Zhuwa.Moolre.Core;
@@ -29,6 +31,9 @@ namespace Zhuwa.Moolre.Core;
         typeof(PaymentChannelConverter),
         typeof(TransactionStatusConverter),
         typeof(TransactionIdKindConverter),
+        typeof(SalesNetworkConverter),
+        typeof(SaleIdKindConverter),
+        typeof(LenientDoubleConverter),
     ])]
 
 // Requests
@@ -48,6 +53,16 @@ namespace Zhuwa.Moolre.Core;
 [JsonSerializable(typeof(ListBankAccountsRequest))]
 [JsonSerializable(typeof(GetPaymentAccountRequest))]
 [JsonSerializable(typeof(GetBanksRequest))]
+[JsonSerializable(typeof(SendAirtimeRequest))]
+[JsonSerializable(typeof(SendDataRequest))]
+[JsonSerializable(typeof(ListBundlesRequest))]
+[JsonSerializable(typeof(GetSaleStatusRequest))]
+[JsonSerializable(typeof(SendSmsRequest))]
+[JsonSerializable(typeof(SendSingleSmsRequest))]
+[JsonSerializable(typeof(GetSmsStatusRequest))]
+[JsonSerializable(typeof(CreateSenderIdsRequest))]
+[JsonSerializable(typeof(GetSenderIdStatusRequest))]
+[JsonSerializable(typeof(ApproveSenderIdsRequest))]
 
 // Responses
 [JsonSerializable(typeof(ResponseEnvelopeWire))]
@@ -68,5 +83,13 @@ namespace Zhuwa.Moolre.Core;
 [JsonSerializable(typeof(PaymentAccountLookupWire))]
 [JsonSerializable(typeof(PaymentAccountWire))]
 [JsonSerializable(typeof(PaymentWebhookWire))]
+[JsonSerializable(typeof(SaleWire))]
+[JsonSerializable(typeof(BundleCatalogWire))]
+[JsonSerializable(typeof(BundleWire))]
+[JsonSerializable(typeof(List<BundleWire>))]
+[JsonSerializable(typeof(SaleStatusWire))]
+[JsonSerializable(typeof(SmsStatusWire))]
+[JsonSerializable(typeof(SenderIdWire))]
+[JsonSerializable(typeof(SmsBalanceWire))]
 [JsonSerializable(typeof(JsonElement))]
 internal sealed partial class MoolreJsonContext : JsonSerializerContext;

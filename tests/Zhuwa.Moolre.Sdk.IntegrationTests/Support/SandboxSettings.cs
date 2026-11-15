@@ -21,6 +21,12 @@ internal static class SandboxSettings
     /// <summary>Optional public key; the sandbox does not check it, but some accounts may have one.</summary>
     internal static string? PublicKey => Read("MOOLRE_SANDBOX_PUBLIC_KEY");
 
+    /// <summary>The sandbox SMS service key (<c>X-API-VASKEY</c>).</summary>
+    internal static string? SmsVasKey => Read("MOOLRE_SANDBOX_SMS_VASKEY");
+
+    /// <summary>An approved SMS sender ID on the sandbox SMS service.</summary>
+    internal static string? SmsSenderId => Read("MOOLRE_SANDBOX_SMS_SENDERID");
+
     /// <summary>A mobile money number in local format (for example <c>0241234567</c>) used as payer and transfer receiver.</summary>
     internal static string? PhoneNumber => Read("MOOLRE_SANDBOX_PHONE");
 

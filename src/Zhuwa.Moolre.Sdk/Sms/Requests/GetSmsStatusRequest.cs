@@ -1,4 +1,5 @@
 using System.Collections.ObjectModel;
+using System.Text.Json.Serialization;
 
 namespace Zhuwa.Moolre.Sms;
 
@@ -6,5 +7,6 @@ namespace Zhuwa.Moolre.Sms;
 public class GetSmsStatusRequest
 {
     /// <summary>References. Moolre field <c>ref</c> (array of message references).</summary>
+    [JsonPropertyName("ref")]
     public Collection<string> References { get; } = [];
 }

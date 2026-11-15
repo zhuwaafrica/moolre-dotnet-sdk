@@ -14,6 +14,6 @@ public class SmsDeliveryStatus
     /// <summary>Reference. Moolre field <c>ref</c>.</summary>
     public string Reference { get; }
 
-    /// <summary>Status. Moolre field <c>status</c> OPEN: meaning of 2, 3, … is not documented.</summary>
+    /// <summary>Moolre's delivery status number. Moolre field <c>status</c>. Moolre does not document what each number means, so it is passed on unchanged.</summary>
     public int Status { get; }
 }

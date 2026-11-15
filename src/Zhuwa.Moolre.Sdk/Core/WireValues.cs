@@ -53,6 +53,49 @@ internal static class WireValues
         _ => throw new ArgumentOutOfRangeException(paramName, channel, "Choose a payment channel: Mtn, Telecel or At."),
     };
 
+    /// <summary>Moolre's sales network name. Sales take the names (<c>MTN</c>, <c>TELECEL</c>, <c>AT</c>), not the transfer codes.</summary>
+    /// <exception cref="ArgumentOutOfRangeException">The network is <see cref="SalesNetwork.None"/> or not a known value.</exception>
+    internal static string ToWire(this SalesNetwork network, string paramName) => network switch
+    {
+        SalesNetwork.Mtn => "MTN",
+        SalesNetwork.Telecel => "TELECEL",
+        SalesNetwork.At => "AT",
+        _ => throw new ArgumentOutOfRangeException(paramName, network, "Choose a network: Mtn, Telecel or At."),
+    };
+
+    /// <summary>A sale status lookup's <c>idtype</c>: <c>1</c> external reference, <c>2</c> transaction ID, <c>3</c> sale reference.</summary>
+    /// <exception cref="ArgumentOutOfRangeException">The kind is <see cref="SaleIdKind.None"/> or not a known value.</exception>
+    internal static int ToWire(this SaleIdKind kind, string paramName) => kind switch
+    {
+        SaleIdKind.ExternalReference => 1,
+        SaleIdKind.TransactionId => 2,
+        SaleIdKind.SaleReference => 3,
+        _ => throw new ArgumentOutOfRangeException(paramName, kind, "Choose ExternalReference, TransactionId or SaleReference."),
+    };
+
+    /// <summary>
+    /// Moolre's SMS delivery network, or <see langword="null"/> for <see cref="SmsDeliveryNetwork.Default"/> (not sent; Moolre then delivers
+    /// over Telecel). This picks the delivery network, not the recipient's.
+    /// </summary>
+    /// <exception cref="ArgumentOutOfRangeException">The network is not a known value.</exception>
+    internal static string? ToWire(this SmsDeliveryNetwork network, string paramName) => network switch
+    {
+        SmsDeliveryNetwork.Default => null,
+        SmsDeliveryNetwork.Telecel => "TELECEL",
+        SmsDeliveryNetwork.Mtn => "MTN",
+        _ => throw new ArgumentOutOfRangeException(paramName, network, "Choose Default, Telecel or Mtn."),
+    };
+
+    /// <summary>A sender ID decision's <c>approve</c> value: <c>0</c> pending, <c>1</c> approved, <c>2</c> rejected.</summary>
+    /// <exception cref="ArgumentOutOfRangeException">The decision is not a known value.</exception>
+    internal static int ToWire(this SenderIdDecisionKind decision, string paramName) => decision switch
+    {
+        SenderIdDecisionKind.Pending => 0,
+        SenderIdDecisionKind.Approved => 1,
+        SenderIdDecisionKind.Rejected => 2,
+        _ => throw new ArgumentOutOfRangeException(paramName, decision, "Choose Pending, Approved or Rejected."),
+    };
+
     /// <summary>Moolre's <c>txstatus</c> value: <c>0</c> pending, <c>1</c> successful, <c>2</c> failed.</summary>
     /// <exception cref="ArgumentOutOfRangeException">The status is not a known value.</exception>
     internal static int ToWire(this TransactionStatus status, string paramName) => status switch

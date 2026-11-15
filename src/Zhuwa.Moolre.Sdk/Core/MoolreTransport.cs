@@ -178,20 +178,20 @@ internal sealed partial class MoolreTransport
         // GET calls carry their values in the query string and have no body. The path is relative: the base address (live or
         // sandbox) is set once on the HttpClient.
         var isGet = endpoint.Method == HttpMethod.Get;
-        var path = isGet && fields is { Count: > 0 } ? $"{endpoint.Path}?{MoolreJson.ToQuery(fields)}" : endpoint.Path;
+        var body = fields ?? [];
+
+        // Many Moolre operations share one URL and differ only by this field, so it comes from the endpoint table. It goes first, as in
+        // Moolre's examples, in the body of a POST or the query string of a GET.
+        if (endpoint.Type is int type)
+        {
+            body.Insert(0, TypeField, type);
+        }
+
+        var path = isGet && body.Count > 0 ? $"{endpoint.Path}?{MoolreJson.ToQuery(body)}" : endpoint.Path;
         var request = new HttpRequestMessage(endpoint.Method, new Uri(path, UriKind.Relative));
 
         if (!isGet)
         {
-            var body = fields ?? [];
-
-            // Many Moolre operations share one URL and differ only by this field, so it comes from the endpoint table. It goes first,
-            // as in Moolre's examples.
-            if (endpoint.Type is int type)
-            {
-                body.Insert(0, TypeField, type);
-            }
-
             // Written with Utf8JsonWriter from the JSON object: no reflection (trimming and AOT safe) and correct escaping of every value.
             var buffer = new ArrayBufferWriter<byte>();
             using (var writer = new Utf8JsonWriter(buffer))
