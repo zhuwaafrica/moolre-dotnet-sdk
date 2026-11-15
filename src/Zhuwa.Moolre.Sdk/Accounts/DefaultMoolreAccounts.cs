@@ -1,4 +1,4 @@
-using Zhuwa.Moolre.Internal.Transport;
+using Zhuwa.Moolre.Core;
 
 namespace Zhuwa.Moolre.Accounts;
 
@@ -8,13 +8,8 @@ internal sealed class DefaultMoolreAccounts(MoolreTransport transport) : MoolreA
     {
         ArgumentNullException.ThrowIfNull(request);
 
-        // The request wins; the default wallet from the options is the fallback. With neither there is nothing to ask Moolre
-        // about, so fail before any network call.
-        var accountNumber = request.AccountNumber ?? transport.DefaultAccountNumber;
-        if (string.IsNullOrWhiteSpace(accountNumber))
-        {
-            throw new InvalidOperationException("Set GetAccountStatusRequest.AccountNumber or MoolreOptions.AccountNumber.");
-        }
+        // The request wins; the default wallet from the options is the fallback. With neither, this throws before any network call.
+        var accountNumber = transport.ResolveAccountNumber(request.AccountNumber, nameof(GetAccountStatusRequest));
 
         // Read-only call: safe to repeat, no external reference. The "type" field comes from the endpoint table.
         var envelope = await transport.SendAsync(

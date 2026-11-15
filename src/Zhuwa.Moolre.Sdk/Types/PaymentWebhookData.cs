@@ -1,0 +1,89 @@
+namespace Zhuwa.Moolre;
+
+/// <summary>The transaction details inside a payment webhook.</summary>
+public class PaymentWebhookData
+{
+    internal PaymentWebhookData(
+        TransactionStatus status,
+        string payer,
+        string? payerName,
+        string? payerNetwork,
+        string? payerInstitution,
+        string terminalId,
+        string accountNumber,
+        string name,
+        decimal amount,
+        decimal value,
+        string? transactionId,
+        string externalReference,
+        string thirdPartyReference,
+        string? reason,
+        string secret,
+        DateTimeOffset timestamp)
+    {
+        Status = status;
+        Payer = payer;
+        PayerName = payerName;
+        PayerNetwork = payerNetwork;
+        PayerInstitution = payerInstitution;
+        TerminalId = terminalId;
+        AccountNumber = accountNumber;
+        Name = name;
+        Amount = amount;
+        Value = value;
+        TransactionId = transactionId;
+        ExternalReference = externalReference;
+        ThirdPartyReference = thirdPartyReference;
+        Reason = reason;
+        Secret = secret;
+        Timestamp = timestamp;
+    }
+
+    /// <summary>Status. Moolre field <c>txstatus</c>.</summary>
+    public TransactionStatus Status { get; }
+
+    /// <summary>Payer. Moolre field <c>payer</c>.</summary>
+    public string Payer { get; }
+
+    /// <summary>Payer name. Moolre field <c>payername</c> (added 11 Nov 2026; may be empty or absent).</summary>
+    public string? PayerName { get; }
+
+    /// <summary>Payer network. Moolre field <c>payernetwork</c>.</summary>
+    public string? PayerNetwork { get; }
+
+    /// <summary>Payer institution. Moolre field <c>payerinstitution</c>.</summary>
+    public string? PayerInstitution { get; }
+
+    /// <summary>Terminal ID. Moolre field <c>terminalid</c>.</summary>
+    public string TerminalId { get; }
+
+    /// <summary>Account number. Moolre field <c>accountnumber</c> (destination wallet).</summary>
+    public string AccountNumber { get; }
+
+    /// <summary>Name. Moolre field <c>name</c>.</summary>
+    public string Name { get; }
+
+    /// <summary>Amount. Moolre field <c>amount</c> ("0" on failure).</summary>
+    public decimal Amount { get; }
+
+    /// <summary>Value. Moolre field <c>value</c> ("0" on failure).</summary>
+    public decimal Value { get; }
+
+    /// <summary>Transaction ID. Moolre field <c>transactionid</c> (null on failed attempts).</summary>
+    public string? TransactionId { get; }
+
+    /// <summary>External reference. Moolre field <c>externalref</c>.</summary>
+    public string ExternalReference { get; }
+
+    /// <summary>Third party reference. Moolre field <c>thirdpartyref</c>.</summary>
+    public string ThirdPartyReference { get; }
+
+    /// <summary>Reason. Moolre field <c>reason</c> (failed callbacks).</summary>
+    public string? Reason { get; }
+
+    /// <summary>Secret. Moolre field <c>secret</c> — compare in constant time; sensitive, never logged.</summary>
+    public string Secret { get; }
+
+    /// <summary>Timestamp. Moolre field <c>ts</c> (GMT).</summary>
+    public DateTimeOffset Timestamp { get; }
+}

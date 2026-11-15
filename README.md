@@ -6,7 +6,7 @@ An **unofficial, community-built** .NET client for the [Moolre](https://docs.moo
 > This project is independent. It is not affiliated with, endorsed by, or supported by Moolre.
 
 > [!WARNING]
-> **Status: preview.** The request, result and model types and the endpoint table exist and are tested, but **only two Moolre calls work so far** (`Accounts.GetStatusAsync` and `ReferenceData.GetBanksAsync`); the other 29 are not implemented yet. The diagrams below show how the SDK is designed to work. The NuGet page text is in [`package-readme.md`](package-readme.md).
+> **Status: preview.** The request, result and model types and the endpoint table exist and are tested, but **only 6 of the 31 Moolre calls work so far**: `Accounts.GetStatusAsync`, the four `Transfers` calls and `ReferenceData.GetBanksAsync`. The diagrams below show how the SDK is designed to work. The NuGet page text is in [`package-readme.md`](package-readme.md).
 
 **On this page:** [How it fits together](#how-it-fits-together) · [Collecting a payment](#collecting-a-payment) · [Receiving a webhook](#receiving-a-webhook) · [When something goes wrong](#when-something-goes-wrong) · [Repository layout](#repository-layout) · [Build and test](#build-and-test)
 
@@ -203,7 +203,7 @@ sequenceDiagram
 
 | Path | Contents |
 | --- | --- |
-| `src/Zhuwa.Moolre.Sdk/` | The library (`net10.0`). One folder per API area (`Accounts`, `Transfers`, `Payments`, `Sales`, `Sms`, `WhatsApp`, `Reference`). Each area keeps everything for that feature together: the public client, its internal implementation (`DefaultMoolre<Area>`) and response mapper (`<Area>Mapper`) at the folder root, plus `Enums/` (C# enums only), `Models/` (data types and text-based value types), `Requests/` and `Results/` as needed. Shared core types use the same folder names at the project root, plus `Clients/` and `Configuration/`; the response codes are in `Models/ResponseCodes/`. Also `Errors/`, `Webhooks/`, `DependencyInjection/`, and `Internal/` (shared plumbing: transport, serialization, options validation; never public API) |
+| `src/Zhuwa.Moolre.Sdk/` | The library (`net10.0`), laid out exactly like the official Square .NET SDK. Root: `MoolreClient` and `MoolreClientFactory` only. One folder per API area (`Accounts`, `Transfers`, `Payments`, `Sales`, `Sms`, `WhatsApp`, `Reference`, `Webhooks`) with the area client, its internal implementation and mapper, and a `Requests/` folder. `Types/`: every result, model, enum and response code. `Core/`: internal plumbing (transport, serialization, validation); `Core/Public/`: options, environment and exceptions. `DependencyInjection/`: `AddMoolre` |
 | `src/Zhuwa.Moolre.Sdk/.PublicAPI/` | The reviewed public API surface (`Shipped` and `Unshipped`); an unlisted public change fails the build |
 | `tests/Zhuwa.Moolre.Sdk.Tests/` | xunit v3 tests mirroring the source layout; `Fixtures/` holds Moolre's documented example responses; no network, no credentials |
 | `samples/` | Sample applications (added with the code they exercise) |

@@ -1,7 +1,7 @@
 using System.Net;
 using Xunit;
 using Zhuwa.Moolre.Accounts;
-using Zhuwa.Moolre.Internal.Serialization;
+using Zhuwa.Moolre.Core;
 
 namespace Zhuwa.Moolre;
 

@@ -18,6 +18,7 @@ public sealed class AddMoolreTests
         var client = provider.GetRequiredService<MoolreClient>();
 
         Assert.NotNull(client.Accounts);
+        Assert.NotNull(client.Transfers);
         Assert.NotNull(client.ReferenceData);
         Assert.Same(client, provider.GetRequiredService<MoolreClient>());
     }

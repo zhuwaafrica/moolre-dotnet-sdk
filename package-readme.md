@@ -6,7 +6,7 @@ An **unofficial, community-built** .NET client for the [Moolre](https://docs.moo
 
 ## Status: preview, most calls not implemented yet
 
-The request and response types exist, but **only two Moolre calls work so far** (`Accounts.GetStatusAsync` and `ReferenceData.GetBanksAsync`). Do not use it in production. The usage below is the design, not what ships today.
+The request and response types exist, but **only 6 of the 31 Moolre calls work so far**: `Accounts.GetStatusAsync`, the four `Transfers` calls and `ReferenceData.GetBanksAsync`. Do not use it in production. The usage below is the design, not what ships today.
 
 ## What it will cover
 

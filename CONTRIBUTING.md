@@ -19,7 +19,19 @@ The .NET SDK is pinned in `global.json`, and build output goes to `artifacts/`. 
 
 ## Where code goes
 
-Each API area has its own folder under `src/Zhuwa.Moolre.Sdk/`. Inside it, the client and its enums sit at the folder root; request types go in `Requests/`, result types in `Results/`, and shared data types in `Models/`. One public type per file. The shared core types sit in the project's own `Clients/`, `Configuration/`, `Enums/`, `Requests/`, `Results/` and `Models/` folders; the project root holds no source files. Namespaces follow the API area (`Zhuwa.Moolre.Payments`), not the sub-folders. Anything users should not see goes under `Internal/` and is `internal`. Tests mirror the same folders under `tests/Zhuwa.Moolre.Sdk.Tests/`.
+The library copies the folder layout of the official Square .NET SDK. Every file has exactly one home:
+
+| Folder (under `src/Zhuwa.Moolre.Sdk/`) | What goes there | Namespace |
+| --- | --- | --- |
+| project root | `MoolreClient` and `MoolreClientFactory` only | `Zhuwa.Moolre` |
+| `<Area>/` (`Accounts`, `Transfers`, `Payments`, ...) | the area client `Moolre<Area>`, its internal `DefaultMoolre<Area>` and `<Area>Mapper` | `Zhuwa.Moolre.<Area>` |
+| `<Area>/Requests/` | the `...Request` types for that area's calls | `Zhuwa.Moolre.<Area>` |
+| `Types/` | every result, model, enum and response code | `Zhuwa.Moolre` |
+| `Core/` | internal plumbing: transport, JSON reading, validation | `Zhuwa.Moolre.Core` |
+| `Core/Public/` | options, environment, exceptions | `Zhuwa.Moolre` |
+| `DependencyInjection/` | `AddMoolre` | `Zhuwa.Moolre.DependencyInjection` |
+
+One type per file, named after the type. Tests mirror the same folders under `tests/Zhuwa.Moolre.Sdk.Tests/`. `FolderConventionTests` checks these rules on every build, so a file in the wrong place fails the tests.
 
 ## Public API changes
 

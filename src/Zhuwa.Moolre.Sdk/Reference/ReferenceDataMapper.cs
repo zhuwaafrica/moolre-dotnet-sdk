@@ -1,5 +1,5 @@
 using System.Text.Json;
-using Zhuwa.Moolre.Internal.Serialization;
+using Zhuwa.Moolre.Core;
 
 namespace Zhuwa.Moolre.Reference;
 

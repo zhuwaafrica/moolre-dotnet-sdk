@@ -17,5 +17,6 @@ All notable changes to this project are documented here. The format follows [Kee
 
 - The call pipeline: the exception types (`MoolreException`, `MoolreApiException`, `MoolreAuthenticationException`, `MoolreDuplicateReferenceException`, `MoolreResponseException`, `MoolreOutcomeUncertainException`), tolerant response parsing, credential headers per operation, the timeout, and `AddMoolre`. Calls that move money or send messages are never retried and report an uncertain outcome with the caller's reference.
 - Two working operations so far: `Accounts.GetStatusAsync` and `ReferenceData.GetBanksAsync`.
+- Transfers: `ValidateNameAsync`, `SendAsync`, `GetStatusAsync` and `SendInternalAsync`. Amounts must be above zero with at most two decimals; a missing transfer status reads as pending, never successful; "pay out in progress" is a pending result; insufficient balance and payout failures throw `MoolreApiException`.
 
-The other 29 operations, `MoolreClientFactory`, `MoolreModelFactory`, the webhook parser and verifier are not implemented yet.
+The other 25 operations, `MoolreClientFactory`, `MoolreModelFactory`, the webhook parser and verifier are not implemented yet.

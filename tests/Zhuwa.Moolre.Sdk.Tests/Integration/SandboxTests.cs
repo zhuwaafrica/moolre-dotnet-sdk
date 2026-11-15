@@ -52,4 +52,20 @@ public sealed class SandboxTests
 
         Assert.False(string.IsNullOrWhiteSpace(result.AccountName));
     }
+
+    [Fact]
+    public async Task ValidateNameAsync_AgainstTheSandbox_AnswersWithAResult()
+    {
+        Assert.SkipUnless(
+            Setting("MOOLRE_SANDBOX_TESTS") == "1" && Setting("MOOLRE_SANDBOX_API_USER") is not null && Setting("MOOLRE_SANDBOX_ACCOUNT_NUMBER") is not null,
+            "Set MOOLRE_SANDBOX_TESTS, MOOLRE_SANDBOX_API_USER and MOOLRE_SANDBOX_ACCOUNT_NUMBER to call the sandbox.");
+        using var provider = CreateProvider();
+
+        var result = await provider.GetRequiredService<MoolreClient>().Transfers.ValidateNameAsync(
+            new Transfers.ValidateNameRequest { Receiver = "0246798993", Channel = TransferChannel.Mtn, Currency = Currency.Ghs },
+            TestContext.Current.CancellationToken);
+
+        // Found or not found are both valid sandbox answers; the point is that the call and the parsing work end to end.
+        Assert.True(result.Found ? result.AccountHolderName.Length > 0 : result.AccountHolderName.Length == 0);
+    }
 }
