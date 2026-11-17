@@ -4,8 +4,6 @@ An **unofficial, community-built** .NET client for the [Moolre](https://docs.moo
 
 > This project is independent. It is not affiliated with, endorsed by, or supported by Moolre.
 
-**Status: preview.** Every call is covered by unit tests against Moolre's documented responses; they have not yet been verified against the real sandbox.
-
 ## Requirements
 
 - .NET 10 or later. Works with trimming and Native AOT.
