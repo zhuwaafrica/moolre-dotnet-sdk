@@ -4,7 +4,7 @@ All notable changes to this project are documented here. The format follows [Kee
 
 ## [Unreleased]
 
-## [1.0.0] - 2026-11-17
+## [1.0.0-beta.1] - 2026-11-17
 
 ### Added
 
@@ -58,5 +58,5 @@ All notable changes to this project are documented here. The format follows [Kee
 
 All 31 documented operations are implemented. Not yet done: verification against the real sandbox, `MoolreModelFactory`, configuration binding, samples.
 
-[Unreleased]: https://github.com/zhuwaafrica/moolre-dotnet-sdk/compare/v1.0.0...HEAD
-[1.0.0]: https://github.com/zhuwaafrica/moolre-dotnet-sdk/releases/tag/v1.0.0
+[Unreleased]: https://github.com/zhuwaafrica/moolre-dotnet-sdk/compare/v1.0.0-beta.1...HEAD
+[1.0.0-beta.1]: https://github.com/zhuwaafrica/moolre-dotnet-sdk/releases/tag/v1.0.0-beta.1

@@ -3,7 +3,7 @@
 ## 1. Install
 
 ```bash
-dotnet add package Zhuwa.Moolre.Sdk
+dotnet add package Zhuwa.Moolre.Sdk --prerelease
 ```
 
 The package targets .NET 10 and works with trimming and Native AOT.
