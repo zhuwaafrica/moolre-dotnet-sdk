@@ -23,7 +23,7 @@ An **unofficial, community-built** .NET client for the [Moolre](https://docs.moo
 ## Installation
 
 ```bash
-dotnet add package Zhuwa.Moolre.Sdk --prerelease
+dotnet add package Zhuwa.Moolre.Sdk
 ```
 
 ## Usage
