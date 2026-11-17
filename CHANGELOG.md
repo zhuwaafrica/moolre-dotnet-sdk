@@ -4,6 +4,8 @@ All notable changes to this project are documented here. The format follows [Kee
 
 ## [Unreleased]
 
+## [1.0.0] - 2026-11-17
+
 ### Added
 
 - Webhook signature verification: `MoolreWebhookVerifier.IsSignatureValid` checks Moolre's `X-Moolre-Signature` header (HMAC-SHA256 of `"<t>.<raw body>"` with the wallet's callback secret, constant-time, 5-minute `MoolreWebhookOptions.SignatureTolerance`), tested against Moolre's published vectors. `SignatureHeaderName` names the header.
@@ -55,3 +57,6 @@ All notable changes to this project are documented here. The format follows [Kee
 - Package: removed the unused `Microsoft.Extensions.Options.ConfigurationExtensions` dependency; the NuGet page now shows real usage, and the release notes point to this changelog.
 
 All 31 documented operations are implemented. Not yet done: verification against the real sandbox, `MoolreModelFactory`, configuration binding, samples.
+
+[Unreleased]: https://github.com/zhuwaafrica/moolre-dotnet-sdk/compare/v1.0.0...HEAD
+[1.0.0]: https://github.com/zhuwaafrica/moolre-dotnet-sdk/releases/tag/v1.0.0

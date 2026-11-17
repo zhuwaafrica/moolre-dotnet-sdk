@@ -7,7 +7,9 @@ Usage (from the repository root, after a Release build):
 import re, sys, glob, xml.etree.ElementTree as ET
 root = sys.argv[1]
 xmlp = f'{root}/artifacts/bin/Zhuwa.Moolre.Sdk/release/Zhuwa.Moolre.Sdk.xml'
-api = open(f'{root}/src/Zhuwa.Moolre.Sdk/.PublicAPI/PublicAPI.Unshipped.txt').read().splitlines()
+# The public API is the shipped list plus anything added since the last release.
+api = [line for name in ('PublicAPI.Shipped.txt', 'PublicAPI.Unshipped.txt')
+       for line in open(f'{root}/src/Zhuwa.Moolre.Sdk/.PublicAPI/{name}').read().splitlines()]
 docs = {m.get('name'): m for m in ET.parse(xmlp).getroot().iter('member')}
 
 def short(t):

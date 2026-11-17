@@ -31,6 +31,8 @@
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageIcon>package-icon.png</PackageIcon>
     <PackageReadmeFile>package-readme.md</PackageReadmeFile>
+    <!-- The Zhuwa Africa logo, 128x128 PNG as NuGet recommends; shown on nuget.org and in the IDE package manager. -->
+    <PackageIcon>package-icon.png</PackageIcon>
     <PackageReleaseNotes>
 First version:
 - All 31 documented Moolre operations: mobile money collections (with the OTP flow), payment links, Payment IDs and bank collection accounts, transfers and name validation, wallets and transaction history, airtime and data, SMS and WhatsApp.
@@ -64,6 +66,7 @@ Full history: https://github.com/zhuwaafrica/moolre-dotnet-sdk/blob/main/CHANGEL
   <ItemGroup>
     <None Update="package-icon.png" Pack="true" PackagePath="" />
     <None Include="..\..\package-readme.md" Pack="true" PackagePath="\" />
+    <None Include="package-icon.png" Pack="true" PackagePath="\" />
   </ItemGroup>
 
   <!-- Build-time only: computes the version from git tags and adds nothing to the package's dependencies. -->
