@@ -15,8 +15,9 @@
     <PackageVersion Include="Microsoft.Extensions.Options" Version="10.0.0" />
   </ItemGroup>
 
-  <!-- Build-time analyzers (private to the library; never a dependency of the package). -->
+  <!-- Build-time tools and analyzers (private to the library; never a dependency of the package). -->
   <ItemGroup>
+    <PackageVersion Include="MinVer" Version="8.0.0" />
     <PackageVersion Include="Microsoft.CodeAnalysis.BannedApiAnalyzers" Version="5.6.0" />
     <PackageVersion Include="Microsoft.CodeAnalysis.PublicApiAnalyzers" Version="5.6.0" />
   </ItemGroup>
