@@ -4,9 +4,12 @@ using Xunit;
 using Zhuwa.Moolre.DependencyInjection;
 using Zhuwa.Moolre.Webhooks;
 
+// These tests cover the deprecated data.secret check on purpose: it stays supported until Moolre removes the field.
+#pragma warning disable CS0618
+
 namespace Zhuwa.Moolre;
 
-/// <summary>Tests the callback verifier: the secret check and the registration.</summary>
+/// <summary>Tests the callback verifier: the deprecated secret check and the registration.</summary>
 public sealed class WebhookVerifierTests
 {
     private static MoolreWebhookVerifier Verifier(string? secret)
@@ -66,7 +69,7 @@ public sealed class WebhookVerifierTests
         var services = new ServiceCollection();
         services.AddOptions<MoolreWebhookOptions>();
         services.AddSingleton<MoolreWebhookVerifier>(provider =>
-            new DefaultMoolreWebhookVerifier(provider.GetRequiredService<IOptionsMonitor<MoolreWebhookOptions>>()));
+            new DefaultMoolreWebhookVerifier(provider.GetRequiredService<IOptionsMonitor<MoolreWebhookOptions>>(), TimeProvider.System));
         using var provider = services.BuildServiceProvider();
 
         Assert.Throws<InvalidOperationException>(() => provider.GetRequiredService<MoolreWebhookVerifier>().IsSecretValid(CallbackWithSecret("x")));

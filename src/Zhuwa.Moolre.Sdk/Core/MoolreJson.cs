@@ -63,24 +63,21 @@ internal static class MoolreJson
         }
     }
 
-    /// <summary>Reads a <c>data</c> value that is an array of objects (the bank list). Entries that are not objects are skipped.</summary>
-    internal static List<T> ReadDataList<T>(JsonElement data, JsonTypeInfo<T> typeInfo)
+    /// <summary>Enumerates objects in a <c>data</c> array. Entries that are not objects are skipped.</summary>
+    internal static IEnumerable<T> EnumerateData<T>(JsonElement data, JsonTypeInfo<T> typeInfo)
     {
-        var items = new List<T>();
         if (data.ValueKind != JsonValueKind.Array)
         {
-            return items;
+            yield break;
         }
 
         foreach (var entry in data.EnumerateArray())
         {
             if (entry.ValueKind == JsonValueKind.Object && entry.Deserialize(typeInfo) is { } item)
             {
-                items.Add(item);
+                yield return item;
             }
         }
-
-        return items;
     }
 
     /// <summary><c>data</c> when it is plain text (a name, a request ID, <c>"senderid"</c>), otherwise <see langword="null"/>.</summary>

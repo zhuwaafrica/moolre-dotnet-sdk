@@ -112,6 +112,13 @@ public sealed class EndpointTableTests
     }
 
     [Fact]
+    public void Credential_ForSandboxAccountCreation_IsTheUserOnly()
+    {
+        // Moolre's sandbox Create Account page: X-API-KEY is "Optional in Sandbox. Omit placeholder keys."
+        Assert.Equal(CredentialKind.User, MoolreEndpoints.Accounts.CreateSandboxAccount.Credential);
+    }
+
+    [Fact]
     public void Transfers_Send_NeedsThePrivateKeyAndCollectionsThePublicKey()
     {
         Assert.Equal(CredentialKind.Private, MoolreEndpoints.Transfers.Send.Credential);

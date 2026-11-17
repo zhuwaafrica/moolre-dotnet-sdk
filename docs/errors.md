@@ -67,4 +67,4 @@ The SDK never retries a call itself. Every Moolre call is a `POST`, including pa
 
 ## What the SDK logs
 
-The SDK logs the operation name, the HTTP status and Moolre's code, at `Debug` level (timeouts and connection failures at `Warning`). It never logs credentials, callback secrets, request bodies or response bodies.
+The SDK logs the operation name and the HTTP status, at `Debug` level (timeouts and connection failures at `Warning`). It never logs credentials, callback secrets, request bodies or response bodies.

@@ -25,7 +25,7 @@ public sealed class PaymentWebhookTests
             timestamp: new DateTimeOffset(2026, 11, 11, 12, 35, 49, TimeSpan.Zero));
 
     private static PaymentWebhook CreateWebhook(MoolreResponseCode code, TransactionStatus status, bool wireStatusIsSuccess) =>
-        new(code, "message", CreateData(status), wireStatusIsSuccess);
+        new(code, "message", CreateData(status), wireStatusIsSuccess, eventId: null, eventType: null);
 
     [Fact]
     public void IsSuccessfulPayment_WhenStatusCodeAndTransactionStatusAllAgree_IsTrue()

@@ -6,6 +6,26 @@ All notable changes to this project are documented here. The format follows [Kee
 
 ### Added
 
+- Webhook signature verification: `MoolreWebhookVerifier.IsSignatureValid` checks Moolre's `X-Moolre-Signature` header (HMAC-SHA256 of `"<t>.<raw body>"` with the wallet's callback secret, constant-time, 5-minute `MoolreWebhookOptions.SignatureTolerance`), tested against Moolre's published vectors. `SignatureHeaderName` names the header.
+- `PaymentWebhook.EventId` and `PaymentWebhook.EventType` (Moolre's `event_id` and `event`), for handling each event once.
+
+### Deprecated
+
+- `MoolreWebhookVerifier.IsSecretValid` and `PaymentWebhookData.Secret`: Moolre removes `data.secret` after 31 March 2027. Use `IsSignatureValid`.
+
+### Fixed
+
+- `CreateSandboxAccountAsync` now sends only `X-API-USER`. Moolre documents the key as optional there, and a live private key made the sandbox answer AIN01 (found in a sandbox run).
+
+- Disabled automatic cookies in the SDK HTTP handler and removed remote response codes and raw transport exceptions from SDK logs.
+- Validate the full supported timeout range during options validation.
+
+### Changed
+
+- Reuse the JSON request buffer and map array responses without an intermediate list.
+
+### Added
+
 - Project setup: `net10.0` library `Zhuwa.Moolre.Sdk`, xunit v3 test project, central package management, pinned SDK, strict analyzers (warnings are errors), documentation file generation, trimming and AOT analyzers, package validation, Source Link and symbol packages, NuGet vulnerability audit.
 - Public API tracking (`.PublicAPI/Shipped.txt` and `Unshipped.txt`) and a banned-APIs list (`BannedSymbols.txt`), both enforced by the build.
 - One `artifacts/` output folder, a separate NuGet README (`package-readme.md`), Dependabot, dependency review, issue and pull request templates, Code of Conduct, and GitHub Actions pinned to commit SHAs.

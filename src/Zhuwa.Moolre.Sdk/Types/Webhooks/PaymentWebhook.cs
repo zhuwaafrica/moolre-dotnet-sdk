@@ -13,13 +13,29 @@ public class PaymentWebhook
         MoolreResponseCode code,
         string? message,
         PaymentWebhookData data,
-        bool wireStatusIsSuccess)
+        bool wireStatusIsSuccess,
+        string? eventId,
+        string? eventType)
     {
         Code = code;
         Message = message;
         Data = data;
         _wireStatusIsSuccess = wireStatusIsSuccess;
+        EventId = eventId;
+        EventType = eventType;
     }
+
+    /// <summary>
+    /// The event's ID, such as <c>evt_0123456789abcdef01234567</c>. Moolre field <c>event_id</c>. It is the same on every retry and resend,
+    /// so store it under a unique key and handle each event once. <see langword="null"/> on callbacks without event fields.
+    /// </summary>
+    public string? EventId { get; }
+
+    /// <summary>
+    /// The event name, such as <c>payment.succeeded</c>, <c>payment.failed</c> or <c>webhook.test</c>. Moolre field <c>event</c>.
+    /// <see langword="null"/> on callbacks without event fields.
+    /// </summary>
+    public string? EventType { get; }
 
     /// <summary>The payment outcome code: <c>P01</c> successful or <c>P02</c> failed. Not an HTTP status. Moolre field <c>code</c>.</summary>
     public MoolreResponseCode Code { get; }
@@ -40,8 +56,8 @@ public class PaymentWebhook
         && Data.Status == TransactionStatus.Successful;
 
     /// <summary>
-    /// Reads the body Moolre posted to your callback URL. Parsing does not verify it: check the secret with
-    /// <see cref="MoolreWebhookVerifier.IsSecretValid"/> before changing any records.
+    /// Reads the body Moolre posted to your callback URL. Parsing does not verify it: check the signature with
+    /// <see cref="MoolreWebhookVerifier.IsSignatureValid(ReadOnlySpan{byte}, string)"/> before changing any records.
     /// </summary>
     /// <param name="utf8Json">The raw request body.</param>
     /// <returns>The callback.</returns>

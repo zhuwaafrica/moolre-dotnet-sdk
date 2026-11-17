@@ -21,7 +21,7 @@ Moolre gives each **wallet** its own API credentials, created in the Moolre app 
 | WhatsApp VAS key | `WhatsAppVasKey` | WhatsApp (a different key from SMS) |
 | Wallet account number | `AccountNumber` | The wallet calls act on, unless a request names another |
 
-The sandbox does not check the private and public keys, so you can start with just the API user. SMS and WhatsApp need their keys in the sandbox too.
+The sandbox does not need the private and public keys, so you can start with just the API user. Keys generated in the Moolre app are live keys: they do not work in the sandbox (Moolre: "live keys never work in the sandbox"). SMS and WhatsApp need their keys in the sandbox too.
 
 ## 3. Register the SDK
 

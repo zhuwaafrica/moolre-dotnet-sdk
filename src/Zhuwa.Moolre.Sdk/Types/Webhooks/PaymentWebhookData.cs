@@ -35,7 +35,10 @@ public class PaymentWebhookData
         ExternalReference = externalReference;
         ThirdPartyReference = thirdPartyReference;
         Reason = reason;
+        // The SDK still fills the deprecated field until Moolre stops sending it; only callers reading it should see the warning.
+#pragma warning disable CS0618
         Secret = secret;
+#pragma warning restore CS0618
         Timestamp = timestamp;
     }
 
@@ -82,9 +85,11 @@ public class PaymentWebhookData
     public string? Reason { get; }
 
     /// <summary>
-    /// The callback secret Moolre sent. Moolre field <c>secret</c>. Sensitive: never log it, and do not compare it yourself; use
-    /// <see cref="Webhooks.MoolreWebhookVerifier.IsSecretValid"/>, which compares in constant time. Empty when the callback had none.
+    /// The callback secret Moolre sent. Moolre field <c>secret</c>. Sensitive: never log it, and do not compare it yourself. Empty when the
+    /// callback had none. Deprecated by Moolre: verify the signature header with
+    /// <see cref="Webhooks.MoolreWebhookVerifier.IsSignatureValid(ReadOnlySpan{byte}, string)"/> instead.
     /// </summary>
+    [Obsolete(Webhooks.MoolreWebhookVerifier.SecretFieldObsoleteMessage)]
     public string Secret { get; }
 
     /// <summary>Timestamp. Moolre field <c>ts</c> (GMT).</summary>

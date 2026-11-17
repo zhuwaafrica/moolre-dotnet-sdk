@@ -26,7 +26,7 @@ internal static class MoolreEndpoints
     /// <summary>Wallet, settings, balance and account transactions.</summary>
     internal static class Accounts
     {
-        internal static readonly MoolreEndpoint CreateSandboxAccount = Define(nameof(Accounts), AccountCreatePath, 1, CredentialKind.Private, isSafeToRepeat: false);
+        internal static readonly MoolreEndpoint CreateSandboxAccount = Define(nameof(Accounts), AccountCreatePath, 1, CredentialKind.User, isSafeToRepeat: false);
         internal static readonly MoolreEndpoint Update = Define(nameof(Accounts), "/open/account/update", 1, CredentialKind.Private, isSafeToRepeat: false);
         internal static readonly MoolreEndpoint GetStatus = Define(nameof(Accounts), AccountStatusPath, 1, CredentialKind.Private, isSafeToRepeat: true);
         internal static readonly MoolreEndpoint ListTransactions = Define(nameof(Accounts), AccountStatusPath, 2, CredentialKind.Private, isSafeToRepeat: true);

@@ -39,3 +39,9 @@ Result types (for example `TransferResult`) have internal constructors, because 
 ## Against the sandbox
 
 Use `MoolreEnvironment.Sandbox` and your sandbox credentials. The sandbox does not move real money, and `RequestMobileMoneyRequest.SkipOtp = true` skips the one-time code step there.
+
+What the sandbox did not support when checked on 17 November 2026:
+
+- **Sales** (airtime, data, bundles): `sandbox.moolre.com/open/sales/...` answers HTTP 404 with an HTML page; the live API serves these paths.
+- **Bank collection accounts** (`CreateBankAccountAsync`): the sandbox answers "Request type invalid".
+- **Update Account** without `AccountName`: the sandbox rejects it, although Moolre's docs mark the name optional. Send the name with every update.

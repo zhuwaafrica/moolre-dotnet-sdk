@@ -12,9 +12,9 @@ internal sealed class MoolreOptionsValidator : IValidateOptions<MoolreOptions>
         // Collect every problem so the developer can fix them all in one go, not one error per restart.
         var failures = new List<string>();
 
-        if (options.Timeout <= TimeSpan.Zero)
+        if (options.Timeout <= TimeSpan.Zero || options.Timeout.TotalMilliseconds > uint.MaxValue - 1)
         {
-            failures.Add("MoolreOptions.Timeout must be greater than zero.");
+            failures.Add("MoolreOptions.Timeout must be greater than zero and at most 4,294,967,294 milliseconds.");
         }
 
         // Credentials travel in headers, so a plain http address would send them in clear text.

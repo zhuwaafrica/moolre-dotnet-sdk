@@ -1203,7 +1203,7 @@ Registers a named wallet. Moolre issues credentials per wallet (a key for one wa
 IServiceCollection services.AddMoolreWebhooks(Action<MoolreWebhookOptions> configure)
 ```
 
-Registers `MoolreWebhookVerifier` for your payment callback endpoint. The secret is checked when the application starts.
+Registers `MoolreWebhookVerifier` for your payment callback endpoint. The settings are checked when the application starts.
 
 | Parameter | Description |
 | --- | --- |
@@ -1240,7 +1240,7 @@ Gets the client for a registered wallet. The same name always gives the same cli
 PaymentWebhook PaymentWebhook.Parse(ReadOnlySpan<byte> utf8Json)
 ```
 
-Reads the body Moolre posted to your callback URL. Parsing does not verify it: check the secret with `IsSecretValid` before changing any records.
+Reads the body Moolre posted to your callback URL. Parsing does not verify it: check the signature with `IsSignatureValid` before changing any records.
 
 | Parameter | Description |
 | --- | --- |
@@ -1301,13 +1301,33 @@ Tries to read a callback body given as text. See `TryParse`.
 
 **Returns:** Whether the body could be read.
 
+### `IsSignatureValid`
+
+```csharp
+bool verifier.IsSignatureValid(string rawBody, string? signatureHeader)
+```
+
+Whether the callback carries a valid Moolre signature, with the body given as text. See `IsSignatureValid`; prefer that overload with the raw bytes when you have them.
+
+| Parameter | Description |
+| --- | --- |
+| `rawBody` | The request body exactly as received. |
+| `signatureHeader` | The value of the `SignatureHeaderName` header; `null` when it was absent. |
+
+**Returns:** `true` only when a signature matches and its timestamp is recent.
+
+| Throws | When |
+| --- | --- |
+| `ArgumentNullException` | `rawBody` is null. |
+| `InvalidOperationException` | No secret is configured at all. |
+
 ### `IsSecretValid`
 
 ```csharp
 bool verifier.IsSecretValid(PaymentWebhook webhook)
 ```
 
-Whether the callback carries the right secret for its wallet: the one in `WalletSecrets` for the callback's account number, or `Secret` otherwise. A callback for a wallet with no secret configured is rejected. The comparison takes the same time whatever the input, so timing cannot reveal a secret. Reject the callback when this is `false`.
+Whether the callback carries the right secret for its wallet in its deprecated `data.secret` field: the one in `WalletSecrets` for the callback's account number, or `Secret` otherwise. A callback for a wallet with no secret configured is rejected. The comparison takes the same time whatever the input.
 
 | Parameter | Description |
 | --- | --- |
@@ -1318,4 +1338,23 @@ Whether the callback carries the right secret for its wallet: the one in `Wallet
 | Throws | When |
 | --- | --- |
 | `ArgumentNullException` | `webhook` is null. |
+| `InvalidOperationException` | No secret is configured at all; a missing setting never counts as a match. |
+
+### `IsSignatureValid`
+
+```csharp
+bool verifier.IsSignatureValid(ReadOnlySpan<byte> rawBody, string? signatureHeader)
+```
+
+Whether the callback carries a valid Moolre signature: the `SignatureHeaderName` header must hold a `v1` HMAC-SHA256 of `"<t>.<raw body>"` keyed with the callback's wallet secret (from `WalletSecrets` for the callback's account number, or `Secret` otherwise), and `t` must be within `SignatureTolerance` of the current time. The comparison takes the same time whatever the input. Reject the callback when this is `false`.
+
+| Parameter | Description |
+| --- | --- |
+| `rawBody` | The request body exactly as received. Re-serialised JSON gives different bytes and never matches. |
+| `signatureHeader` | The value of the `SignatureHeaderName` header; `null` when it was absent. |
+
+**Returns:** `true` only when a signature matches and its timestamp is recent.
+
+| Throws | When |
+| --- | --- |
 | `InvalidOperationException` | No secret is configured at all; a missing setting never counts as a match. |

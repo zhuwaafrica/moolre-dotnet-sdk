@@ -53,6 +53,7 @@ public sealed class TransportHardeningTests
             CredentialKind.Private => ("user", "private", (string?)null, (string?)null),
             CredentialKind.Either => ("user", "private", null, null),
             CredentialKind.Public => ("user", null, "public", null),
+            CredentialKind.User => ("user", null, null, null),
             CredentialKind.Sms => (null, null, null, "sms"),
             CredentialKind.WhatsApp => (null, null, null, "whatsapp"),
             _ => ((string?)null, (string?)null, (string?)null, (string?)null),

@@ -12,7 +12,7 @@ internal static class SmsMapper
     /// <summary>Maps an SMS status response, whose <c>data</c> is an array of <c>{ ref, status }</c>.</summary>
     internal static SmsStatusResult ToSmsStatusResult(this ResponseEnvelope envelope)
     {
-        var statuses = MoolreJson.ReadDataList(envelope.Data, MoolreJsonContext.Default.SmsStatusWire)
+        var statuses = MoolreJson.EnumerateData(envelope.Data, MoolreJsonContext.Default.SmsStatusWire)
             .Select(s => new SmsDeliveryStatus(s.Reference ?? string.Empty, s.Status))
             .ToList();
 
@@ -44,7 +44,7 @@ internal static class SmsMapper
     /// </summary>
     internal static SenderIdListResult ToSenderIdListResult(this ResponseEnvelope envelope)
     {
-        var senderIds = MoolreJson.ReadDataList(envelope.Data, MoolreJsonContext.Default.SenderIdWire)
+        var senderIds = MoolreJson.EnumerateData(envelope.Data, MoolreJsonContext.Default.SenderIdWire)
             .Select(s => new SenderIdInfo(s.Id ?? string.Empty, s.SenderId ?? string.Empty, ToApproval(s.Approval), s.IsWhitelisted))
             .ToList();
 

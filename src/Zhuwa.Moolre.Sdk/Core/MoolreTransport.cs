@@ -1,4 +1,3 @@
-using System.Buffers;
 using System.Net;
 using System.Net.Http.Headers;
 using System.Text.Json;
@@ -112,8 +111,8 @@ internal sealed partial class MoolreTransport
         byte[] body;
         try
         {
-            // The HttpClient is not disposed: clients from IHttpClientFactory are cheap and must not be disposed per call.
-            var client = _httpClientFactory.CreateClient(MoolreHttpClientConfiguration.ClientNameFor(_walletName));
+            // Disposing a factory-created client leaves its pooled handler available for reuse.
+            using var client = _httpClientFactory.CreateClient(MoolreHttpClientConfiguration.ClientNameFor(_walletName));
             // ResponseContentRead makes the HttpClient buffer the whole body itself, which is the only path where it enforces
             // MaxResponseContentBufferSize (16 MB, see MoolreHttpClientConfiguration); a larger body fails here instead of filling
             // memory. Reading inside the same try means a failure while reading is handled like a failure to connect, because the
@@ -141,7 +140,7 @@ internal sealed partial class MoolreTransport
         // The filter is narrow on purpose: no other exception type is swallowed.
         catch (Exception ex) when ((ex is HttpRequestException or IOException) && !endpoint.IsSafeToRepeat)
         {
-            LogFailed(_logger, endpoint.Name, ex);
+            LogFailed(_logger, endpoint.Name);
             throw Uncertain(endpoint, externalReference, "failed after the request may have been sent", ex);
         }
 
@@ -158,8 +157,8 @@ internal sealed partial class MoolreTransport
             throw Uncertain(endpoint, externalReference, "returned a response that could not be read", ex);
         }
 
-        // Log the operation, HTTP status and Moolre code only. Never the body, headers or credentials.
-        LogCompleted(_logger, endpoint.Name, (int)statusCode, envelope.Code.Value);
+        // Only log local operation names and HTTP statuses. Response fields can contain sensitive data.
+        LogCompleted(_logger, endpoint.Name, (int)statusCode);
 
         // Authentication and duplicate-reference failures mean the same thing for every operation, so they are handled here.
         // Any other failure is left to the caller, because some "failures" (pending, OTP needed, not found) are valid results.
@@ -204,7 +203,7 @@ internal sealed partial class MoolreTransport
         if (!isGet)
         {
             // Written with Utf8JsonWriter from the JSON object: no reflection (trimming and AOT safe) and correct escaping of every value.
-            var buffer = new ArrayBufferWriter<byte>();
+            using var buffer = new MemoryStream();
             using (var writer = new Utf8JsonWriter(buffer))
             {
                 body.WriteTo(writer);
@@ -212,7 +211,7 @@ internal sealed partial class MoolreTransport
 
             // A byte array, not a stream: it can be sent again by the HttpClient if it ever needs to (for example a handler the
             // caller adds), and the request disposes it with the message.
-            request.Content = new ByteArrayContent(buffer.WrittenSpan.ToArray());
+            request.Content = new ByteArrayContent(buffer.GetBuffer(), 0, checked((int)buffer.Length));
             request.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
         }
 
@@ -243,12 +242,12 @@ internal sealed partial class MoolreTransport
             externalReference,
             inner);
 
-    [LoggerMessage(Level = LogLevel.Debug, Message = "Moolre {Operation} answered HTTP {HttpStatus} with code {Code}")]
-    private static partial void LogCompleted(ILogger logger, string operation, int httpStatus, string code);
+    [LoggerMessage(Level = LogLevel.Debug, Message = "Moolre {Operation} answered HTTP {HttpStatus}")]
+    private static partial void LogCompleted(ILogger logger, string operation, int httpStatus);
 
     [LoggerMessage(Level = LogLevel.Warning, Message = "Moolre {Operation} timed out")]
     private static partial void LogTimedOut(ILogger logger, string operation);
 
     [LoggerMessage(Level = LogLevel.Warning, Message = "Moolre {Operation} failed before an answer was read")]
-    private static partial void LogFailed(ILogger logger, string operation, Exception exception);
+    private static partial void LogFailed(ILogger logger, string operation);
 }

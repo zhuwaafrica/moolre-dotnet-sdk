@@ -105,9 +105,9 @@ sequenceDiagram
 
 ## Receiving a webhook
 
-Moolre calls your endpoint when a payment succeeds or fails. The SDK gives you a parser and a secret check; deciding what to do stays in your code.
+Moolre calls your endpoint when a payment succeeds or fails. The SDK gives you a parser and a signature check; deciding what to do stays in your code.
 
-Moolre documents no signature, so `MoolreWebhookVerifier.IsSecretValid` (the callback secret, compared in constant time) is the verification. Moolre also publishes the addresses it sends callbacks from. Filter them in your firewall, load balancer or reverse proxy, not in application code; Moolre can change them, so check its documentation:
+Moolre signs each callback in the `X-Moolre-Signature` header, and `MoolreWebhookVerifier.IsSignatureValid` checks it: an HMAC-SHA256 of the raw body keyed with the wallet's callback secret, compared in constant time, with a 5-minute limit on the timestamp. The rules and test vectors come from Moolre's own PHP SDK. The older `data.secret` check (`IsSecretValid`) is obsolete because Moolre removes that field after 31 March 2027. Moolre also publishes the addresses it sends callbacks from. Filter them in your firewall, load balancer or reverse proxy, not in application code; Moolre can change them, so check its documentation:
 
 | IPv4 | IPv6 |
 | --- | --- |

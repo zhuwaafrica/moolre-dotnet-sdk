@@ -79,11 +79,12 @@ public static class MoolreServiceCollectionExtensions
                 MoolreHttpClientConfiguration.Configure(client, provider.GetRequiredService<IOptionsMonitor<MoolreOptions>>().Get(name)))
             // The credential headers are custom headers, which .NET keeps when it follows a redirect to another host.
             // Moolre does not redirect its API, so a redirect is treated as a failure instead of followed.
-            .ConfigurePrimaryHttpMessageHandler(() => new SocketsHttpHandler { AllowAutoRedirect = false });
+            // Authentication uses headers, so the pooled handler does not need to store or replay cookies.
+            .ConfigurePrimaryHttpMessageHandler(() => new SocketsHttpHandler { AllowAutoRedirect = false, UseCookies = false });
     }
 
     /// <summary>
-    /// Registers <see cref="MoolreWebhookVerifier"/> for your payment callback endpoint. The secret is checked when the application starts.
+    /// Registers <see cref="MoolreWebhookVerifier"/> for your payment callback endpoint. The settings are checked when the application starts.
     /// </summary>
     /// <param name="services">The service collection.</param>
     /// <param name="configure">
@@ -105,8 +106,14 @@ public static class MoolreServiceCollectionExtensions
             .Validate(
                 options => options.WalletSecrets.All(pair => !string.IsNullOrWhiteSpace(pair.Key) && !string.IsNullOrEmpty(pair.Value)),
                 "Every MoolreWebhookOptions.WalletSecrets entry needs a wallet account number and a secret.")
+            .Validate(
+                options => options.SignatureTolerance > TimeSpan.Zero,
+                "MoolreWebhookOptions.SignatureTolerance must be greater than zero.")
             .ValidateOnStart();
 
+        // The signature check compares Moolre's timestamp with the current time. TryAdd keeps a TimeProvider the application (or a test)
+        // has registered already, the same way ASP.NET Core and Microsoft.Extensions.Caching register it.
+        services.TryAddSingleton(TimeProvider.System);
         services.TryAddSingleton<MoolreWebhookVerifier, DefaultMoolreWebhookVerifier>();
 
         return services;

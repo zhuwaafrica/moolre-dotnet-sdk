@@ -25,7 +25,7 @@ public sealed class FixtureTests
     [Fact]
     public void FixtureFolder_AfterBuild_ContainsEveryDocumentedExample()
     {
-        const int DocumentedExampleCount = 59;
+        const int DocumentedExampleCount = 60;
 
         var actual = Directory.EnumerateFiles(FixtureRoot, "*.json", SearchOption.AllDirectories).Count();
 

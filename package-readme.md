@@ -71,8 +71,8 @@ Calls that move money or send messages are **never retried** by the SDK. Every M
 ```csharp
 builder.Services.AddMoolreWebhooks(o => o.Secret = builder.Configuration["Moolre:CallbackSecret"]);
 
-// In your endpoint:
-if (PaymentWebhook.TryParse(body, out var webhook) && verifier.IsSecretValid(webhook) && webhook.IsSuccessfulPayment)
+// In your endpoint, with the raw body bytes and the X-Moolre-Signature header:
+if (verifier.IsSignatureValid(body, signature) && PaymentWebhook.TryParse(body, out var webhook) && webhook.IsSuccessfulPayment)
 {
     // confirm with Payments.GetStatusAsync, then fulfil once
 }

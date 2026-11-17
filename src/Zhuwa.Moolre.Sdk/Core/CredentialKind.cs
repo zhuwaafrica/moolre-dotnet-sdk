@@ -23,4 +23,10 @@ internal enum CredentialKind
 
     /// <summary>The WhatsApp service <c>X-API-VASKEY</c>.</summary>
     WhatsApp = 5,
+
+    /// <summary>
+    /// <c>X-API-USER</c> only. The sandbox's Create Account documents <c>X-API-KEY</c> as optional and rejects a key that is not a sandbox
+    /// key (a live key gives AIN01), so no key is sent at all.
+    /// </summary>
+    User = 6,
 }

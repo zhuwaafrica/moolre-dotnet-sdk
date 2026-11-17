@@ -24,7 +24,10 @@ public sealed class WebhooksMapperTests
         Assert.Equal(98.97m, webhook.Data.Value);
         Assert.Equal("54214408", webhook.Data.TransactionId);
         Assert.Equal("CDT20261111F1CE1703", webhook.Data.ExternalReference);
+        // The deprecated field is still read until Moolre stops sending it.
+#pragma warning disable CS0618
         Assert.Equal("YOUR_CALLBACK_SECRET", webhook.Data.Secret);
+#pragma warning restore CS0618
         Assert.Equal(new DateTimeOffset(2026, 11, 11, 12, 35, 49, TimeSpan.Zero), webhook.Data.Timestamp);
         Assert.Null(webhook.Data.Reason);
     }
@@ -98,6 +101,30 @@ public sealed class WebhooksMapperTests
     {
         var webhook = PaymentWebhook.Parse("""{"status":1,"code":"P01","data":{"txstatus":1}}"""u8);
 
+#pragma warning disable CS0618
         Assert.Equal(string.Empty, webhook.Data.Secret);
+#pragma warning restore CS0618
+    }
+
+    [Fact]
+    public void Parse_ACallbackWithEventFields_ReadsTheEventIdAndType()
+    {
+        // The body of Moolre's "valid" signature vector, which carries the event fields Moolre added in November 2026.
+        var body = """{"status":1,"code":"P01","message":"Transaction Successful","data":{"txstatus":1,"externalref":"PAY-1001","amount":"1.00"},"go":null,"event_id":"evt_0123456789abcdef01234567","event":"payment.succeeded","created":"2025-11-15T08:26:40Z","meta":{"notices":[]}}""";
+
+        var webhook = PaymentWebhook.Parse(body);
+
+        Assert.Equal("evt_0123456789abcdef01234567", webhook.EventId);
+        Assert.Equal("payment.succeeded", webhook.EventType);
+        Assert.True(webhook.IsSuccessfulPayment);
+    }
+
+    [Fact]
+    public void Parse_ACallbackWithoutEventFields_ReadsNullEventIdAndType()
+    {
+        var webhook = PaymentWebhook.Parse(Fixture("successful-payment-callback.json"));
+
+        Assert.Null(webhook.EventId);
+        Assert.Null(webhook.EventType);
     }
 }

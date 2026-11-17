@@ -9,7 +9,7 @@ internal static class WhatsAppMapper
     /// <summary>Maps a templates page: <c>data</c> is the templates, and the top-level <c>next</c> is the cursor for the next page.</summary>
     internal static WhatsAppTemplatesPage ToTemplatesPage(this ResponseEnvelope envelope)
     {
-        var templates = MoolreJson.ReadDataList(envelope.Data, MoolreJsonContext.Default.WhatsAppTemplateWire)
+        var templates = MoolreJson.EnumerateData(envelope.Data, MoolreJsonContext.Default.WhatsAppTemplateWire)
             .Select(t => new WhatsAppTemplate(
                 t.Id ?? string.Empty,
                 t.Name ?? string.Empty,
@@ -30,7 +30,7 @@ internal static class WhatsAppMapper
     internal static WhatsAppSendResult ToSendResult(this ResponseEnvelope envelope)
     {
         var warning = envelope.Error.ValueKind == JsonValueKind.String && envelope.Error.GetString() is { Length: > 0 } text ? text : null;
-        var notSent = MoolreJson.ReadDataList(envelope.Data, MoolreJsonContext.Default.WhatsAppRejectedWire)
+        var notSent = MoolreJson.EnumerateData(envelope.Data, MoolreJsonContext.Default.WhatsAppRejectedWire)
             .Select(m => new WhatsAppRejectedMessage(m.Recipient ?? string.Empty, m.Reference ?? string.Empty))
             .ToList();
 
@@ -40,7 +40,7 @@ internal static class WhatsAppMapper
     /// <summary>Maps a status response, whose <c>data</c> is an array of <c>{ ref, status }</c>; statuses are kept exactly as text.</summary>
     internal static WhatsAppStatusResult ToStatusResult(this ResponseEnvelope envelope)
     {
-        var statuses = MoolreJson.ReadDataList(envelope.Data, MoolreJsonContext.Default.WhatsAppStatusWire)
+        var statuses = MoolreJson.EnumerateData(envelope.Data, MoolreJsonContext.Default.WhatsAppStatusWire)
             .Select(s => new WhatsAppMessageStatus(
                 s.Reference ?? string.Empty,
                 string.IsNullOrWhiteSpace(s.Status) ? default : new WhatsAppDeliveryStatus(s.Status)))

@@ -27,12 +27,14 @@ public sealed class AddMoolreTests
         Assert.Same(client, provider.GetRequiredService<MoolreClient>());
     }
 
-    [Fact]
-    public void AddMoolre_WithAnInvalidTimeout_FailsWhenTheOptionsAreRead()
+    [Theory]
+    [InlineData(0L)]
+    [InlineData(4_294_967_295L)]
+    public void AddMoolre_WithAnInvalidTimeout_FailsWhenTheOptionsAreRead(long timeoutMilliseconds)
     {
         using var provider = new ServiceCollection()
             .AddLogging()
-            .AddMoolre(options => options.Timeout = TimeSpan.Zero)
+            .AddMoolre(options => options.Timeout = TimeSpan.FromMilliseconds(timeoutMilliseconds))
             .BuildServiceProvider();
 
         var exception = Assert.Throws<OptionsValidationException>(() => provider.GetRequiredService<IOptions<MoolreOptions>>().Value);
@@ -79,7 +81,7 @@ public sealed class AddMoolreTests
     }
 
     [Fact]
-    public void AddMoolre_Always_DoesNotFollowRedirectsBecauseTheCredentialsAreCustomHeaders()
+    public void AddMoolre_Always_DisablesRedirectsAndCookies()
     {
         using var provider = new ServiceCollection().AddLogging().AddMoolre(_ => { }).BuildServiceProvider();
 
@@ -91,6 +93,7 @@ public sealed class AddMoolreTests
 
         var primary = Assert.IsType<SocketsHttpHandler>(handler);
         Assert.False(primary.AllowAutoRedirect);
+        Assert.False(primary.UseCookies);
     }
 
     [Fact]

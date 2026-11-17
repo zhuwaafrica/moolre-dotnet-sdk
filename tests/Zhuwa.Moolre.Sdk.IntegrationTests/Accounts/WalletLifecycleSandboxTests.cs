@@ -12,7 +12,8 @@ public sealed class WalletLifecycleSandboxTests
     public async Task CreateSandboxAccountAsync_ThenUpdateAsync_ThenListTransactionsAsync_WorkOnTheNewWallet()
     {
         using var sandbox = new SandboxClient();
-        var name = "Zhuwa IT " + Guid.NewGuid().ToString("N")[..10];
+        // The sandbox accepts 2 to 30 letters and digits only, so no spaces.
+        var name = "ZhuwaIT" + Guid.NewGuid().ToString("N")[..10];
 
         var created = await sandbox.Moolre.Accounts.CreateSandboxAccountAsync(
             new CreateSandboxAccountRequest
@@ -25,7 +26,8 @@ public sealed class WalletLifecycleSandboxTests
 
         var walletNumber = created.Account.AccountNumber;
         var updated = await sandbox.Moolre.Accounts.UpdateAsync(
-            new UpdateAccountRequest { AccountNumber = walletNumber, CallbackUrl = new Uri("https://example.com/moolre/updated") },
+            // Moolre's docs mark accountname optional on update, but the sandbox rejects an update without it (checked 17 Nov 2026).
+            new UpdateAccountRequest { AccountNumber = walletNumber, AccountName = name, CallbackUrl = new Uri("https://example.com/moolre/updated") },
             TestContext.Current.CancellationToken);
         var transactions = await sandbox.Moolre.Accounts.ListTransactionsAsync(
             new ListAccountTransactionsRequest { AccountNumber = walletNumber },

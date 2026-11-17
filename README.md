@@ -150,20 +150,21 @@ app.MapPost("/moolre/callback", async (HttpRequest http, MoolreWebhookVerifier v
 {
     using var body = new MemoryStream();
     await http.Body.CopyToAsync(body);
+    var rawBody = body.ToArray();
 
-    if (!PaymentWebhook.TryParse(body.ToArray(), out var webhook)) return Results.BadRequest();
-    if (!verifier.IsSecretValid(webhook)) return Results.Unauthorized();
+    if (!verifier.IsSignatureValid(rawBody, http.Headers[MoolreWebhookVerifier.SignatureHeaderName])) return Results.Unauthorized();
+    if (!PaymentWebhook.TryParse(rawBody, out var webhook)) return Results.BadRequest();
 
     if (webhook.IsSuccessfulPayment)
     {
-        // Confirm with Payments.GetStatusAsync, then fulfil the order exactly once.
+        // Confirm with Payments.GetStatusAsync, then fulfil the order exactly once (deduplicate on webhook.EventId).
     }
 
     return Results.Ok();
 });
 ```
 
-The secret is compared in constant time. For several wallets, set one secret per wallet in `WalletSecrets`. See [Payment webhooks](docs/webhooks.md), including Moolre's callback addresses for your firewall.
+The `X-Moolre-Signature` header (an HMAC-SHA256 of the raw body, keyed with the wallet's callback secret) is checked in constant time, and callbacks more than 5 minutes old are rejected. For several wallets, set one secret per wallet in `WalletSecrets`. See [Payment webhooks](docs/webhooks.md), including Moolre's callback addresses for your firewall.
 
 ## Documentation
 

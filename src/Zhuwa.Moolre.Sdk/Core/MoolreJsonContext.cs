@@ -87,6 +87,7 @@ namespace Zhuwa.Moolre.Core;
 [JsonSerializable(typeof(PaymentAccountLookupWire))]
 [JsonSerializable(typeof(PaymentAccountWire))]
 [JsonSerializable(typeof(PaymentWebhookWire))]
+[JsonSerializable(typeof(PaymentWebhookEventWire))]
 [JsonSerializable(typeof(SaleWire))]
 [JsonSerializable(typeof(BundleCatalogWire))]
 [JsonSerializable(typeof(BundleWire))]

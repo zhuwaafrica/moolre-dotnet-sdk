@@ -22,11 +22,11 @@ public sealed class RedactionTests
         var logger = new CapturingLogger();
         var options = new MoolreOptions { ApiUser = ApiUser, PrivateKey = PrivateKey, PublicKey = PublicKey, AccountNumber = "1", Timeout = TimeSpan.FromMilliseconds(50) };
 
-        await Send(StubHttpHandler.ReturningFixture("account-status/response-200-success.json"), options, logger, MoolreEndpoints.Accounts.GetStatus);
+        await Send(StubHttpHandler.Returning($$"""{"status":1,"code":"{{PublicKey}}"}"""), options, logger, MoolreEndpoints.Accounts.GetStatus);
         await Assert.ThrowsAsync<MoolreOutcomeUncertainException>(() =>
             Send(StubHttpHandler.NeverAnswering(), options, logger, MoolreEndpoints.Transfers.Send));
         await Assert.ThrowsAsync<MoolreOutcomeUncertainException>(() =>
-            Send(StubHttpHandler.Throwing(new HttpRequestException("reset")), options, logger, MoolreEndpoints.Payments.RequestMobileMoney));
+            Send(StubHttpHandler.Throwing(new HttpRequestException($"Request failed with {PrivateKey}")), options, logger, MoolreEndpoints.Payments.RequestMobileMoney));
 
         Assert.NotEmpty(logger.Messages);
         Assert.All(logger.Messages, message =>

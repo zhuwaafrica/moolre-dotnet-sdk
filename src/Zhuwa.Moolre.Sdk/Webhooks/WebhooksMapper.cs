@@ -43,7 +43,18 @@ internal static class WebhooksMapper
             wire.Secret ?? string.Empty,
             wire.Timestamp);
 
-        return new PaymentWebhook(envelope.Code, envelope.Message, details, envelope.IsSuccess);
+        // The event fields sit at the top level, beside the envelope, so they are read from the whole body. The envelope parse above has
+        // already proved the body is a JSON object, so this read cannot fail on the shape.
+        var eventWire = JsonSerializer.Deserialize(utf8Json, MoolreJsonContext.Default.PaymentWebhookEventWire);
+
+        return new PaymentWebhook(
+            envelope.Code,
+            envelope.Message,
+            details,
+            envelope.IsSuccess,
+            // Absent from callbacks sent before Moolre added events, so both read as null rather than empty text.
+            Blank(eventWire?.EventId),
+            Blank(eventWire?.EventType));
     }
 
     private static string? Blank(string? value) => string.IsNullOrWhiteSpace(value) ? null : value;

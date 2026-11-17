@@ -21,6 +21,9 @@ internal static class MoolreRequestPolicy
         {
             case CredentialKind.None:
                 break;
+            case CredentialKind.User:
+                AddUser(headers, endpoint, options);
+                break;
             case CredentialKind.Private:
                 AddUser(headers, endpoint, options);
                 AddKey(headers, PrivateKeyHeader, options.PrivateKey, keysRequired, endpoint, nameof(MoolreOptions.PrivateKey));
