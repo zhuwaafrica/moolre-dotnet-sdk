@@ -66,7 +66,9 @@ Full history: https://github.com/zhuwaafrica/moolre-dotnet-sdk/blob/main/CHANGEL
   <ItemGroup>
     <None Update="package-icon.png" Pack="true" PackagePath="" />
     <None Include="..\..\package-readme.md" Pack="true" PackagePath="\" />
-    <None Include="package-icon.png" Pack="true" PackagePath="\" />
+    <!-- Update, not Include: the SDK already adds every file in the project folder as a None item, and a second Include packs the
+         icon twice, which nuget.org rejects ("duplicated files in the same folder"). -->
+    <None Update="package-icon.png" Pack="true" PackagePath="\" />
   </ItemGroup>
 
   <!-- Build-time only: computes the version from git tags and adds nothing to the package's dependencies. -->
