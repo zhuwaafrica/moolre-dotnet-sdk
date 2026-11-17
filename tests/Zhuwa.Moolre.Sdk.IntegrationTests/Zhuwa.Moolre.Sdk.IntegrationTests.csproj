@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!-- Calls Moolre's real sandbox. Every test is skipped unless MOOLRE_SANDBOX_TESTS=1 and the needed credentials are set, so a
+       normal `dotnet test` (and CI) stays offline. Layout follows Octokit's separate Octokit.Tests.Integration project. -->
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <OutputType>Exe</OutputType>
+    <IsPackable>false</IsPackable>
+    <IsTestProject>true</IsTestProject>
+    <RootNamespace>Zhuwa.Moolre</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="xunit.v3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Zhuwa.Moolre.Sdk\Zhuwa.Moolre.Sdk.csproj" />
+  </ItemGroup>
+
+</Project>

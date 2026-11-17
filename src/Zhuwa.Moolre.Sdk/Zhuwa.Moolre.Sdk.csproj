@@ -29,8 +29,20 @@
     <RepositoryUrl>https://github.com/zhuwaafrica/moolre-dotnet-sdk</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageIcon>package-icon.png</PackageIcon>
     <PackageReadmeFile>package-readme.md</PackageReadmeFile>
-    <PackageReleaseNotes>Preview: project setup only; no Moolre endpoints implemented yet. See CHANGELOG.md.</PackageReleaseNotes>
+    <!-- The Zhuwa Africa logo, 128x128 PNG as NuGet recommends; shown on nuget.org and in the IDE package manager. -->
+    <PackageIcon>package-icon.png</PackageIcon>
+    <PackageReleaseNotes>
+First version:
+- All 31 documented Moolre operations: mobile money collections (with the OTP flow), payment links, Payment IDs and bank collection accounts, transfers and name validation, wallets and transaction history, airtime and data, SMS and WhatsApp.
+- Payment webhooks: parsing and X-Moolre-Signature verification (HMAC-SHA256, constant time, replay window), one secret per wallet.
+- Money safety: calls that move money or send messages are never retried; an unknown outcome throws MoolreOutcomeUncertainException with your reference.
+- Several wallets through named clients (AddMoolre(name, ...) and MoolreClientFactory).
+- Dependency injection first, trimming and Native AOT compatible, credentials never logged.
+
+Full history: https://github.com/zhuwaafrica/moolre-dotnet-sdk/blob/main/CHANGELOG.md
+    </PackageReleaseNotes>
 
     <!-- Source Link is built into the .NET SDK for GitHub; write the repository URL into the package. -->
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
@@ -44,8 +56,22 @@
     <EnablePackageValidation>true</EnablePackageValidation>
   </PropertyGroup>
 
+  <!-- Version: MinVer reads it from the latest git tag (v1.0.0 gives 1.0.0), so no version is written in any file. Builds after a
+       tag get the next patch as a prerelease (1.0.1-alpha.0.3). MinVer sets AssemblyVersion to the major version only, as
+       Microsoft's library guidance recommends, and FileVersion to major.minor.patch. -->
+  <PropertyGroup>
+    <MinVerTagPrefix>v</MinVerTagPrefix>
+  </PropertyGroup>
+
   <ItemGroup>
+    <None Update="package-icon.png" Pack="true" PackagePath="" />
     <None Include="..\..\package-readme.md" Pack="true" PackagePath="\" />
+    <None Include="package-icon.png" Pack="true" PackagePath="\" />
+  </ItemGroup>
+
+  <!-- Build-time only: computes the version from git tags and adds nothing to the package's dependencies. -->
+  <ItemGroup>
+    <PackageReference Include="MinVer" PrivateAssets="all" />
   </ItemGroup>
 
   <!-- Direct dependencies only; versions are in Directory.Packages.props. -->
@@ -54,7 +80,6 @@
     <PackageReference Include="Microsoft.Extensions.Http" />
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" />
     <PackageReference Include="Microsoft.Extensions.Options" />
-    <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" />
   </ItemGroup>
 
   <!-- Public API tracking: every public member must be listed in .PublicAPI/PublicAPI.Unshipped.txt (moved to

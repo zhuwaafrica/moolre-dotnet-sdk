@@ -25,16 +25,6 @@
     <NuGetAuditLevel>low</NuGetAuditLevel>
   </PropertyGroup>
 
-  <!-- Version. SemVer 2.0.0; a prerelease suffix until the SDK is complete and sandbox-verified.
-       AssemblyVersion carries only the major version (Microsoft library guidance); FileVersion carries the CI run number. -->
-  <PropertyGroup>
-    <VersionPrefix>0.1.0</VersionPrefix>
-    <VersionSuffix>preview.1</VersionSuffix>
-    <AssemblyVersion>$([System.Version]::Parse('$(VersionPrefix)').Major).0.0.0</AssemblyVersion>
-    <FileVersion Condition="'$(GITHUB_RUN_NUMBER)' != ''">$(VersionPrefix).$(GITHUB_RUN_NUMBER)</FileVersion>
-    <FileVersion Condition="'$(GITHUB_RUN_NUMBER)' == ''">$(VersionPrefix).0</FileVersion>
-  </PropertyGroup>
-
   <!-- Official-build settings only on CI (a local build keeps debugger source paths working). -->
   <PropertyGroup Condition="'$(GITHUB_ACTIONS)' == 'true'">
     <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>

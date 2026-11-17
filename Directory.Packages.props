@@ -13,11 +13,11 @@
     <PackageVersion Include="Microsoft.Extensions.Http" Version="10.0.0" />
     <PackageVersion Include="Microsoft.Extensions.Logging.Abstractions" Version="10.0.0" />
     <PackageVersion Include="Microsoft.Extensions.Options" Version="10.0.0" />
-    <PackageVersion Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="10.0.0" />
   </ItemGroup>
 
-  <!-- Build-time analyzers (private to the library; never a dependency of the package). -->
+  <!-- Build-time tools and analyzers (private to the library; never a dependency of the package). -->
   <ItemGroup>
+    <PackageVersion Include="MinVer" Version="8.0.0" />
     <PackageVersion Include="Microsoft.CodeAnalysis.BannedApiAnalyzers" Version="5.6.0" />
     <PackageVersion Include="Microsoft.CodeAnalysis.PublicApiAnalyzers" Version="5.6.0" />
   </ItemGroup>
@@ -25,6 +25,8 @@
   <!-- Test-only dependencies (xunit v3 runs on Microsoft.Testing.Platform; no VSTest packages needed). -->
   <ItemGroup>
     <PackageVersion Include="xunit.v3" Version="4.0.3" />
+    <!-- Code coverage for the test run (a Microsoft.Testing.Platform extension; see CONTRIBUTING.md). -->
+    <PackageVersion Include="Microsoft.Testing.Extensions.CodeCoverage" Version="18.12.0" />
   </ItemGroup>
 
 </Project>

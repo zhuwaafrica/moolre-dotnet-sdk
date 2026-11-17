@@ -1,6 +1,6 @@
 # Troubleshooting
 
-Based on Moolre's documented codes. The SDK is a preview with no endpoints implemented yet, so this describes what each situation will mean once calls exist.
+Based on Moolre's documented codes: what each situation means and what to do about it.
 
 ## Authentication errors (`AIN01`, `AIN03`, `AIN04`, `IN01`, `ASL00`, `ASS00`)
 

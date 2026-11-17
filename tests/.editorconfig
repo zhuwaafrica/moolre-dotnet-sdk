@@ -7,3 +7,5 @@ dotnet_diagnostic.CA1515.severity = none
 dotnet_diagnostic.CA2007.severity = none
 # IDE0005 only runs in a build when GenerateDocumentationFile is on; tests do not generate docs.
 dotnet_diagnostic.IDE0005.severity = none
+# The stub handler answers at once; the tests also call the no-token overloads on purpose.
+dotnet_diagnostic.xUnit1051.severity = none

@@ -1,50 +1,84 @@
 # Zhuwa.Moolre.Sdk
 
-An **unofficial, community-built** .NET client for the [Moolre](https://docs.moolre.com/) API, maintained by [Zhuwa Africa](https://github.com/zhuwaafrica).
+An **unofficial, community-built** .NET client for the [Moolre](https://docs.moolre.com/) API, maintained by [Zhuwa Africa](https://github.com/zhuwaafrica). It covers all 31 documented Moolre operations: mobile money collections, payment links, Payment IDs and bank collections, transfers, wallets, airtime and data, SMS and WhatsApp, plus payment webhooks.
 
 > This project is independent. It is not affiliated with, endorsed by, or supported by Moolre.
 
-## Status: preview, nothing implemented yet
+## Requirements
 
-The package builds, tests and packs, but **no Moolre endpoint is implemented yet**. Do not use it in production. The usage below is the design, not what ships today.
+- .NET 10 or later. Works with trimming and Native AOT.
+- Moolre API credentials for your wallet (created in the Moolre app; each wallet has its own).
 
-## What it will cover
+## Installation
 
-One package for the whole documented Moolre API: mobile money collections, payment links, Payment IDs and bank collections, transfers and name validation, wallet status and transactions, airtime and data sales, SMS and sender IDs, WhatsApp templates and messages, and payment webhook models.
+```bash
+dotnet add package Zhuwa.Moolre.Sdk --prerelease
+```
 
-## Planned usage (dependency injection first)
+## Usage
+
+Register the SDK once, then inject `MoolreClient`:
 
 ```csharp
+using Zhuwa.Moolre;
+using Zhuwa.Moolre.DependencyInjection;
+using Zhuwa.Moolre.Payments;
+
 builder.Services.AddMoolre(options =>
 {
-    options.Environment = MoolreEnvironment.Sandbox;   // sandbox is the default; live is an explicit choice
-    options.ApiUser = "...";                           // from configuration or a secret store, never source code
-    options.PublicKey = "...";
-    options.PrivateKey = "...";
-    options.AccountNumber = "...";
+    options.Environment = MoolreEnvironment.Sandbox;   // the default; Live is an explicit choice
+    options.ApiUser = builder.Configuration["Moolre:ApiUser"];
+    options.PublicKey = builder.Configuration["Moolre:PublicKey"];
+    options.AccountNumber = builder.Configuration["Moolre:AccountNumber"];
 });
 
 public class CheckoutService(MoolreClient moolre)
 {
-    // await moolre.Payments.RequestMobileMoneyAsync(...);
-    // await moolre.Payments.GetStatusAsync(...);
+    public async Task StartAsync(string orderId, CancellationToken cancellationToken)
+    {
+        var result = await moolre.Payments.RequestMobileMoneyAsync(new RequestMobileMoneyRequest
+        {
+            Channel = PaymentChannel.Mtn,
+            Currency = Currency.Ghs,
+            PayerPhoneNumber = "0241234567",
+            Amount = 25.50m,
+            ExternalReference = orderId,   // unique per payment; keep it
+        }, cancellationToken);
+
+        // result.Outcome: PromptSent, or OtpRequired (send again with the customer's code)
+    }
 }
 ```
 
-## Money safety
+Several wallets: register each with `AddMoolre("name", ...)` and use `MoolreClientFactory.Create("name")`.
 
-- Payment, transfer, sales and messaging calls are **never retried automatically**.
-- You supply the external reference. After a timeout the SDK throws an exception that carries it, so you can check the status instead of paying twice.
-- A callback or a browser redirect is not proof of payment. Confirm the status before fulfilling an order.
-- If you add a resilience handler to the `HttpClient`, do not retry `POST` requests blindly: every Moolre call is a `POST`, including read-only status lookups.
+## Exception handling
 
-## Requirements
+| Exception | Meaning |
+| --- | --- |
+| `MoolreOutcomeUncertainException` | A money or message call may or may not have happened (timeout, dropped connection). Check its status with the same reference; never resend blindly. |
+| `MoolreDuplicateReferenceException` | The reference was already used. Look up the original. |
+| `MoolreAuthenticationException` | Credentials or wallet rejected. |
+| `MoolreApiException` | Moolre refused the call; for money calls, nothing moved. |
+| `MoolreResponseException` | Moolre's answer could not be read. |
 
-- .NET 10 or later.
+Calls that move money or send messages are **never retried** by the SDK. Every Moolre call is a `POST`, so do not add a blind retry policy to its `HttpClient`.
 
-## Links
+## Webhooks
 
-- [Source code and documentation](https://github.com/zhuwaafrica/moolre-dotnet-sdk)
+```csharp
+builder.Services.AddMoolreWebhooks(o => o.Secret = builder.Configuration["Moolre:CallbackSecret"]);
+
+// In your endpoint, with the raw body bytes and the X-Moolre-Signature header:
+if (verifier.IsSignatureValid(body, signature) && PaymentWebhook.TryParse(body, out var webhook) && webhook.IsSuccessfulPayment)
+{
+    // confirm with Payments.GetStatusAsync, then fulfil once
+}
+```
+
+## Documentation
+
+- [User guides](https://github.com/zhuwaafrica/moolre-dotnet-sdk/tree/main/docs): getting started, configuration, every API area, webhooks, errors and money safety, testing
 - [Changelog](https://github.com/zhuwaafrica/moolre-dotnet-sdk/blob/main/CHANGELOG.md)
-- [Report a problem](https://github.com/zhuwaafrica/moolre-dotnet-sdk/issues)
+- [Source code](https://github.com/zhuwaafrica/moolre-dotnet-sdk) and [issues](https://github.com/zhuwaafrica/moolre-dotnet-sdk/issues)
 - [MIT licence](https://github.com/zhuwaafrica/moolre-dotnet-sdk/blob/main/LICENSE)

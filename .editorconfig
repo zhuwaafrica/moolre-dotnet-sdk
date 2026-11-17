@@ -427,6 +427,11 @@ csharp_style_namespace_declarations = file_scoped:error
 dotnet_diagnostic.IDE0005.severity = error  # remove unnecessary usings
 dotnet_diagnostic.IDE0161.severity = error  # file-scoped namespaces
 
-# Namespaces follow the API area (Zhuwa.Moolre.Payments), not the Requests/Results/Models/Errors sub-folders.
+# Square .NET SDK layout: Types/ and Core/Public/ hold root-namespace types, and <Area>/Requests/ keeps the area's namespace.
+# The rule stays off so those folders are not flagged.
 dotnet_style_namespace_match_folder = false
 dotnet_diagnostic.IDE0130.severity = none
+
+# Rider: the endpoint table and its nested classes are internal on purpose (tests and clients read them).
+resharper_member_can_be_private_global_highlighting = none
+resharper_member_can_be_private_local_highlighting = none

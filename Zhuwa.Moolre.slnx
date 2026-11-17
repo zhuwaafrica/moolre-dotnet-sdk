@@ -5,6 +5,27 @@
   <Folder Name="/tests/">
     <File Path="tests/.editorconfig" />
     <Project Path="tests/Zhuwa.Moolre.Sdk.Tests/Zhuwa.Moolre.Sdk.Tests.csproj" />
+    <Project Path="tests/Zhuwa.Moolre.Sdk.IntegrationTests/Zhuwa.Moolre.Sdk.IntegrationTests.csproj" />
+    <File Path="tests/Zhuwa.Moolre.Sdk.IntegrationTests/README.md" />
+  </Folder>
+  <Folder Name="/docs/">
+    <File Path="docs/README.md" />
+    <File Path="docs/getting-started.md" />
+    <File Path="docs/configuration.md" />
+    <File Path="docs/payments.md" />
+    <File Path="docs/transfers.md" />
+    <File Path="docs/accounts.md" />
+    <File Path="docs/sales.md" />
+    <File Path="docs/sms.md" />
+    <File Path="docs/whatsapp.md" />
+    <File Path="docs/webhooks.md" />
+    <File Path="docs/errors.md" />
+    <File Path="docs/testing.md" />
+    <File Path="docs/reference.md" />
+    <File Path="docs/architecture.md" />
+  </Folder>
+  <Folder Name="/eng/">
+    <File Path="eng/generate-reference.py" />
   </Folder>
   <Folder Name="/samples/">
     <File Path="samples/README.md" />

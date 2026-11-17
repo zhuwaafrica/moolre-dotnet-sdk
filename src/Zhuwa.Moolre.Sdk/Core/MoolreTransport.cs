@@ -1,0 +1,253 @@
+using System.Net;
+using System.Net.Http.Headers;
+using System.Text.Json;
+using System.Text.Json.Nodes;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
+
+namespace Zhuwa.Moolre.Core;
+
+/// <summary>
+/// Sends every Moolre call: builds the request from the endpoint table, adds the credentials, applies the timeout,
+/// reads the response and turns Moolre's failures into exceptions. Calls that move money or send messages are never retried.
+/// </summary>
+internal sealed partial class MoolreTransport
+{
+    // The selector field Moolre uses to tell operations on a shared URL apart. Its value comes from the endpoint table.
+    private const string TypeField = "type";
+
+    // Codes that mean the credentials or the wallet were not accepted.
+    private static readonly HashSet<string> AuthenticationCodes = new(StringComparer.Ordinal)
+    {
+        "AIN01", "AIN03", "AIN04", "IN01", "ASL00", "ASS00",
+    };
+
+    // Codes that mean the external reference was already used.
+    private static readonly HashSet<string> DuplicateReferenceCodes = new(StringComparer.Ordinal)
+    {
+        "TP13", "TR013", "APY18", "ASL08", "INP02",
+    };
+
+    // Creates a fresh HttpClient per call; the factory pools and recycles the handlers underneath (DNS changes, socket reuse).
+    private readonly IHttpClientFactory _httpClientFactory;
+
+    // A monitor, not a snapshot: every call reads the current values, so a changed key or timeout applies without a restart.
+    private readonly IOptionsMonitor<MoolreOptions> _options;
+
+    // Which wallet this transport sends for. Moolre keys belong to one wallet each, so every registered wallet gets its own transport,
+    // reading its own named settings ("" is the wallet registered without a name).
+    private readonly string _walletName;
+
+    private readonly ILogger<MoolreTransport> _logger;
+
+    public MoolreTransport(
+        IHttpClientFactory httpClientFactory,
+        IOptionsMonitor<MoolreOptions> options,
+        ILogger<MoolreTransport> logger,
+        string walletName = "")
+    {
+        _httpClientFactory = httpClientFactory;
+        _options = options;
+        _walletName = walletName;
+        _logger = logger;
+    }
+
+    /// <summary>Whether calls go to the sandbox. Some request fields (for example <c>skipotp</c>) only exist there.</summary>
+    internal bool IsSandbox => _options.Get(_walletName).Environment == MoolreEnvironment.Sandbox;
+
+    /// <summary>
+    /// The wallet a call acts on: the request's account number, or the default from <see cref="MoolreOptions.AccountNumber"/>.
+    /// </summary>
+    /// <param name="requested">The account number on the request, if any.</param>
+    /// <param name="requestTypeName">The request type, named in the error so the developer knows which property to set.</param>
+    /// <exception cref="InvalidOperationException">Neither is set. Thrown before any network call.</exception>
+    internal string ResolveAccountNumber(string? requested, string requestTypeName)
+    {
+        // A blank value on the request counts as "not set", so the default still applies.
+        var accountNumber = string.IsNullOrWhiteSpace(requested) ? _options.Get(_walletName).AccountNumber : requested;
+
+        if (string.IsNullOrWhiteSpace(accountNumber))
+        {
+            throw new InvalidOperationException($"Set {requestTypeName}.AccountNumber or MoolreOptions.AccountNumber.");
+        }
+
+        return accountNumber.Trim();
+    }
+
+    /// <summary>Sends one call and returns Moolre's answer, or throws for authentication, duplicate reference and unreadable answers.</summary>
+    /// <param name="endpoint">The operation, from <see cref="MoolreEndpoints"/>.</param>
+    /// <param name="fields">
+    /// The request fields, from <see cref="MoolreJson.ToBody"/>: the JSON body of a POST (the <c>type</c> field is added for you), or the
+    /// query string of a GET. <see langword="null"/> when there are none.
+    /// </param>
+    /// <param name="externalReference">The caller's reference, carried by <see cref="MoolreOutcomeUncertainException"/>.</param>
+    /// <param name="cancellationToken">
+    /// Cancels the call. Cancelling before anything is sent throws <see cref="OperationCanceledException"/>. Cancelling a call that
+    /// moves money or sends a message after it started throws <see cref="MoolreOutcomeUncertainException"/>, because it may have been processed.
+    /// </param>
+    internal async Task<ResponseEnvelope> SendAsync(
+        MoolreEndpoint endpoint,
+        JsonObject? fields,
+        string? externalReference,
+        CancellationToken cancellationToken)
+    {
+        // Nothing has been sent yet, so a token that is already cancelled is a plain cancellation.
+        cancellationToken.ThrowIfCancellationRequested();
+
+        // Read once so the credentials, the timeout and the error text in this call all come from the same snapshot.
+        var options = _options.Get(_walletName);
+
+        // Build the request and add the credentials before any network use: a missing or invalid credential throws
+        // InvalidOperationException here, so nothing has been sent when it does.
+        using var request = CreateRequest(endpoint, fields);
+        MoolreRequestPolicy.ApplyCredentials(request.Headers, endpoint, options);
+
+        // One token for both the caller's cancellation and our own timeout. The HttpClient timeout is switched off
+        // (see MoolreHttpClientConfiguration), so this is the only timeout, and we can tell the two causes apart below.
+        using var timeout = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
+        timeout.CancelAfter(options.Timeout);
+
+        HttpStatusCode statusCode;
+        byte[] body;
+        try
+        {
+            // Disposing a factory-created client leaves its pooled handler available for reuse.
+            using var client = _httpClientFactory.CreateClient(MoolreHttpClientConfiguration.ClientNameFor(_walletName));
+            // ResponseContentRead makes the HttpClient buffer the whole body itself, which is the only path where it enforces
+            // MaxResponseContentBufferSize (16 MB, see MoolreHttpClientConfiguration); a larger body fails here instead of filling
+            // memory. Reading inside the same try means a failure while reading is handled like a failure to connect, because the
+            // request has already been sent by then.
+            using var response = await client.SendAsync(request, HttpCompletionOption.ResponseContentRead, timeout.Token).ConfigureAwait(false);
+            statusCode = response.StatusCode;
+            body = await response.Content.ReadAsByteArrayAsync(timeout.Token).ConfigureAwait(false);
+        }
+        // Cancelled, but not by the caller: this is our own timeout.
+        catch (OperationCanceledException ex) when (!cancellationToken.IsCancellationRequested)
+        {
+            LogTimedOut(_logger, endpoint.Name);
+            // A read-only call can simply be repeated, so a plain TimeoutException is enough. A call that moves money or
+            // sends a message may have been processed, so the caller is told the outcome is unknown and given the reference.
+            throw endpoint.IsSafeToRepeat
+                ? new TimeoutException($"{endpoint.Name} timed out after {options.Timeout}.", ex)
+                : Uncertain(endpoint, externalReference, "timed out", ex);
+        }
+        catch (OperationCanceledException ex) when (!endpoint.IsSafeToRepeat)
+        {
+            // The caller cancelled after the request was started, so it may already have reached Moolre.
+            throw Uncertain(endpoint, externalReference, "was cancelled after it was sent", ex);
+        }
+        // Connection and read failures. For read-only calls these pass through unchanged so the caller can retry.
+        // The filter is narrow on purpose: no other exception type is swallowed.
+        catch (Exception ex) when ((ex is HttpRequestException or IOException) && !endpoint.IsSafeToRepeat)
+        {
+            LogFailed(_logger, endpoint.Name);
+            throw Uncertain(endpoint, externalReference, "failed after the request may have been sent", ex);
+        }
+
+        // An answer arrived. Read it into the shared envelope; a body that is not Moolre JSON is a failure
+        // (and, for a money or message call, an unknown outcome, because the server may have acted before replying badly).
+        ResponseEnvelope envelope;
+        try
+        {
+            envelope = ResponseEnvelope.Parse(body, statusCode);
+        }
+        catch (MoolreResponseException ex) when (!endpoint.IsSafeToRepeat)
+        {
+            // Moolre answered, but not with something we can read: whether the money or message went through is unknown.
+            throw Uncertain(endpoint, externalReference, "returned a response that could not be read", ex);
+        }
+
+        // Only log local operation names and HTTP statuses. Response fields can contain sensitive data.
+        LogCompleted(_logger, endpoint.Name, (int)statusCode);
+
+        // Authentication and duplicate-reference failures mean the same thing for every operation, so they are handled here.
+        // Any other failure is left to the caller, because some "failures" (pending, OTP needed, not found) are valid results.
+        ThrowForKnownFailures(envelope);
+        return envelope;
+    }
+
+    /// <summary>
+    /// Throws <see cref="MoolreApiException"/> when Moolre did not report success. Operations call this when status 0 is a
+    /// real failure; operations where status 0 can be a valid answer (for example "name not found") check the code instead.
+    /// </summary>
+    internal static void EnsureSuccess(ResponseEnvelope envelope)
+    {
+        if (!envelope.IsSuccess)
+        {
+            throw new MoolreApiException(
+                envelope.Message ?? "Moolre reported a failure.",
+                envelope.Code,
+                envelope.HttpStatusCode,
+                envelope.Messages,
+                envelope.Detail);
+        }
+    }
+
+    private static HttpRequestMessage CreateRequest(MoolreEndpoint endpoint, JsonObject? fields)
+    {
+        // GET calls carry their values in the query string and have no body. The path is relative: the base address (live or
+        // sandbox) is set once on the HttpClient.
+        var isGet = endpoint.Method == HttpMethod.Get;
+        var body = fields ?? [];
+
+        // Many Moolre operations share one URL and differ only by this field, so it comes from the endpoint table. It goes first, as in
+        // Moolre's examples, in the body of a POST or the query string of a GET.
+        if (endpoint.Type is int type)
+        {
+            body.Insert(0, TypeField, type);
+        }
+
+        var path = isGet && body.Count > 0 ? $"{endpoint.Path}?{MoolreJson.ToQuery(body)}" : endpoint.Path;
+        var request = new HttpRequestMessage(endpoint.Method, new Uri(path, UriKind.Relative));
+
+        if (!isGet)
+        {
+            // Written with Utf8JsonWriter from the JSON object: no reflection (trimming and AOT safe) and correct escaping of every value.
+            using var buffer = new MemoryStream();
+            using (var writer = new Utf8JsonWriter(buffer))
+            {
+                body.WriteTo(writer);
+            }
+
+            // A byte array, not a stream: it can be sent again by the HttpClient if it ever needs to (for example a handler the
+            // caller adds), and the request disposes it with the message.
+            request.Content = new ByteArrayContent(buffer.GetBuffer(), 0, checked((int)buffer.Length));
+            request.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+        }
+
+        return request;
+    }
+
+    private static void ThrowForKnownFailures(ResponseEnvelope envelope)
+    {
+        // Compared as plain text so a code Moolre adds later is never mistaken for one of these.
+        var code = envelope.Code.Value;
+        var message = envelope.Message ?? "Moolre rejected the call.";
+
+        if (AuthenticationCodes.Contains(code))
+        {
+            throw new MoolreAuthenticationException(message, envelope.Code, envelope.HttpStatusCode, envelope.Messages, envelope.Detail);
+        }
+
+        if (DuplicateReferenceCodes.Contains(code))
+        {
+            throw new MoolreDuplicateReferenceException(message, envelope.Code, envelope.HttpStatusCode, envelope.Messages, envelope.Detail);
+        }
+    }
+
+    private static MoolreOutcomeUncertainException Uncertain(MoolreEndpoint endpoint, string? externalReference, string what, Exception inner) =>
+        new(
+            $"{endpoint.Name} {what}. It may or may not have been processed; check its status before doing anything else.",
+            endpoint.Name,
+            externalReference,
+            inner);
+
+    [LoggerMessage(Level = LogLevel.Debug, Message = "Moolre {Operation} answered HTTP {HttpStatus}")]
+    private static partial void LogCompleted(ILogger logger, string operation, int httpStatus);
+
+    [LoggerMessage(Level = LogLevel.Warning, Message = "Moolre {Operation} timed out")]
+    private static partial void LogTimedOut(ILogger logger, string operation);
+
+    [LoggerMessage(Level = LogLevel.Warning, Message = "Moolre {Operation} failed before an answer was read")]
+    private static partial void LogFailed(ILogger logger, string operation);
+}
